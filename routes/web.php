@@ -11,11 +11,20 @@
 |
 */
 
+/*
+* Prueba de Home Page
+*/
+
 Route::get('/', function() {
 
     return 'Home';
 
 });
+
+/*
+* Pruebas de usuarios
+*/
+
 
 Route::get('/usuarios', function() {
 
@@ -35,7 +44,13 @@ Route::get('/usuarios/nuevo', function() {
 
 });
 
+/*
+* Pruebas de saludo
+*/
+
 Route::get('/saludo/{name}/{nickname?}', function($name, $nickname = null) {
+
+    $name = ucfirst($name);
 
     if ($nickname){
         return "Bienvenido {$name}, tu nick es {$nickname}";
