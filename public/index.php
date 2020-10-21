@@ -1,7 +1,5 @@
 <?php
 
-die($_SERVER['REQUEST_URI']);
-
 use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Http\Request;
 
