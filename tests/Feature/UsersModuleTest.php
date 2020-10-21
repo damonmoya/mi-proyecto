@@ -15,7 +15,10 @@ class UsersModuleTest extends TestCase
     {
         $this->get('/usuarios')
             ->assertStatus(200)
-            ->assertSee('Usuarios');
+            ->assertSee('Listado de usuarios')
+            ->assertSee('Pepe')
+            ->assertSee('Pablo')
+            ->assertSee('Willy');
     }
 
     /**
