@@ -11,8 +11,8 @@
 |
 */
 
-/*
-* Prueba de Home Page
+/**
+* Home Page
 */
 
 Route::get('/', function() {
@@ -21,43 +21,19 @@ Route::get('/', function() {
 
 });
 
-/*
-* Pruebas de usuarios
+/**
+* Páginas de usuarios
 */
 
+Route::get('/usuarios', 'App\Http\Controllers\UserController@index');
 
-Route::get('/usuarios', function() {
+Route::get('/usuarios/{id}', 'App\Http\Controllers\UserController@show') -> where('id', '[0-9]+');
 
-    return 'Usuarios';
+Route::get('/usuarios/nuevo', 'App\Http\Controllers\UserController@create');
 
-});
-
-Route::get('/usuarios/{id}', function($id) {
-
-    return "Mostrar detalles del usuario: {$id}";
-
-})->where('id', '[0-9]+');
-
-Route::get('/usuarios/nuevo', function() {
-
-    return "Crear nuevo usuario";
-
-});
-
-/*
-* Pruebas de saludo
+/**
+* Página de saludo
 */
 
-Route::get('/saludo/{name}/{nickname?}', function($name, $nickname = null) {
-
-    $name = ucfirst($name);
-
-    if ($nickname){
-        return "Bienvenido {$name}, tu nick es {$nickname}";
-    } else {
-        return "Bienvenido {$name}";
-    }
-
-
-});
+Route::get('/saludo/{name}/{nickname?}', 'App\Http\Controllers\WelcomeUserController');
 

@@ -9,7 +9,7 @@ use Tests\TestCase;
 class WelcomeUsersTest extends TestCase
 {
     /**
-     * @test
+     * Prueba de saludo con nickname
      */
     function test_loads_welcome_user_nickname_page ()
     {
@@ -19,7 +19,7 @@ class WelcomeUsersTest extends TestCase
     }
 
     /**
-     * @test
+     * Prueba de saludo sin nickname
      */
     function test_loads_welcome_user_no_nickname_page ()
     {

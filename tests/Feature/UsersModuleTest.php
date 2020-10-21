@@ -9,8 +9,8 @@ use Tests\TestCase;
 class UsersModuleTest extends TestCase
 {
     /**
-     * @test
-     */
+    * Pruebas de usuarios
+    */
     function test_loads_users_page ()
     {
         $this->get('/usuarios')
@@ -19,7 +19,7 @@ class UsersModuleTest extends TestCase
     }
 
     /**
-     * @test
+     * Pruebas de detalles de usuario
      */
     function test_loads_users_details_page ()
     {
@@ -29,7 +29,7 @@ class UsersModuleTest extends TestCase
     }
 
     /**
-     * @test
+     * Pruebas de nuevo usuario
      */
     function test_loads_new_user_page ()
     {
