@@ -11,7 +11,7 @@ class UsersModuleTest extends TestCase
     /**
     * Pruebas de usuarios
     */
-    function test_loads_users_page ()
+    function test_show_users_page ()
     {
         $this->get('/usuarios')
             ->assertStatus(200)
@@ -19,6 +19,14 @@ class UsersModuleTest extends TestCase
             ->assertSee('Pepe')
             ->assertSee('Pablo')
             ->assertSee('Willy');
+    }
+
+    function test_empty_users_page ()
+    {
+        $this->get('/usuarios?empty')
+            ->assertStatus(200)
+            ->assertSee('Listado de usuarios')
+            ->assertSee('No hay usuarios registrados');
     }
 
     /**
