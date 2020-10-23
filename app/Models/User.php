@@ -39,5 +39,19 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'is_admin' => 'boolean'
     ];
+
+    public function isAdmin()
+    {
+        return $this->email === 'pepebenavente@hotmail.es';
+    }
+
+    public static function findByEmail($email)
+    {
+        return static::where(compact('email'))->first();
+    }
+
+
+
 }
