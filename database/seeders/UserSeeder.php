@@ -27,6 +27,21 @@ class UserSeeder extends Seeder
             'email' => 'pepebenavente@hotmail.es',
             'password' => bcrypt('elmejorcantante'),
             'profession_id' => $professionId,
+            'is_admin' => true,
+        ]);
+
+        User::create([
+            'name' => 'Paco Sanz',
+            'email' => 'pacosanz@hotmail.es',
+            'password' => bcrypt('elmejorcantante'),
+            'profession_id' => $professionId,
+        ]);
+
+        User::create([
+            'name' => 'Will Smith',
+            'email' => 'willsmith@hotmail.com',
+            'password' => bcrypt('elmejorcantante'),
+            'profession_id' => null,
         ]);
     }
 }
