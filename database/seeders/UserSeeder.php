@@ -22,26 +22,17 @@ class UserSeeder extends Seeder
         //$profession = DB::table('professions')->select('id')->first();
         $professionId = Profession::where('title', 'Desarrollador back-end')->value('id');
 
-        User::create([
-            'name' => 'Pepe Benavente',
+        User::factory()->create([
             'email' => 'pepebenavente@hotmail.es',
             'password' => bcrypt('elmejorcantante'),
             'profession_id' => $professionId,
             'is_admin' => true,
         ]);
 
-        User::create([
-            'name' => 'Paco Sanz',
-            'email' => 'pacosanz@hotmail.es',
-            'password' => bcrypt('elmejorcantante'),
-            'profession_id' => $professionId,
+        User::factory()->create([
+            'profession_id' => $professionId
         ]);
 
-        User::create([
-            'name' => 'Will Smith',
-            'email' => 'willsmith@hotmail.com',
-            'password' => bcrypt('elmejorcantante'),
-            'profession_id' => null,
-        ]);
+        User::factory(48)->create();
     }
 }
