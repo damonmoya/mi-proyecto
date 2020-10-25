@@ -8,7 +8,7 @@
 
         <ul>
             @foreach ($users as $user)
-                <li>{{ $user }}</li>
+                <li>{{ $user->name }} (correo: {{ $user->email }})</li>
             @endforeach
         </ul>
     @else 
