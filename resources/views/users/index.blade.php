@@ -16,8 +16,3 @@
     @endif
 @endsection
 
-@section('sidebar')
-    @parent
-
-    <h2>Barra lateral personalizada</h2>
-@endsection

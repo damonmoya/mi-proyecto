@@ -15,11 +15,7 @@
 * Home Page
 */
 
-Route::get('/', function() {
-
-    return 'Home';
-
-});
+Route::get('/', 'App\Http\Controllers\Controller@home');
 
 /**
 * Páginas de usuarios
