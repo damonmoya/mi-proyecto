@@ -26,7 +26,7 @@ Route::get('/usuarios', 'App\Http\Controllers\UserController@index')
     ->name('users');
 
 Route::get('/usuarios/{id}', 'App\Http\Controllers\UserController@show') 
-    -> where('id', '[0-9]+')
+    ->where('id', '[0-9]+')
     ->name('users.show');
 
 Route::get('/usuarios/nuevo', 'App\Http\Controllers\UserController@create')
