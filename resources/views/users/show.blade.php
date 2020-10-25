@@ -8,6 +8,10 @@
     <p>Nombre del usuario: {{ $user->name }}</p>
     <p>Correo del usuario: {{ $user->email }}</p>
 
+    <p>
+        <a href="{{ url('/usuarios') }}">Regresar a listado de usuarios</a>
+    </p>
+
 @endsection
 
 

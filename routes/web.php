@@ -15,21 +15,27 @@
 * Home Page
 */
 
-Route::get('/', 'App\Http\Controllers\Controller@home');
+Route::get('/', 'App\Http\Controllers\Controller@home')
+    ->name('home');
 
 /**
 * Páginas de usuarios
 */
 
-Route::get('/usuarios', 'App\Http\Controllers\UserController@index');
+Route::get('/usuarios', 'App\Http\Controllers\UserController@index')
+    ->name('users');
 
-Route::get('/usuarios/{id}', 'App\Http\Controllers\UserController@show') -> where('id', '[0-9]+');
+Route::get('/usuarios/{id}', 'App\Http\Controllers\UserController@show') 
+    -> where('id', '[0-9]+')
+    ->name('users.show');
 
-Route::get('/usuarios/nuevo', 'App\Http\Controllers\UserController@create');
+Route::get('/usuarios/nuevo', 'App\Http\Controllers\UserController@create')
+    ->name('users.create');
 
 /**
 * Página de saludo
 */
 
-Route::get('/saludo/{name}/{nickname?}', 'App\Http\Controllers\WelcomeUserController');
+Route::get('/saludo/{name}/{nickname?}', 'App\Http\Controllers\WelcomeUserController')
+    ->name('welcome');
 
