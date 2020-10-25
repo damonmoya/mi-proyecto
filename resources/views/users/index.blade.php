@@ -3,16 +3,15 @@
 @section('title', "Usuarios")
 
 @section('content')
-<h1>{{ $title }}</h1>
-     @if (! empty($users))       
+    <h1>{{ $title }}</h1>
+     
+    <ul>
+        @forelse ($users as $user)
+            <li>{{ $user->name }}, ({{ $user->email }})</li>
+        @empty
+            <li>No hay usuarios registrados</li>
+        @endforelse
+    </ul>
 
-        <ul>
-            @foreach ($users as $user)
-                <li>{{ $user->name }} (correo: {{ $user->email }})</li>
-            @endforeach
-        </ul>
-    @else 
-        <p>No hay usuarios registrados</p>
-    @endif
 @endsection
 

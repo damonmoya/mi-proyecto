@@ -13,7 +13,6 @@ class UserController extends Controller
 
         //$users = DB::table('users')->get();
         $users = User::all();
-
         
         return view('users.index')
             ->with('users', $users)
