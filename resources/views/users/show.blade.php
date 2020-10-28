@@ -12,6 +12,14 @@
         <a href="{{ route('users.edit', ['id' => $user->id]) }}">Modificar usuario</a>
     </p>
 
+    <form action="{{ route('users.destroy', [$user->id]) }}" method="POST">
+        {{ method_field('DELETE') }}
+        {{ csrf_field() }}
+        <button type="submit">Eliminar usuario</button>
+    </form>
+
+    <br><br>
+
     <p>
         <a href="{{ url('/usuarios') }}">Regresar a listado de usuarios</a>
     </p>
