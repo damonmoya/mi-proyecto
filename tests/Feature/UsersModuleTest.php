@@ -230,6 +230,8 @@ class UsersModuleTest extends TestCase
     function test_updates_a_user ()
     {
 
+        //$this->withoutExceptionHandling();
+
         $user = User::factory()->create();
 
         $this->put("/usuarios/{$user->id}", [
@@ -245,4 +247,186 @@ class UsersModuleTest extends TestCase
             'password' => 'elmejorcantante'
         ]);
     }
+
+    function test_update_name_is_required ()
+    {
+
+        //$this->withoutExceptionHandling();
+
+        $user = User::factory()->create();
+
+        $this->from("usuarios/{$user->id}/editar")
+            ->put("/usuarios/{$user->id}", [
+            'name' => '',
+            'email' => 'pepebenavente2@hotmail.es',
+            'password' => 'elmejorcantante',
+            'confirm_password' => 'elmejorcantante'
+        ])->assertRedirect("/usuarios/{$user->id}/editar")
+            ->assertSessionHasErrors(['name']);
+
+        $this->assertDatabaseMissing('users', ['email' => 'pepebenavente2@hotmail.es']);
+        
+    }
+
+    function test_update_email_is_required ()
+    {
+        //$this->withoutExceptionHandling();
+
+        $user = User::factory()->create();
+
+        $this->from("usuarios/{$user->id}/editar")
+            ->put("/usuarios/{$user->id}", [
+            'name' => 'Pepe2',
+            'email' => '',
+            'password' => 'elmejorcantante',
+            'confirm_password' => 'elmejorcantante'
+        ])->assertRedirect("/usuarios/{$user->id}/editar")
+            ->assertSessionHasErrors(['email']);
+
+        $this->assertDatabaseMissing('users', ['name' => 'Pepe2']);
+
+    }
+
+    function test_update_password_is_optional ()
+    {
+        //$this->withoutExceptionHandling();
+
+        $user = User::factory()->create([
+            'password' => bcrypt('clave_anterior')
+        ]);
+
+        $this->from("usuarios/{$user->id}/editar")
+            ->put("/usuarios/{$user->id}", [
+            'name' => 'Pepe2',
+            'email' => 'pepebenavente2@hotmail.es',
+            'password' => '',
+            'confirm_password' => ''
+        ])->assertRedirect("/usuarios/{$user->id}");
+
+        $this->assertCredentials([
+            'name' => 'Pepe2',
+            'email' => 'pepebenavente2@hotmail.es',
+            'password' => 'clave_anterior'
+            
+        ]);
+
+    }
+
+    function test_update_email_not_changed ()
+    {
+        //$this->withoutExceptionHandling();
+
+        $user = User::factory()->create([
+            'email' => 'pepebenavente2@hotmail.es'
+        ]);
+
+        $this->from("usuarios/{$user->id}/editar")
+            ->put("/usuarios/{$user->id}", [
+            'name' => 'Pepe2',
+            'email' => 'pepebenavente2@hotmail.es',
+            'password' => '123456',
+            'confirm_password' => '123456'
+        ])->assertRedirect("/usuarios/{$user->id}");
+
+        $this->assertDatabaseHas('users', [
+            'name' => 'Pepe2',
+            'email' => 'pepebenavente2@hotmail.es'
+        ]);
+
+    }
+
+    function test_update_email_muest_be_valid ()
+    {
+        //$this->withoutExceptionHandling();
+
+        $user = User::factory()->create();
+
+        $this->from("usuarios/{$user->id}/editar")
+            ->put("/usuarios/{$user->id}", [
+            'name' => 'Pepe2',
+            'email' => 'correo-no-valido',
+            'password' => 'elmejorcantante',
+            'confirm_password' => 'elmejorcantante'
+        ])->assertRedirect("/usuarios/{$user->id}/editar")
+            ->assertSessionHasErrors(['email']);
+
+        $this->assertDatabaseMissing('users', ['name' => 'Pepe2']);
+
+    }
+
+    function test_update_email_must_be_unique ()
+    {
+        User::factory()->create([
+            'email' => 'correo-existente@hotmail.es',
+        ]);
+
+        $user = User::factory()->create([
+            'email' => 'pepebenavente2@hotmail.es',
+        ]);
+
+        $this->from("usuarios/{$user->id}/editar")
+            ->put("/usuarios/{$user->id}", [
+                'name' => 'Pepe2',
+                'email' => 'correo-existente@hotmail.es',
+                'password' => 'elmejorcantante'
+        ])->assertRedirect("/usuarios/{$user->id}/editar")
+            ->assertSessionHasErrors(['email']);
+
+    }
+
+    function test_update_password_must_have_min_length ()
+    {
+
+        //$this->withoutExceptionHandling();
+
+        $user = User::factory()->create([
+            'name' => 'Pepe2',
+            'email' => 'pepebenavente2@hotmail.es',
+            'password' => bcrypt('clave_anterior')
+        ]);
+
+        $this->from("usuarios/{$user->id}/editar")
+            ->put("usuarios/{$user->id}", [
+                'name' => 'Pepe2',
+                'email' => 'pepebenavente2@hotmail.es',
+                'password' => '12345'
+        ])->assertRedirect("/usuarios/{$user->id}/editar")
+            ->assertSessionHasErrors(['password']);
+
+        $this->assertCredentials([
+            'name' => 'Pepe2',
+            'email' => 'pepebenavente2@hotmail.es',
+            'password' => 'clave_anterior'
+                
+        ]);
+
+    }
+
+    function test_update_password_and_confirm_password_are_not_same ()
+    {
+        $user = User::factory()->create([
+            'name' => 'Pepe2',
+            'email' => 'pepebenavente2@hotmail.es',
+            'password' => bcrypt('clave_anterior')
+        ]);
+
+        $this->from("usuarios/{$user->id}/editar")
+            ->put("usuarios/{$user->id}", [
+                'name' => 'Pepe2',
+                'email' => 'pepebenavente2@hotmail.es',
+                'password' => 'elmejorcantante',
+                'confirm_password' => 'elmejorcantante2'
+        ])->assertRedirect("usuarios/{$user->id}/editar")
+            ->assertSessionHasErrors(['confirm_password']);
+
+
+        $this->assertCredentials([
+            'name' => 'Pepe2',
+            'email' => 'pepebenavente2@hotmail.es',
+            'password' => 'clave_anterior'
+                
+        ]);
+
+    }
+
 }

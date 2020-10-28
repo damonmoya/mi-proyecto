@@ -19,17 +19,18 @@
     @endif
 
     {{--Sección de formulario--}}        
-    <form method="POST" action="{{ url('/usuarios') }}">
+    <form method="POST" action="{{ url("/usuarios/{$user->id}") }}">
+        {{ method_field('PUT') }}
         {{ csrf_field() }}
 
         <label for="name">Nombre:</label><br>
-        <input type="text" name="name" id="name" placeholder="p.e: Kike Pérez" value="{{ old('name', $user->name) }}"><br>
+        <input type="text" name="name" id="name" placeholder="p.e: Kike Pérez" value="{{ $user->name }}"><br>
 
-        <label for="email">Email:</label><br>
-        <input type="email" name="email" id="email" placeholder="p.e: kikeperez@hotmail.es" value="{{ old('email', $user->email) }}"><br>
+        <label for="email">Correo:</label><br>
+        <input type="email" name="email" id="email" placeholder="p.e: kikeperez@hotmail.es" value="{{ $user->email }}"><br>
 
         <label for="password">Clave:</label><br>
-        <input type="password" name="password" id="password"><br>
+        <input type="password" name="password" id="password" placeholder="Opcional..."><br>
 
         <label for="confirm_password">Confirmar clave:</label><br>
         <input type="password" name="confirm_password" id="confirm_password"><br><br>

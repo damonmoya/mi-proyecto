@@ -50,9 +50,27 @@ class UserController extends Controller
     public function update($id)
     {
         $user = User::find($id);
-        $data = request()->all();
+        
+        $data = request()->validate([
+            'name' => 'required',
+            'email' => ['required', 'email', 'unique:users,email,'.$user->id],
+            'password' => ['nullable', 'min:6'],
+            'confirm_password' => 'same:password'
+        ], [
+            'name.required' => 'El campo nombre es obligatorio',
+            'email.required' => 'El campo correo es obligatorio',
+            'email.email' => 'El correo no es válido',
+            'email.unique' => 'El correo ya está en uso',
+            'password.min' => 'La clave debe tener mínimo 6 caracteres',
+            'confirm_password.same' => 'Las claves no coinciden',
+        ]);
 
-        $data['password'] = bcrypt($data['password']);
+        if ($data['password'] != null) {
+            $data['password'] = bcrypt($data['password']);
+        } else {
+            unset($data['password']);
+        }
+
 
         $user->update($data);
 

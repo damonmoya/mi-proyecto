@@ -25,7 +25,7 @@
         <label for="name">Nombre:</label><br>
         <input type="text" name="name" id="name" placeholder="p.e: Kike Pérez" value="{{ old('name') }}"><br>
 
-        <label for="email">Email:</label><br>
+        <label for="email">Correo:</label><br>
         <input type="email" name="email" id="email" placeholder="p.e: kikeperez@hotmail.es" value="{{ old('email') }}"><br>
 
         <label for="password">Clave:</label><br>
