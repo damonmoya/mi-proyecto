@@ -1,9 +1,9 @@
 @extends('layout')
 
-@section('title', "Crear usuario")
+@section('title', "Editar usuario")
 
 @section('content')
-    <h1>Crear usuario</h1>
+    <h1>Editar usuario</h1>
 
 
     {{--Sección de errores--}}
@@ -23,10 +23,10 @@
         {{ csrf_field() }}
 
         <label for="name">Nombre:</label><br>
-        <input type="text" name="name" id="name" placeholder="p.e: Kike Pérez" value="{{ old('name') }}"><br>
+        <input type="text" name="name" id="name" placeholder="p.e: Kike Pérez" value="{{ old('name', $user->name) }}"><br>
 
         <label for="email">Email:</label><br>
-        <input type="email" name="email" id="email" placeholder="p.e: kikeperez@hotmail.es" value="{{ old('email') }}"><br>
+        <input type="email" name="email" id="email" placeholder="p.e: kikeperez@hotmail.es" value="{{ old('email', $user->email) }}"><br>
 
         <label for="password">Clave:</label><br>
         <input type="password" name="password" id="password"><br>
@@ -34,7 +34,7 @@
         <label for="confirm_password">Confirmar clave:</label><br>
         <input type="password" name="confirm_password" id="confirm_password"><br><br>
 
-        <button type="submit">Crear usuario</button><br><br>
+        <button type="submit">Actualizar usuario</button><br><br>
     </form>
 
     <p>

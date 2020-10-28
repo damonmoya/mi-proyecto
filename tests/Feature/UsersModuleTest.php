@@ -48,8 +48,28 @@ class UsersModuleTest extends TestCase
     }
 
     /**
-     * Pruebas de detalles de usuario
+     * Pruebas de carga de páginas
      */
+    function test_loads_new_user_page ()
+    {
+        $this->get('/usuarios/nuevo')
+            ->assertStatus(200)
+            ->assertSee("Crear usuario");
+    }
+
+    function test_loads_edit_user_page ()
+    {
+        $user = User::factory()->create();
+
+        $this->get("/usuarios/{$user->id}/editar")
+            ->assertStatus(200)
+            ->assertViewIs('users.edit')
+            ->assertSee("Editar usuario")
+            ->assertViewHas('user', function ($viewUser) use ($user) {
+                return $viewUser->id == $user->id;
+            });
+    }
+
     function test_loads_users_details_page ()
     {
 
@@ -60,16 +80,6 @@ class UsersModuleTest extends TestCase
         $this->get('/usuarios/'.$user->id)
             ->assertStatus(200)
             ->assertSee("Pepe Benavente");
-    }
-
-    /**
-     * Pruebas de nuevo usuario
-     */
-    function test_loads_new_user_page ()
-    {
-        $this->get('/usuarios/nuevo')
-            ->assertStatus(200)
-            ->assertSee("Crear nuevo usuario");
     }
 
     /**
@@ -90,13 +100,149 @@ class UsersModuleTest extends TestCase
         $this->post('/usuarios/', [
             'name' => 'Pepe2',
             'email' => 'pepebenavente2@hotmail.es',
-            'password' => 'elmejorcantante'
-        ])->assertRedirect('usuarios');
+            'password' => 'elmejorcantante',
+            'confirm_password' => 'elmejorcantante'
+        ])->assertRedirect('/usuarios');
 
         $this->assertCredentials([
+            'name' => 'Pepe2',
+            'email' => 'pepebenavente2@hotmail.es',
+            'password' => 'elmejorcantante'
+        ]);
+    }
+
+    function test_name_is_required ()
+    {
+        $this->from('usuarios/nuevo')
+            ->post('/usuarios/', [
+                'name' => '',
+                'email' => 'pepebenavente2@hotmail.es',
+                'password' => 'elmejorcantante'
+        ])->assertRedirect('usuarios/nuevo')
+            ->assertSessionHasErrors(['name' => 'El campo nombre es obligatorio']);
+
+
+        $this->assertEquals(0, User::count());
+
+    }
+
+    function test_email_is_required ()
+    {
+        $this->from('usuarios/nuevo')
+            ->post('/usuarios/', [
+                'name' => 'Pepe2',
+                'email' => '',
+                'password' => 'elmejorcantante'
+        ])->assertRedirect('usuarios/nuevo')
+            ->assertSessionHasErrors(['email' => 'El campo correo es obligatorio']);
+
+
+        $this->assertEquals(0, User::count());
+
+    }
+
+    function test_password_is_required ()
+    {
+        $this->from('usuarios/nuevo')
+            ->post('/usuarios/', [
+                'name' => 'Pepe2',
+                'email' => 'pepebenavente2@hotmail.es',
+                'password' => ''
+        ])->assertRedirect('usuarios/nuevo')
+            ->assertSessionHasErrors(['password' => 'El campo clave es obligatorio']);
+
+
+        $this->assertEquals(0, User::count());
+
+    }
+
+    function test_email_muest_be_valid ()
+    {
+        $this->from('usuarios/nuevo')
+            ->post('/usuarios/', [
+                'name' => 'Pepe2',
+                'email' => 'correo-no-valido',
+                'password' => 'elmejorcantante'
+        ])->assertRedirect('usuarios/nuevo')
+            ->assertSessionHasErrors(['email']);
+
+
+        $this->assertEquals(0, User::count());
+
+    }
+
+    function test_email_must_be_unique ()
+    {
+        User::factory()->create([
+            'email' => 'pepebenavente2@hotmail.es',
+        ]);
+
+        $this->from('usuarios/nuevo')
+            ->post('/usuarios/', [
                 'name' => 'Pepe2',
                 'email' => 'pepebenavente2@hotmail.es',
                 'password' => 'elmejorcantante'
-            ]);
+        ])->assertRedirect('usuarios/nuevo')
+            ->assertSessionHasErrors(['email']);
+
+
+        $this->assertEquals(1, User::count());
+
+    }
+
+    function test_password_must_have_min_length ()
+    {
+
+        $this->from('usuarios/nuevo')
+            ->post('/usuarios/', [
+                'name' => 'Pepe2',
+                'email' => 'pepebenavente2@hotmail.es',
+                'password' => '12345'
+        ])->assertRedirect('usuarios/nuevo')
+            ->assertSessionHasErrors(['password']);
+
+
+        $this->assertEquals(0, User::count());
+
+    }
+
+    function test_password_and_confirm_password_are_not_same ()
+    {
+
+        $this->from('usuarios/nuevo')
+            ->post('/usuarios/', [
+                'name' => 'Pepe2',
+                'email' => 'pepebenavente2@hotmail.es',
+                'password' => 'elmejorcantante',
+                'confirm_password' => 'elmejorcantante2'
+        ])->assertRedirect('usuarios/nuevo')
+            ->assertSessionHasErrors(['confirm_password']);
+
+
+        $this->assertEquals(0, User::count());
+
+    }
+
+    /**
+     * Pruebas de actualización de usuario
+     */
+
+    function test_updates_a_user ()
+    {
+
+        $user = User::factory()->create();
+
+        $this->put("/usuarios/{$user->id}", [
+            'name' => 'Pepe2',
+            'email' => 'pepebenavente2@hotmail.es',
+            'password' => 'elmejorcantante',
+            'confirm_password' => 'elmejorcantante'
+        ])->assertRedirect("/usuarios/{$user->id}");
+
+        $this->assertCredentials([
+            'name' => 'Pepe2',
+            'email' => 'pepebenavente2@hotmail.es',
+            'password' => 'elmejorcantante'
+        ]);
     }
 }

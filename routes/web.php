@@ -29,8 +29,16 @@ Route::get('/usuarios/{id}', 'App\Http\Controllers\UserController@show')
     ->where('id', '[0-9]+')
     ->name('users.show');
 
+Route::put('/usuarios/{id}', 'App\Http\Controllers\UserController@update') 
+    ->where('id', '[0-9]+')
+    ->name('users.show');
+
+Route::get('/usuarios/{id}/editar', 'App\Http\Controllers\UserController@edit') 
+    ->where('id', '[0-9]+')
+    ->name('users.edit');
+
 Route::get('/usuarios/nuevo', 'App\Http\Controllers\UserController@create')
-    ->name('users.create');
+    ->name('users.create');;
 
 Route::post('/usuarios', 'App\Http\Controllers\UserController@store');
 

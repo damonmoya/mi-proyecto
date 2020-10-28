@@ -36,9 +36,46 @@ class UserController extends Controller
         return view('users.create');
     }
 
+    public function edit($id)
+    {
+        $user = User::find($id);
+
+        if ($user == null) {
+            return response()->view('errors.404', [], 404);
+        }
+
+        return view('users.edit', compact('user'));
+    }
+
+    public function update($id)
+    {
+        $user = User::find($id);
+        $data = request()->all();
+
+        $data['password'] = bcrypt($data['password']);
+
+        $user->update($data);
+
+        return redirect("/usuarios/$id");
+    }
+
     public function store()
     {
-        $data = request()->all();
+        $data = request()->validate([
+            'name' => 'required',
+            'email' => ['required', 'email', 'unique:users,email'],
+            'password' => ['required', 'min:6'],
+            'confirm_password' => ['required', 'same:password']
+        ], [
+            'name.required' => 'El campo nombre es obligatorio',
+            'email.required' => 'El campo correo es obligatorio',
+            'email.email' => 'El correo no es válido',
+            'email.unique' => 'El correo ya está en uso',
+            'password.required' => 'El campo clave es obligatorio',
+            'password.min' => 'La clave debe tener mínimo 6 caracteres',
+            'confirm_password.required' => 'Se debe confirmar la clave',
+            'confirm_password.same' => 'Las claves no coinciden'
+        ]);
 
         User::create([
             'name' => $data['name'],
