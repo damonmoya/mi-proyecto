@@ -23,7 +23,7 @@ Route::get('/', 'App\Http\Controllers\Controller@home')
 */
 
 Route::get('/usuarios', 'App\Http\Controllers\UserController@index')
-    ->name('users');
+    ->name('users.index');
 
 Route::get('/usuarios/{id}', 'App\Http\Controllers\UserController@show') 
     ->where('id', '[0-9]+')
@@ -31,6 +31,8 @@ Route::get('/usuarios/{id}', 'App\Http\Controllers\UserController@show')
 
 Route::get('/usuarios/nuevo', 'App\Http\Controllers\UserController@create')
     ->name('users.create');
+
+Route::post('/usuarios', 'App\Http\Controllers\UserController@store');
 
 /**
 * Página de saludo
