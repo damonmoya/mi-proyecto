@@ -22,24 +22,33 @@
     <form method="POST" action="{{ url('/usuarios') }}">
         {{ csrf_field() }}
 
-        <label for="name">Nombre:</label><br>
-        <input type="text" name="name" id="name" placeholder="p.e: Kike Pérez" value="{{ old('name') }}"><br>
+        <div class="form-group">
+            <label for="name">Nombre:</label>
+            <input type="text" class="form-control" name="name" id="name" aria-describedby="nameHelp" placeholder="Pon tu nombre aquí..." value="{{ old('name') }}">
+            <small id="nameHelp" class="form-text text-muted">Por ejemplo: Kike Pérez</small>
+        </div>
 
-        <label for="email">Correo:</label><br>
-        <input type="email" name="email" id="email" placeholder="p.e: kikeperez@hotmail.es" value="{{ old('email') }}"><br>
+        <div class="form-group">
+            <label for="email">Correo:</label>
+            <input type="email" class="form-control" name="email" id="email" aria-describedby="emailHelp" placeholder="Pon tu correo aquí..." value="{{ old('email') }}">
+            <small id="emailHelp" class="form-text text-muted">Por ejemplo: kikeperez@hotmail.es</small>
+        </div>
 
-        <label for="password">Clave:</label><br>
-        <input type="password" name="password" id="password"><br>
+        <div class="form-group">
+            <label for="password">Clave:</label>
+            <input type="password" class="form-control" name="password" id="password" aria-describedby="passwordHelp" placeholder="Pon tu clave aquí...">
+            <small id="passwordHelp" class="form-text text-muted">Mínimo: 6 caracteres</small>
+        </div>
 
-        <label for="confirm_password">Confirmar clave:</label><br>
-        <input type="password" name="confirm_password" id="confirm_password"><br><br>
+        <div class="form-group">
+            <label for="confirm_password">Confirmar clave:</label>
+            <input type="confirm_password" class="form-control" name="confirm_password" id="confirm_password" aria-describedby="confirmpasswordHelp">
+            <small id="confirmpasswordHelp" class="form-text text-muted">Confirma la clave</small>
+        </div>
 
-        <button type="submit">Crear usuario</button><br><br>
+        <button type="submit" class="btn btn-primary">Crear usuario</button>
+        <a href="{{ url('/usuarios') }}" class="btn btn-link">Regresar a listado de usuarios</a>
     </form>
-
-    <p>
-        <a href="{{ url('/usuarios') }}">Regresar a listado de usuarios</a>
-    </p>
 
 @endsection
 

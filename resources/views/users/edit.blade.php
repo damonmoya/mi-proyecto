@@ -3,7 +3,7 @@
 @section('title', "Editar usuario")
 
 @section('content')
-    <h1>Editar usuario</h1>
+    <h1>Editar usuario: #{{ $user->id }}</h1>
 
 
     {{--Sección de errores--}}
@@ -23,26 +23,33 @@
         {{ method_field('PUT') }}
         {{ csrf_field() }}
 
-        <label for="name">Nombre:</label><br>
-        <input type="text" name="name" id="name" placeholder="p.e: Kike Pérez" value="{{ $user->name }}"><br>
+        <div class="form-group">
+            <label for="name">Nombre:</label>
+            <input type="text" class="form-control" name="name" id="name" aria-describedby="nameHelp" placeholder="Pon tu nombre aquí..." value="{{ $user->name }}">
+            <small id="nameHelp" class="form-text text-muted">Por ejemplo: Kike Pérez</small>
+        </div>
 
-        <label for="email">Correo:</label><br>
-        <input type="email" name="email" id="email" placeholder="p.e: kikeperez@hotmail.es" value="{{ $user->email }}"><br>
+        <div class="form-group">
+            <label for="email">Correo:</label>
+            <input type="email" class="form-control" name="email" id="email" aria-describedby="emailHelp" placeholder="Pon tu correo aquí..." value="{{ $user->email }}">
+            <small id="emailHelp" class="form-text text-muted">Por ejemplo: kikeperez@hotmail.es</small>
+        </div>
 
-        <label for="password">Clave:</label><br>
-        <input type="password" name="password" id="password" placeholder="Opcional..."><br>
+        <div class="form-group">
+            <label for="password">Clave:</label>
+            <input type="password" class="form-control" name="password" id="password" aria-describedby="passwordHelp" placeholder="Pon tu clave aquí...">
+            <small id="passwordHelp" class="form-text text-muted">Mínimo: 6 caracteres. Dejar en blanco si no se desea cambiar</small>
+        </div>
 
-        <label for="confirm_password">Confirmar clave:</label><br>
-        <input type="password" name="confirm_password" id="confirm_password"><br><br>
+        <div class="form-group">
+            <label for="confirm_password">Confirmar clave:</label>
+            <input type="confirm_password" class="form-control" name="confirm_password" id="confirm_password" aria-describedby="confirmpasswordHelp">
+            <small id="confirmpasswordHelp" class="form-text text-muted">Confirma la clave, en caso de cambiarla</small>
+        </div>
 
-        <button type="submit">Actualizar usuario</button><br><br>
+        <button type="submit" class="btn btn-primary">Actualizar usuario</button>
+        <a href="{{ url('/usuarios') }}" class="btn btn-link">Regresar a listado de usuarios</a>
     </form>
 
-    <p>
-        <a href="{{ url('/usuarios') }}">Regresar a listado de usuarios</a>
-    </p>
-
 @endsection
-
-
 
