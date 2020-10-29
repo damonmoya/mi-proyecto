@@ -35,9 +35,6 @@
             <li class="nav-item">
               <a class="nav-link" href="http://127.0.0.1:8000/usuarios">Usuarios</a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="http://127.0.0.1:8000/usuarios/nuevo">Crear nuevo usuario</a>
-            </li>
           </ul>
         </div>
       </nav>
@@ -45,14 +42,17 @@
 
     <!-- Begin page content -->
     <main role="main" class="container">
+
       <div class="row">
-        <div class="col-sm-8">
-          @yield('content')
+        <div class="col-6">
+          @yield('search')
         </div>
-        <div class="col-sm-4">
-          @yield('sidebar')
+        <div class="col-6">
+          @yield('create_user')
         </div>
       </div>
+
+      @yield('content')
     </main>
 
     <footer class="footer bg-dark text-white">
