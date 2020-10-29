@@ -13,6 +13,7 @@
 
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/open-iconic/1.1.1/font/css/open-iconic-bootstrap.css" integrity="sha512-CdBAHV63xsk13rW8Wd6u6S1SqfW6TXXE/2HvYpeiCaQSJhEuathtzO87zloBMqQKW7JoqTixSvWlm6aj4722WQ==" crossorigin="anonymous" />
     <!-- Custom styles for this template -->
     <link rel="stylesheet" href="/css/style.css">
   </head>
@@ -21,7 +22,7 @@
 
     <header>
       <!-- Fixed navbar -->
-      <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+      <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-primary">
         <a class="navbar-brand" href="http://127.0.0.1:8000/">Mi proyecto</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -38,24 +39,23 @@
               <a class="nav-link" href="http://127.0.0.1:8000/usuarios/nuevo">Crear nuevo usuario</a>
             </li>
           </ul>
-          <form class="form-inline mt-2 mt-md-0">
-            <input class="form-control mr-sm-2" type="text" placeholder="Búsqueda no disponible!" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
-          </form>
         </div>
       </nav>
     </header>
 
     <!-- Begin page content -->
     <main role="main" class="container">
-
-      @yield('content')
-
-    
-
+      <div class="row">
+        <div class="col-sm-8">
+          @yield('content')
+        </div>
+        <div class="col-sm-4">
+          @yield('sidebar')
+        </div>
+      </div>
     </main>
 
-    <footer class="footer">
+    <footer class="footer bg-dark text-white">
       <div class="container">
         <span class="text-muted">Proyecto con Laravel</span>
       </div>
