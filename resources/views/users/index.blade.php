@@ -44,10 +44,9 @@
 @section('search')
     <h1 class="mb-3">Buscar usuarios</h1>
 
-    <form class="form-inline mt-2 mt-md-0 mb-3">
-        <input class="form-control mr-sm-2" type="text" placeholder="Búsqueda no disponible!" aria-label="Search">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
-    </form>
+    <div class="form-group mt-2 mt-md-0 mb-3">
+        <input class="form-controller mr-sm-2" type="text" id="search" name="search" placeholder="Buscar usuario..." aria-label="Search">
+    </div>
     
 @endsection
 

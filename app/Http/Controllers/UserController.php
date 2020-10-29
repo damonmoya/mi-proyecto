@@ -113,4 +113,33 @@ class UserController extends Controller
         return redirect()->route('users.index');
         
     }
+
+    public function search(Request $request)
+    {
+    if($request->ajax())
+        {
+            $output="";
+            $users=DB::table('users')->where('name','LIKE','%'.$request->search."%")->get();
+            if($users)
+            {
+                foreach ($users as $key => $user) {
+                    $output.='<tr>'.
+                    '<td>'.$user->id.'</td>'.
+                    '<td>'.$user->name.'</td>'.
+                    '<td>'.$user->email.'</td>'.
+                    "<td>
+                        <form action='/usuarios/{$user->id}' method='POST'>
+                            <input type='hidden' name='_method' value='delete'/>
+                            <input type='hidden' name='token' value='{csrf_token()}'/>
+                            <a href='/usuarios/{$user->id}' class='btn btn-info'><span class='oi oi-eye'></span></a> 
+                            <a href='/usuarios/{$user->id}/editar' class='btn btn-primary'><span class='oi oi-pencil'></span></a> 
+                            <button type='submit' class='btn btn-danger'><span class='oi oi-trash'></span></button>
+                        </form>
+                    </td>".
+                    '</tr>';
+                }
+                return Response($output);
+            }
+        }
+    }
 }

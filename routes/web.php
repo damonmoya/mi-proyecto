@@ -46,9 +46,8 @@ Route::get('/usuarios/nuevo', 'App\Http\Controllers\UserController@create')
 Route::post('/usuarios', 'App\Http\Controllers\UserController@store');
 
 /**
-* Página de saludo
+* Búsqueda de usuarios
 */
 
-Route::get('/saludo/{name}/{nickname?}', 'App\Http\Controllers\WelcomeUserController')
-    ->name('welcome');
+Route::get('/search', 'App\Http\Controllers\UserController@search');
 
