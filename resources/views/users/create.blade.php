@@ -46,8 +46,8 @@
             <small id="confirmpasswordHelp" class="form-text text-muted">Confirma la clave</small>
         </div>
 
-        <button type="submit" class="btn btn-primary">Crear usuario</button>
-        <a href="{{ url('/usuarios') }}" class="btn btn-link">Regresar a listado de usuarios</a>
+        <button type="submit" class="btn btn-success">Crear usuario</button>
+        <a href="{{ url('/usuarios') }}" class="btn btn-outline-primary">Regresar a listado de usuarios</a>
     </form>
 
 @endsection
