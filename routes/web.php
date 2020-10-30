@@ -41,7 +41,7 @@ Route::get('/usuarios/{id}/editar', 'App\Http\Controllers\UserController@edit')
     ->name('users.edit');
 
 Route::get('/usuarios/nuevo', 'App\Http\Controllers\UserController@create')
-    ->name('users.create');;
+    ->name('users.create');
 
 Route::post('/usuarios', 'App\Http\Controllers\UserController@store');
 
@@ -49,5 +49,6 @@ Route::post('/usuarios', 'App\Http\Controllers\UserController@store');
 * Búsqueda de usuarios
 */
 
-Route::get('/search', 'App\Http\Controllers\UserController@search');
+Route::get('/usuarios/search', 'App\Http\Controllers\UserController@search')
+    ->name('users.search');
 

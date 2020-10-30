@@ -43,13 +43,8 @@
     <!-- Begin page content -->
     <main role="main" class="container">
 
-      <div class="row">
-        <div class="col-6">
-          @yield('search')
-        </div>
-        <div class="col-6">
-          @yield('create_user')
-        </div>
+      <div class="title">
+        @yield('header')
       </div>
 
       @yield('content')
@@ -67,18 +62,29 @@
     <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    <script type="text/javascript">
-        $('#search').on('keyup',function(){
-            $value=$(this).val();
-            $.ajax({
-                type : 'get',
-                url : '{{URL::to('search')}}',
-                data:{'search':$value},
-                success:function(data){
-                    $('tbody').html(data);
-                }
-            });
-        })
+    <script>
+      $(document).ready(function(){
+
+        fetch_user_data();
+
+        function fetch_user_data(query = '')
+        {
+          $.ajax({
+            url:"{{ route('users.search') }}",
+            method:'GET',
+            data:{query:query},
+            dataType:'json',
+            success:function(data)
+            {
+              $('#listado').html(data.table_data);
+            }
+          })
+        }
+        $(document).on('keyup', '#search', function(){
+          var query = $(this).val();
+          fetch_user_data(query);
+        });
+      });
     </script>
   </body>
 </html>

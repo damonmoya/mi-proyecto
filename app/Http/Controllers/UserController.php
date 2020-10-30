@@ -118,11 +118,26 @@ class UserController extends Controller
     {
     if($request->ajax())
         {
-            $output="";
-            $users=DB::table('users')->where('name','LIKE','%'.$request->search."%")->get();
-            if($users)
+            $output='';
+            $query = $request->get('query');
+            if ($query != '')
             {
-                foreach ($users as $key => $user) {
+                $users=DB::table('users')
+                    ->where('name','LIKE','%'.$query.'%')
+                    ->orWhere('email','LIKE','%'.$query.'%')
+                    ->orWhere('id','LIKE','%'.$query.'%')
+                    ->orderBy('id', 'asc')
+                    ->get();
+            } else 
+            {
+                $users=DB::table('users')
+                    ->orderBy('id', 'asc')
+                    ->get();
+            }
+            $total_rows = $users->count();
+            if($total_rows > 0)
+            {
+                foreach ($users as $user) {
                     $output.='<tr>'.
                     '<td>'.$user->id.'</td>'.
                     '<td>'.$user->name.'</td>'.
@@ -138,8 +153,19 @@ class UserController extends Controller
                     </td>".
                     '</tr>';
                 }
-                return Response($output);
+            } else
+            {
+                $output.='<tr>
+                    <td align="center" colspan="4">No hay resultados</td>
+                </tr>';
             }
+            $users = array(
+                'table_data' => $output,
+                'total_data' => $total_rows
+            );
+
+            echo json_encode($users);
+            
         }
     }
 }
