@@ -12,22 +12,31 @@ if ($profession == null){
     $oficio = $profession->title;
 }
 
+if ($user->is_admin){
+    $tipo_usuario = "Administrador";
+} else {
+    $tipo_usuario = "Usuario normal";
+}
+
 ?>
 
 @extends('layout')
 
 @section('title', "Usuario {$user->id}")
 
-@section('content')
-    <h1>Usuario #{{ $user->id }}</h1>
+@section('header')
+    <h1>Usuario #{{ $user->id }} ({{ $user->name }})</h1>
+@endsection
 
-    <table class="table">
+@section('content')
+    <table class="table table-bordered table-striped">
         <thead class="thead-dark">
         <tr>
             <th scope="col">Nombre</th>
             <th scope="col">Correo</th>
             <th scope="col">Profesión</th>
-            <th scope="col">Acciones</th>
+            <th scope="col">Tipo Usuario</th>
+            <th scope="col">Creado en</th>
         </tr>
         </thead>
         <tbody>
@@ -35,20 +44,17 @@ if ($profession == null){
             <td>{{ $user->name }}</td>
             <td>{{ $user->email }}</td>
             <td>{{ $oficio }}</td>
-            <td>
-                <form action="{{ route('users.destroy', [$user->id]) }}" method="POST">
-                    {{ method_field('DELETE') }}
-                    {{ csrf_field() }}
-                    <a href="{{ route('users.edit', [$user->id]) }}" class="btn btn-primary"><span class="oi oi-pencil"></span></a> 
-                    <button type="submit" class="btn btn-danger"><span class="oi oi-trash"></span></button>
-                </form>
-            </td>
+            <td>{{ $tipo_usuario }}</td>
+            <td>{{ $user->created_at }}</td>
         </tr>
         </tbody>
     </table>
-
-    <a href="{{ url('/usuarios') }} " class="btn btn-outline-primary">Regresar a listado de usuarios</a>
-
+    <p>
+        <a href="{{ route('users.edit', [$user->id]) }}" class="btn btn-primary">Editar usuario</a> 
+    </p>
+    <p>
+        <a href="{{ url('/usuarios') }} " class="btn btn-outline-primary">Regresar a listado de usuarios</a>
+    </p>
 @endsection
 
 

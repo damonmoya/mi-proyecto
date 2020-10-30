@@ -10,7 +10,7 @@
 
     @if ($users->isNotEmpty())
 
-    <table class="table">
+    <table class="table table-bordered table-striped">
         <thead class="thead-dark">
         <div class="form-group mt-2 mt-md-0 mb-3 row align-items-end">
             <div class="col-10">
