@@ -143,13 +143,9 @@ class UserController extends Controller
                     '<td>'.$user->name.'</td>'.
                     '<td>'.$user->email.'</td>'.
                     "<td>
-                        <form action='/usuarios/{$user->id}' method='POST'>
-                            <input type='hidden' name='_method' value='delete'/>
-                            <input type='hidden' name='token' value='{csrf_token()}'/>
-                            <a href='/usuarios/{$user->id}' class='btn btn-info'><span class='oi oi-eye'></span></a> 
-                            <a href='/usuarios/{$user->id}/editar' class='btn btn-primary'><span class='oi oi-pencil'></span></a> 
-                            <button type='submit' class='btn btn-danger'><span class='oi oi-trash'></span></button>
-                        </form>
+                        <a href='/usuarios/{$user->id}' class='btn btn-info'><span class='oi oi-eye'></span></a> 
+                        <a href='/usuarios/{$user->id}/editar' class='btn btn-primary'><span class='oi oi-pencil'></span></a> 
+                        <a href='/usuarios/{$user->id}/borrar' class='btn btn-danger'><span class='oi oi-trash'></span></button>
                     </td>".
                     '</tr>';
                 }

@@ -32,7 +32,7 @@ Route::get('/usuarios/{id}', 'App\Http\Controllers\UserController@show')
 Route::put('/usuarios/{id}', 'App\Http\Controllers\UserController@update') 
     ->where('id', '[0-9]+');
 
-Route::delete('/usuarios/{id}', 'App\Http\Controllers\UserController@destroy') 
+Route::get('/usuarios/{id}/borrar', 'App\Http\Controllers\UserController@destroy') 
     ->where('id', '[0-9]+')
     ->name('users.destroy');
 
