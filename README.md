@@ -1,1 +1,1 @@
-## Proyecto inicial con Laravel
+# Proyecto: CRUD con Laravel
