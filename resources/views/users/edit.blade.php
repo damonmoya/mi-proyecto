@@ -2,7 +2,7 @@
     <?php
         $loggedUser = auth()->user();
     ?>
-    @if ($loggedUser->is_admin == false)
+    @if (false)
         <script>window.location.href = "{{ route('home') }}";</script>
     @endif
 @endif

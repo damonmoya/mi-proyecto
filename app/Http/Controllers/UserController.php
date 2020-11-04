@@ -157,7 +157,7 @@ class UserController extends Controller
 
                         if(auth()->check()){
                             $loggedUser = auth()->user();
-                            if ($loggedUser->is_admin){
+                            if (true){
                                 $output.= 
                                 "<a href='/usuarios/{$user->id}' class='btn btn-info'><span class='oi oi-eye'></span></a>
                                 <a href='/usuarios/{$user->id}/editar' class='btn btn-primary'><span class='oi oi-pencil'></span></a> 
