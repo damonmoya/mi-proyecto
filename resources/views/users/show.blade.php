@@ -61,7 +61,7 @@ if ($user->is_admin){
       @endif
     
     <p>
-        <a href="{{ url('/usuarios') }} " class="btn btn-outline-primary">Regresar a listado de usuarios</a>
+        <a href="{{ route('users.index') }} " class="btn btn-outline-primary">Regresar a listado de usuarios</a>
     </p>
 @endsection
 

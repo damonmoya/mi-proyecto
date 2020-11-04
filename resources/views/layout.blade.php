@@ -41,7 +41,7 @@
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="{{ route('users.show', $user->id) }}">Perfil</a>
-            </li>
+              </li>
             @endif
           </ul>
         </div>
@@ -52,6 +52,9 @@
           <?php
             $user = auth()->user();
           ?>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ route('users.show', $user->id) }}">Sesión iniciada como: {{ $user->name }}</a>
+            </li>
             <li class="nav-item">
               <form method="POST" action="{{ route('logout') }}">
                 {{ csrf_field() }}

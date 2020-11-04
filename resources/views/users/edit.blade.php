@@ -1,3 +1,12 @@
+@if (auth()->check())
+    <?php
+        $loggedUser = auth()->user();
+    ?>
+    @if ($loggedUser->is_admin == false)
+        <script>window.location.href = "{{ route('home') }}";</script>
+    @endif
+@endif
+
 @extends('layout')
 
 @section('title', "Editar usuario")
@@ -48,7 +57,7 @@
         </div>
 
         <button type="submit" class="btn btn-success">Actualizar usuario</button>
-        <a href="{{ url('/usuarios') }}" class="btn btn-outline-primary">Regresar a listado de usuarios</a>
+        <a href="{{ route('users.index') }}" class="btn btn-outline-primary">Regresar a listado de usuarios</a>
     </form>
 
 @endsection

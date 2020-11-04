@@ -8,6 +8,12 @@ use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index()
     {
 
@@ -106,12 +112,17 @@ class UserController extends Controller
 
     public function destroy($id)
     {
-        $user = User::find($id);
-
-        $user->delete();
-
-        return redirect()->route('users.index');
-        
+        if(auth()->check()){
+            $loggedUser = auth()->user();
+            if ($loggedUser->is_admin){
+                $user = User::find($id);
+                $user->delete();
+                return redirect()->route('users.index');
+            } else {
+                return redirect()->route('home');
+            }
+        }
+        return redirect()->route('home'); 
     }
 
     public function search(Request $request)
