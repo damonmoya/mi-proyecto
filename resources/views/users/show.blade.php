@@ -49,9 +49,17 @@ if ($user->is_admin){
         </tr>
         </tbody>
     </table>
-    <p>
-        <a href="{{ route('users.edit', [$user->id]) }}" class="btn btn-primary">Editar usuario</a> 
-    </p>
+    @if (auth()->check())
+        <?php
+          $loggedUser = auth()->user();
+        ?>
+        @if ($loggedUser->is_admin)
+            <p>
+                <a href="{{ route('users.edit', [$user->id]) }}" class="btn btn-primary">Editar usuario</a> 
+            </p>
+        @endif
+      @endif
+    
     <p>
         <a href="{{ url('/usuarios') }} " class="btn btn-outline-primary">Regresar a listado de usuarios</a>
     </p>

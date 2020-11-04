@@ -23,25 +23,47 @@
     <header>
       <!-- Fixed navbar -->
       <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-primary">
-        <a class="navbar-brand" href="{{ route('home_main') }}">Mi proyecto</a>
+        <a class="navbar-brand" href="{{ route('home') }}">Mi proyecto</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
           <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-              <a class="nav-link" href="{{ route('home_main') }}">Inicio<span class="sr-only">(current)</span></a>
+              <a class="nav-link" href="{{ route('home') }}">Inicio<span class="sr-only">(current)</span></a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{{ route('users.index') }}">Usuarios</a>
+            @if (auth()->check())
+              <?php
+                $user = auth()->user();
+              ?>
+              <li class="nav-item">
+                <a class="nav-link" href="{{ route('users.index') }}">Usuarios</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{{ route('users.show', $user->id) }}">Perfil</a>
             </li>
+            @endif
           </ul>
         </div>
         <div class="navbar-collapse collapse w-100 order-3">
         <ul class="navbar-nav ml-auto">
+
+          @if (auth()->check())
+          <?php
+            $user = auth()->user();
+          ?>
+            <li class="nav-item">
+              <form method="POST" action="{{ route('logout') }}">
+                {{ csrf_field() }}
+                <button type="submit" class="btn btn-danger">Cerrar Sesión</button>
+              </form>
+            </li>
+          @else
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('login') }}">Iniciar sesión</a>
             </li>
+          @endif
+            
         </ul>
     </div>
       </nav>

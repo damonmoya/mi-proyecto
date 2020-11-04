@@ -142,11 +142,22 @@ class UserController extends Controller
                     '<td>'.$user->id.'</td>'.
                     '<td>'.$user->name.'</td>'.
                     '<td>'.$user->email.'</td>'.
-                    "<td>
-                        <a href='/usuarios/{$user->id}' class='btn btn-info'><span class='oi oi-eye'></span></a> 
-                        <a href='/usuarios/{$user->id}/editar' class='btn btn-primary'><span class='oi oi-pencil'></span></a> 
-                        <a href='/usuarios/{$user->id}/borrar' class='btn btn-danger'><span class='oi oi-trash'></span></button>
-                    </td>".
+                    "<td>";
+
+                        if(auth()->check()){
+                            $loggedUser = auth()->user();
+                            if ($loggedUser->is_admin){
+                                $output.= 
+                                "<a href='/usuarios/{$user->id}' class='btn btn-info'><span class='oi oi-eye'></span></a>
+                                <a href='/usuarios/{$user->id}/editar' class='btn btn-primary'><span class='oi oi-pencil'></span></a> 
+                                <a href='/usuarios/{$user->id}/borrar' class='btn btn-danger'><span class='oi oi-trash'></span></button>";
+                            } else {
+                                $output.= 
+                                "<a href='/usuarios/{$user->id}' class='btn btn-info'><span class='oi oi-eye'></span></a>";
+                            }
+                        }
+
+                    $output.="</td>".
                     '</tr>';
                 }
             } else

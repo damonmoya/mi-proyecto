@@ -31,7 +31,10 @@ class UserSeeder extends Seeder
         ]);
 
         User::factory()->create([
-            'profession_id' => 2
+            'name' => 'Damon García',
+            'email' => 'correoprueba@hotmail.es',
+            'profession_id' => 2,
+            'password' => bcrypt('prueba'),
         ]);
 
         User::factory(48)->create();
