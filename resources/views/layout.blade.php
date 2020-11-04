@@ -23,20 +23,30 @@
     <header>
       <!-- Fixed navbar -->
       <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-primary">
-        <a class="navbar-brand" href="http://127.0.0.1:8000/">Mi proyecto</a>
+        <a class="navbar-brand" href="{{ route('home_main') }}">Mi proyecto</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
           <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-              <a class="nav-link" href="http://127.0.0.1:8000/">Home <span class="sr-only">(current)</span></a>
+              <a class="nav-link" href="{{ route('home_main') }}">Inicio<span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="http://127.0.0.1:8000/usuarios">Usuarios</a>
+              <a class="nav-link" href="{{ route('users.index') }}">Usuarios</a>
             </li>
           </ul>
         </div>
+        <div class="navbar-collapse collapse w-100 order-3">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('login') }}">Iniciar sesión</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('register') }}">Registrarse</a>
+            </li>
+        </ul>
+    </div>
       </nav>
     </header>
 

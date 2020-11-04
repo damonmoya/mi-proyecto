@@ -11,7 +11,7 @@
   <div class="row">
     <div class="col">
         <h3>¡Bienvenido, visitante!</h3>
-        <a href="{{ url('/usuarios') }}" class="btn btn-outline-primary">Ir a Listado de usuarios</a>
+        <a href="{{ url('/login') }}" class="btn btn-outline-primary">Iniciar sesión</a>
     </div>
   </div>
             

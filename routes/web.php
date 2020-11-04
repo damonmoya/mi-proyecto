@@ -16,7 +16,7 @@
 */
 
 Route::get('/', 'App\Http\Controllers\Controller@home')
-    ->name('home');
+    ->name('home_main');
 
 /**
 * Páginas de usuarios
@@ -52,3 +52,7 @@ Route::post('/usuarios', 'App\Http\Controllers\UserController@store');
 Route::get('/usuarios/search', 'App\Http\Controllers\UserController@search')
     ->name('users.search');
 
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
