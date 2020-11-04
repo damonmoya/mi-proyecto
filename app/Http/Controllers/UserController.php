@@ -39,6 +39,12 @@ class UserController extends Controller
 
     public function create()
     {
+        if(auth()->check()){
+            $loggedUser = auth()->user();
+            if ($loggedUser->cannot('Crear usuarios')){
+                return response()->view('errors.403', [], 403);
+            } 
+        }
         return view('users.create');
     }
 
@@ -49,6 +55,10 @@ class UserController extends Controller
         if ($user == null) {
             return response()->view('errors.404', [], 404);
         }
+
+        if ($user->cannot('Crear usuarios')){
+            return response()->view('errors.403', [], 403);
+        } 
 
         return view('users.edit', compact('user'));
     }
@@ -118,12 +128,9 @@ class UserController extends Controller
                 $user = User::find($id);
                 $user->delete();
                 return redirect()->route('users.index');
-            } else {
-                return redirect()->route('home');
-            }
+            } 
         }
-        return redirect()->route('home'); 
-    }
+        return response()->view('errors.403', [], 403);    }
 
     public function search(Request $request)
     {
