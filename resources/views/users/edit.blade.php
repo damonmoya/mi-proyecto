@@ -1,10 +1,7 @@
 @if (auth()->check())
-    <?php
-        $loggedUser = auth()->user();
-    ?>
-    @if (false)
+    @cannot('Editar usuarios')
         <script>window.location.href = "{{ route('home') }}";</script>
-    @endif
+    @endcannot
 @endif
 
 @extends('layout')

@@ -114,7 +114,7 @@ class UserController extends Controller
     {
         if(auth()->check()){
             $loggedUser = auth()->user();
-            if ($loggedUser->is_admin){
+            if ($loggedUser->can('Eliminar usuarios')){
                 $user = User::find($id);
                 $user->delete();
                 return redirect()->route('users.index');
@@ -157,7 +157,7 @@ class UserController extends Controller
 
                         if(auth()->check()){
                             $loggedUser = auth()->user();
-                            if (true){
+                            if ($loggedUser->can('Eliminar usuarios') && $loggedUser->can('Crear usuarios')){
                                 $output.= 
                                 "<a href='/usuarios/{$user->id}' class='btn btn-info'><span class='oi oi-eye'></span></a>
                                 <a href='/usuarios/{$user->id}/editar' class='btn btn-primary'><span class='oi oi-pencil'></span></a> 
