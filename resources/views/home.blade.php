@@ -19,7 +19,7 @@
         <a href="{{ route('users.index') }}" class="btn btn-outline-primary">Ir a Listado de usuarios</a>
       @else
         <h3>¡Bienvenido, visitante!</h3>
-        <a href="{{ url('/login') }}" class="btn btn-outline-primary">Iniciar sesión</a>
+        <a href="{{ route('login') }}" class="btn btn-outline-primary">Iniciar sesión</a>
       @endif
         
     </div>

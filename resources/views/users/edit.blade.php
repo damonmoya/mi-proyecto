@@ -28,7 +28,7 @@
     @endif
 
     {{--Sección de formulario--}}        
-    <form method="POST" action="{{ url("/usuarios/{$user->id}") }}">
+    <form method="POST" action="{{ route('users.show', $user->id) }}">
         {{ method_field('PUT') }}
         {{ csrf_field() }}
 
