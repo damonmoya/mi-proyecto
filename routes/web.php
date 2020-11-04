@@ -53,6 +53,6 @@ Route::get('/usuarios/search', 'App\Http\Controllers\UserController@search')
     ->name('users.search');
 
 
-Auth::routes();
+Auth::routes(['register' => false]);
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

@@ -1,5 +1,7 @@
 @extends('layout')
 
+@section('title', "Iniciar sesión")
+
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
