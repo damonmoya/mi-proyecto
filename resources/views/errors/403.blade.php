@@ -1,6 +1,6 @@
 @extends('layout')
 
-@section('title', "Página no encontrada")
+@section('title', "Acceso restringido")
 
 @section('content')
     <h1>Acceso restringido</h1>

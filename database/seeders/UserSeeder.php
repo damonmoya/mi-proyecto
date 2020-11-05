@@ -6,6 +6,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use \App\Models\User;
 use \App\Models\Profession;
+use \App\Models\Department;
 
 class UserSeeder extends Seeder
 {
@@ -16,22 +17,30 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        $professionId = Profession::where('title', 'Desarrollador back-end')->value('id');
+        $professionId = Profession::where('title', 'Empleador')->value('id');
+        $departmentId = Department::where('name', 'Selección')->value('id');
 
         $user = User::factory()->create([
             'name' => 'Pepe Benavente',
             'email' => 'pepebenavente@hotmail.es',
             'password' => bcrypt('elmejorcantante'),
             'profession_id' => $professionId,
+            'department_id' => $departmentId,
         ]);
 
         $user->assignRole('Administrador');
 
+
+        $professionId = Profession::where('title', 'Desarrollador Diseñador Web')->value('id');
+        $departmentId = Department::where('name', 'Tecnología')->value('id');
+
         $user = User::factory()->create([
             'name' => 'Damon García',
             'email' => 'correoprueba@hotmail.es',
-            'profession_id' => 2,
             'password' => bcrypt('prueba'),
+            'profession_id' => $professionId,
+            'department_id' => $departmentId,
+            
         ]);
 
         $user->assignRole('Usuario registrado');
