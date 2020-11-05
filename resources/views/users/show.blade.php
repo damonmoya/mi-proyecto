@@ -1,10 +1,13 @@
 <?php
 
 use App\Models\Profession;
+use App\Models\Company;
+use App\Models\Department;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 $profession = Profession::find($user->profession_id);
+$department = Department::find($user->department_id);
 
 if ($profession == null){
     $oficio = "Sin profesión asignada";
@@ -12,7 +15,25 @@ if ($profession == null){
     $oficio = $profession->title;
 }
 
-if ($user->is_admin){
+if ($department == null){
+    $departamento_usuario = "Sin departamento asignado";
+    $departamento_dependiente = "-";
+    $empresa = "-";
+} else {
+    $departamento_usuario = $department->name;
+    $empresa = Company::find($department->company_id)
+        ->name;
+
+    if ($department->department_id == null){
+        $departamento_dependiente = Department::find($department->dependent_id)
+            ->name;
+    } else {
+        $departamento_dependiente = "No";
+    }
+    
+}
+
+if ($user->hasrole('Administrador')){
     $tipo_usuario = "Administrador";
 } else {
     $tipo_usuario = "Usuario normal";
@@ -35,6 +56,9 @@ if ($user->is_admin){
             <th scope="col">Nombre</th>
             <th scope="col">Correo</th>
             <th scope="col">Profesión</th>
+            <th scope="col">Departamento</th>
+            <th scope="col">Departamento dependiente</th>
+            <th scope="col">Empresa</th>
             <th scope="col">Tipo Usuario</th>
             <th scope="col">Creado en</th>
         </tr>
@@ -44,6 +68,9 @@ if ($user->is_admin){
             <td>{{ $user->name }}</td>
             <td>{{ $user->email }}</td>
             <td>{{ $oficio }}</td>
+            <td>{{ $departamento_usuario }}</td>
+            <td>{{ $departamento_dependiente }}</td>
+            <td>{{ $empresa }}</td>
             <td>{{ $tipo_usuario }}</td>
             <td>{{ $user->created_at }}</td>
         </tr>
