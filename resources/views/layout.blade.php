@@ -40,6 +40,9 @@
                 <a class="nav-link" href="{{ route('users.index') }}">Usuarios</a>
               </li>
               <li class="nav-item">
+                <a class="nav-link" href="{{ route('companies.index') }}">Empresas</a>
+              </li>
+              <li class="nav-item">
                 <a class="nav-link" href="{{ route('users.show', $user->id) }}">Perfil</a>
               </li>
             @endif
@@ -115,6 +118,30 @@
         $(document).on('keyup', '#search', function(){
           var query = $(this).val();
           fetch_user_data(query);
+        });
+      });
+    </script>
+    <script>
+      $(document).ready(function(){
+
+        fetch_company_data();
+
+        function fetch_company_data(query = '')
+        {
+          $.ajax({
+            url:"{{ route('companies.search') }}",
+            method:'GET',
+            data:{query:query},
+            dataType:'json',
+            success:function(data)
+            {
+              $('#listado_empresas').html(data.table_data);
+            }
+          })
+        }
+        $(document).on('keyup', '#search_companies', function(){
+          var query = $(this).val();
+          fetch_company_data(query);
         });
       });
     </script>

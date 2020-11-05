@@ -46,12 +46,25 @@ Route::get('/usuarios/nuevo', 'App\Http\Controllers\UserController@create')
 Route::post('/usuarios', 'App\Http\Controllers\UserController@store');
 
 /**
+* Páginas de empresas
+*/
+
+Route::get('/empresas', 'App\Http\Controllers\CompanyController@index')
+    ->name('companies.index');
+
+/**
 * Búsqueda de usuarios
 */
 
 Route::get('/usuarios/search', 'App\Http\Controllers\UserController@search')
     ->name('users.search');
 
+/**
+* Búsqueda de empresas
+*/
+
+Route::get('/empresas/search', 'App\Http\Controllers\CompanyController@search')
+    ->name('companies.search');
 
 Auth::routes(['register' => false]);
 
