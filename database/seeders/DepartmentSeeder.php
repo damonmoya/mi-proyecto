@@ -52,7 +52,7 @@ class DepartmentSeeder extends Seeder
         $dependentId = Department::where('name', 'Producción')->value('id');
 
         $department = Department::factory()->create([
-            'name' => 'Mantemiento',
+            'name' => 'Mantenimiento',
             'dependent_id' => $dependentId,
             'company_id' => $companyId,
         ]);

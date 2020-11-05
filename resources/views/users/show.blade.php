@@ -24,11 +24,11 @@ if ($department == null){
     $empresa = Company::find($department->company_id)
         ->name;
 
-    if ($department->department_id == null){
+    if ($department->dependent_id == null){
+        $departamento_dependiente = "No";
+    } else {
         $departamento_dependiente = Department::find($department->dependent_id)
             ->name;
-    } else {
-        $departamento_dependiente = "No";
     }
     
 }

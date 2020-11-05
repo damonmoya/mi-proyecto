@@ -28,7 +28,7 @@ class UserSeeder extends Seeder
             'department_id' => $departmentId,
         ]);
 
-        $user->assignRole('Administrador');
+        $user->assignRole('Administrador', 'Usuario registrado');
 
 
         $professionId = Profession::where('title', 'Desarrollador Diseñador Web')->value('id');
@@ -41,10 +41,20 @@ class UserSeeder extends Seeder
             'profession_id' => $professionId,
             'department_id' => $departmentId,
             
-        ]);
+        ])->assignRole('Usuario registrado');
 
-        $user->assignRole('Usuario registrado');
+        $professionId = Profession::where('title', 'Desarrollador Diseñador Web')->value('id');
+        $departmentId = Department::where('name', 'Mantenimiento')->value('id');
 
-        User::factory(48)->create();
+        $user = User::factory()->create([
+            'profession_id' => $professionId,
+            'department_id' => $departmentId,
+            
+        ])->assignRole('Usuario registrado');
+
+        $randomUser = User::factory(48)->create();
+        foreach($randomUser as $user){
+            $user->assignRole('Usuario registrado');
+         }
     }
 }

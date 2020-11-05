@@ -52,6 +52,10 @@ Route::post('/usuarios', 'App\Http\Controllers\UserController@store');
 Route::get('/empresas', 'App\Http\Controllers\CompanyController@index')
     ->name('companies.index');
 
+Route::get('/empresas/{id}', 'App\Http\Controllers\CompanyController@show') 
+    ->where('id', '[0-9]+')
+    ->name('companies.show');
+
 /**
 * Búsqueda de usuarios
 */

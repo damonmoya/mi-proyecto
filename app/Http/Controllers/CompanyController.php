@@ -23,6 +23,17 @@ class CompanyController extends Controller
         
     }
 
+    public function show($id)
+    {
+        $company = Company::find($id);
+
+        if ($company == null) {
+            return response()->view('errors.404', [], 404);
+        }
+
+        return view('companies.show', compact('company'));
+    }
+
     public function search(Request $request)
     {
     if($request->ajax())
