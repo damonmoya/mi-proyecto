@@ -16,9 +16,11 @@
             <div class="col-10">
                 Buscar usuario: <input class="form-controller mr-sm-2" type="text" id="search" name="search" placeholder="Buscar..." aria-label="Search">
             </div>
-            <div class="col-2">
-                <a href="{{ route('users.create') }}" class="btn btn-primary">Nuevo usuario</a>
-            </div>
+            @hasrole('Administrador')
+                <div class="col-2">
+                    <a href="{{ route('users.create') }}" class="btn btn-primary">Nuevo usuario</a>
+                </div>
+            @endhasrole
         </div>
         <tr>
             <th scope="col">ID</th>
