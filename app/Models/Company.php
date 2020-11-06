@@ -20,4 +20,9 @@ class Company extends Model
         'description',
         'contact',
     ];
+
+    public function users()
+    {
+        return $this->hasMany(Department::class);
+    }
 }

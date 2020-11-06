@@ -6,8 +6,8 @@ use App\Models\Department;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-$profession = Profession::find($user->profession_id);
-$department = Department::find($user->department_id);
+$profession = $user->profession;
+$department = $user->department;
 
 if ($profession == null){
     $oficio = "Sin profesión asignada";

@@ -47,6 +47,11 @@ class User extends Authenticatable
         return $this->belongsTo(Profession::class);
     }
 
+    public function department()
+    {
+        return $this->belongsTo(Department::class);
+    }
+
     public static function findByEmail($email)
     {
         return static::where(compact('email'))->first();
