@@ -18,57 +18,61 @@
 Route::get('/', 'App\Http\Controllers\Controller@home')
     ->name('home');
 
-/**
-* Páginas de usuarios
-*/
+Route::middleware('auth')->group(function () {  
 
-Route::get('/usuarios', 'App\Http\Controllers\UserController@index')
-    ->name('users.index');
+    Route::prefix('usuarios')->group(function () {
 
-Route::get('/usuarios/{id}', 'App\Http\Controllers\UserController@show') 
-    ->where('id', '[0-9]+')
-    ->name('users.show');
+        Route::name('users.')->group(function () {
 
-Route::put('/usuarios/{id}', 'App\Http\Controllers\UserController@update') 
-    ->where('id', '[0-9]+');
+            Route::get('', 'App\Http\Controllers\UserController@index')
+                ->name('index');
 
-Route::get('/usuarios/{id}/borrar', 'App\Http\Controllers\UserController@destroy') 
-    ->where('id', '[0-9]+')
-    ->name('users.destroy');
+            Route::get('{id}', 'App\Http\Controllers\UserController@show') 
+                ->where('id', '[0-9]+')
+                ->name('show');
 
-Route::get('/usuarios/{id}/editar', 'App\Http\Controllers\UserController@edit') 
-    ->where('id', '[0-9]+')
-    ->name('users.edit');
+            Route::get('{id}/borrar', 'App\Http\Controllers\UserController@destroy') 
+                ->where('id', '[0-9]+')
+                ->name('destroy');
 
-Route::get('/usuarios/nuevo', 'App\Http\Controllers\UserController@create')
-    ->name('users.create');
+            Route::get('{id}/editar', 'App\Http\Controllers\UserController@edit') 
+                ->where('id', '[0-9]+')
+                ->name('edit');
 
-Route::post('/usuarios', 'App\Http\Controllers\UserController@store');
+            Route::get('nuevo', 'App\Http\Controllers\UserController@create')
+                ->name('create');
 
-/**
-* Páginas de empresas
-*/
+            Route::post('', 'App\Http\Controllers\UserController@store')
+                ->name('store');
 
-Route::get('/empresas', 'App\Http\Controllers\CompanyController@index')
-    ->name('companies.index');
+            Route::put('{id}', 'App\Http\Controllers\UserController@update') 
+                ->where('id', '[0-9]+')
+                ->name('update');
 
-Route::get('/empresas/{id}', 'App\Http\Controllers\CompanyController@show') 
-    ->where('id', '[0-9]+')
-    ->name('companies.show');
+            Route::get('/usuarios/search', 'App\Http\Controllers\UserController@search')
+                ->name('search');
 
-/**
-* Búsqueda de usuarios
-*/
+        });
+    });
 
-Route::get('/usuarios/search', 'App\Http\Controllers\UserController@search')
-    ->name('users.search');
+    Route::prefix('empresas')->group(function () {
 
-/**
-* Búsqueda de empresas
-*/
+        Route::name('companies.')->group(function () {
 
-Route::get('/empresas/search', 'App\Http\Controllers\CompanyController@search')
-    ->name('companies.search');
+            Route::get('', 'App\Http\Controllers\CompanyController@index')
+                ->name('index');
+
+            Route::get('{id}', 'App\Http\Controllers\CompanyController@show') 
+                ->where('id', '[0-9]+')
+                ->name('show');
+
+            Route::get('search', 'App\Http\Controllers\CompanyController@search')
+                ->name('search');
+        });
+    
+    });
+    
+});
 
 Auth::routes(['register' => false]);
 

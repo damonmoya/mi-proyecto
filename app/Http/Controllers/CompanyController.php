@@ -10,11 +10,6 @@ use Illuminate\Support\Facades\DB;
 
 class CompanyController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
     public function index()
     {
         $companies = Company::all();
@@ -42,6 +37,8 @@ class CompanyController extends Controller
             $cuenta_empleados += User::all()->where("department_id", "{$department->id}")->count();
 
         }
+
+        //User::all()->where("department_id", "{$department->id}")->count()
 
         return view('companies.show', compact('company', 'cuenta_empleados', 'departments'));
     }

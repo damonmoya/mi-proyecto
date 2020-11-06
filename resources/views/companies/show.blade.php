@@ -58,10 +58,10 @@
                     @if($department->dependent_id == null)
                         No
                     @else
-                        {{ Department::find($department->dependent_id)->name }}
+                        {{ $department->name }}
                     @endif
                 </td>
-                <td>{{ User::all()->where("department_id", "{$department->id}")->count() }}</td>
+                <td> No disponible </td>
             </tr>
         @endforeach
         </tbody>
