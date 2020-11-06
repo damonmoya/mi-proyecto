@@ -22,11 +22,7 @@ class CompanyController extends Controller
 
     public function show($id)
     {
-        $company = Company::find($id);
-
-        if ($company == null) {
-            return response()->view('errors.404', [], 404);
-        }
+        $company = Company::findOrFail($id);
 
         $departments = $company->departments;
 

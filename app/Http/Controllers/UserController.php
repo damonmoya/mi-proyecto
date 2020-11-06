@@ -23,11 +23,7 @@ class UserController extends Controller
 
     public function show($id)
     {
-        $user = User::find($id);
-
-        if ($user == null) {
-            return response()->view('errors.404', [], 404);
-        }
+        $user = User::findOrFail($id);
 
         $profession = $user->profession;
         $department = $user->department;
@@ -73,18 +69,14 @@ class UserController extends Controller
 
     public function edit($id)
     {
-        $user = User::find($id);
-
-        if ($user == null) {
-            return response()->view('errors.404', [], 404);
-        }
+        $user = User::findOrFail($id);
 
         return view('users.edit', compact('user'));
     }
 
     public function update($id)
     {
-        $user = User::find($id);
+        $user = User::findOrFail($id);
         
         $data = request()->validate([
             'name' => 'required',
@@ -141,10 +133,10 @@ class UserController extends Controller
 
     public function destroy($id)
     {
-        $user = User::find($id)->delete();
+        $user = User::findOrFail($id)->delete();
         return redirect()->route('users.index');
     }
-    
+
     public function search(Request $request)
     {
         if($request->ajax())
