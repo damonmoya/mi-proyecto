@@ -1,23 +1,3 @@
-<?php
-
-use App\Models\User;
-use App\Models\Company;
-use App\Models\Department;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-
-$departments = Department::all()->where("company_id", "{$company->id}");
-
-$cuenta_empleados = 0;
-
-foreach($departments as $department){
-                        
-    $cuenta_empleados += User::all()->where("department_id", "{$department->id}")->count();
-
-}
-
-?>
-
 @extends('layout')
 
 @section('title', "Empresa {$company->id}")
@@ -91,6 +71,3 @@ foreach($departments as $department){
         <a href="{{ route('companies.index') }} " class="btn btn-outline-primary">Regresar a listado de empresas</a>
     </p>
 @endsection
-
-
-

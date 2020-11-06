@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Company;
+use App\Models\Department;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -31,7 +33,17 @@ class CompanyController extends Controller
             return response()->view('errors.404', [], 404);
         }
 
-        return view('companies.show', compact('company'));
+        $departments = Department::all()->where("company_id", "{$company->id}");
+
+        $cuenta_empleados = 0;
+
+        foreach($departments as $department){
+                        
+            $cuenta_empleados += User::all()->where("department_id", "{$department->id}")->count();
+
+        }
+
+        return view('companies.show', compact('company', 'cuenta_empleados', 'departments'));
     }
 
     public function search(Request $request)
