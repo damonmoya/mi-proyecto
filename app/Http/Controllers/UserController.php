@@ -50,7 +50,7 @@ class UserController extends Controller
             if ($department->dependent_id == null){
                 $departamento_dependiente = "No";
             } else {
-                $departamento_dependiente = Department::find($department->dependent_id)
+                $departamento_dependiente = $department->dependent
                     ->name;
             }
 
@@ -78,10 +78,6 @@ class UserController extends Controller
         if ($user == null) {
             return response()->view('errors.404', [], 404);
         }
-
-        //if ($user->cannot('Crear usuarios')){
-        //    return response()->view('errors.403', [], 403);
-        //} 
 
         return view('users.edit', compact('user'));
     }
@@ -147,8 +143,8 @@ class UserController extends Controller
     {
         $user = User::find($id)->delete();
         return redirect()->route('users.index');
-        return response()->view('errors.403', [], 403);    }
-
+    }
+    
     public function search(Request $request)
     {
         if($request->ajax())

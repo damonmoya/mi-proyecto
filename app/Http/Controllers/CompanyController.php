@@ -44,7 +44,7 @@ class CompanyController extends Controller
             if($department->dependent_id == null){
                 $array2["{$department->name}"] = "No";
             } else {
-                $array2["{$department->name}"] = Department::find($department->dependent_id)->name;
+                $array2["{$department->name}"] = $department->dependent->name;
             }
         }
         

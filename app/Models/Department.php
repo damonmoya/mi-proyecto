@@ -26,10 +26,15 @@ class Department extends Model
         return $this->hasMany(User::class);
     }   
 
-    public function dependent()
+    public function department()
     {
         return $this->hasOne(Department::class);
     }  
+
+    public function dependent()
+    {
+        return $this->belongsTo(Department::class);
+    }
 
     public function company()
     {
