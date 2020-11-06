@@ -32,15 +32,24 @@ class CompanyController extends Controller
 
         $cuenta_empleados = 0;
 
+        $array = array();
+        $array2 = array();
+
         foreach($departments as $department){
-                        
-            $cuenta_empleados += User::all()->where("department_id", "{$department->id}")->count();
 
+            $cuenta_departamento = User::all()->where("department_id", "{$department->id}")->count();          
+            $cuenta_empleados += $cuenta_departamento;
+            $array["{$department->name}"] = $cuenta_departamento;
+
+            if($department->dependent_id == null){
+                $array2["{$department->name}"] = "No";
+            } else {
+                $array2["{$department->name}"] = Department::find($department->dependent_id)->name;
+            }
         }
+        
 
-        //User::all()->where("department_id", "{$department->id}")->count()
-
-        return view('companies.show', compact('company', 'cuenta_empleados', 'departments'));
+        return view('companies.show', compact('company', 'cuenta_empleados', 'departments', 'array', 'array2'));
     }
 
     public function search(Request $request)

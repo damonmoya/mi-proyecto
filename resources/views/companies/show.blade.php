@@ -54,14 +54,8 @@
                 <td>{{ $department->director }}</td>
                 <td>{{ $department->director_type }}</td>
                 <td>{{ $department->budget }} €</td>
-                <td>
-                    @if($department->dependent_id == null)
-                        No
-                    @else
-                        {{ $department->name }}
-                    @endif
-                </td>
-                <td> No disponible </td>
+                <td> {{ $array2[$department->name] }} </td>
+                <td> {{ $array[$department->name] }} </td>
             </tr>
         @endforeach
         </tbody>
