@@ -134,7 +134,7 @@ class UserController extends Controller
 
     public function search(Request $request)
     {
-    if($request->ajax())
+        if($request->ajax())
         {
             $output='';
             $query = $request->get('query');
