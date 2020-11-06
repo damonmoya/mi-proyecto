@@ -68,12 +68,6 @@ class UserController extends Controller
 
     public function create()
     {
-        if(auth()->check()){
-            $loggedUser = auth()->user();
-            if ($loggedUser->cannot('Crear usuarios')){
-                return response()->view('errors.403', [], 403);
-            } 
-        }
         return view('users.create');
     }
 
@@ -85,9 +79,9 @@ class UserController extends Controller
             return response()->view('errors.404', [], 404);
         }
 
-        if ($user->cannot('Crear usuarios')){
-            return response()->view('errors.403', [], 403);
-        } 
+        //if ($user->cannot('Crear usuarios')){
+        //    return response()->view('errors.403', [], 403);
+        //} 
 
         return view('users.edit', compact('user'));
     }
@@ -151,14 +145,8 @@ class UserController extends Controller
 
     public function destroy($id)
     {
-        if(auth()->check()){
-            $loggedUser = auth()->user();
-            if ($loggedUser->can('Eliminar usuarios')){
-                $user = User::find($id);
-                $user->delete();
-                return redirect()->route('users.index');
-            } 
-        }
+        $user = User::find($id)->delete();
+        return redirect()->route('users.index');
         return response()->view('errors.403', [], 403);    }
 
     public function search(Request $request)
@@ -191,19 +179,17 @@ class UserController extends Controller
                     '<td>'.$user->email.'</td>'.
                     "<td>";
 
-                        if(auth()->check()){
-                            $loggedUser = auth()->user();
-                            if ($loggedUser->can('Eliminar usuarios') && $loggedUser->can('Crear usuarios')){
-                                $output.= 
-                                "<a href='/usuarios/{$user->id}' class='btn btn-info'><span class='oi oi-eye'></span></a>
-                                <a href='/usuarios/{$user->id}/editar' class='btn btn-primary'><span class='oi oi-pencil'></span></a> 
-                                <a href='/usuarios/{$user->id}/borrar' class='btn btn-danger'><span class='oi oi-trash'></span></button>";
-                            } else {
-                                $output.= 
-                                "<a href='/usuarios/{$user->id}' class='btn btn-info'><span class='oi oi-eye'></span></a>";
-                            }
+                        $loggedUser = auth()->user();
+                        if ($loggedUser->can('Eliminar usuarios') && $loggedUser->can('Crear usuarios')){
+                            $output.= 
+                            "<a href='/usuarios/{$user->id}' class='btn btn-info'><span class='oi oi-eye'></span></a>
+                            <a href='/usuarios/{$user->id}/editar' class='btn btn-primary'><span class='oi oi-pencil'></span></a> 
+                            <a href='/usuarios/{$user->id}/borrar' class='btn btn-danger'><span class='oi oi-trash'></span></button>";
+                        } else {
+                            $output.= 
+                            "<a href='/usuarios/{$user->id}' class='btn btn-info'><span class='oi oi-eye'></span></a>";
                         }
-
+                        
                     $output.="</td>".
                     '</tr>';
                 }
