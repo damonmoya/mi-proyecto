@@ -28,7 +28,7 @@ class CompanyController extends Controller
             return response()->view('errors.404', [], 404);
         }
 
-        $departments = Department::all()->where("company_id", "{$company->id}");
+        $departments = $company->departments;
 
         $cuenta_empleados = 0;
 
@@ -37,7 +37,7 @@ class CompanyController extends Controller
 
         foreach($departments as $department){
 
-            $cuenta_departamento = User::all()->where("department_id", "{$department->id}")->count();          
+            $cuenta_departamento = $department->users->count();          
             $cuenta_empleados += $cuenta_departamento;
             $array["{$department->name}"] = $cuenta_departamento;
 

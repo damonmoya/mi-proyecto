@@ -13,8 +13,6 @@ class UserController extends Controller
 {
     public function index()
     {
-
-        //$users = DB::table('users')->get();
         $users = User::all();
         
         return view('users.index')
@@ -46,7 +44,7 @@ class UserController extends Controller
             $empresa = "-";
         } else {
             $departamento_usuario = $department->name;
-            $empresa = Company::find($department->company_id)
+            $empresa = $department->company
                 ->name;
         
             if ($department->dependent_id == null){
