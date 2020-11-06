@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Company;
+use App\Models\Department;
 use App\Models\User;
+use App\Models\Profession;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -28,7 +31,41 @@ class UserController extends Controller
             return response()->view('errors.404', [], 404);
         }
 
-        return view('users.show', compact('user'));
+        $profession = $user->profession;
+        $department = $user->department;
+
+        if ($profession == null){
+            $oficio = "Sin profesión asignada";
+        } else {
+            $oficio = $profession->title;
+        }
+
+        if ($department == null){
+            $departamento_usuario = "Sin departamento asignado";
+            $departamento_dependiente = "-";
+            $empresa = "-";
+        } else {
+            $departamento_usuario = $department->name;
+            $empresa = Company::find($department->company_id)
+                ->name;
+        
+            if ($department->dependent_id == null){
+                $departamento_dependiente = "No";
+            } else {
+                $departamento_dependiente = Department::find($department->dependent_id)
+                    ->name;
+            }
+
+        }
+
+        if ($user->hasrole('Administrador')){
+            $tipo_usuario = "Administrador";
+        } else {
+            $tipo_usuario = "Usuario normal";
+        }
+
+        return view('users.show', compact('user', 'oficio', 'departamento_usuario',
+                    'departamento_dependiente', 'empresa', 'tipo_usuario'));
     }
 
     public function create()
