@@ -90,6 +90,38 @@ Route::middleware('auth')->group(function () {
         });
     
     });
+
+    Route::prefix('departamentos')->group(function () {
+
+        Route::name('departments.')->group(function () {
+
+            Route::get('', 'App\Http\Controllers\DepartmentController@index')
+                ->name('index');
+
+            //Route::get('{id}', 'App\Http\Controllers\DepartmentController@show') 
+            //    ->where('id', '[0-9]+')
+            //    ->name('show');
+
+            Route::get('search', 'App\Http\Controllers\DepartmentController@search')
+                ->name('search');
+
+            Route::group(['middleware' => ['role:Administrador']], function () {
+
+                Route::get('nuevo', 'App\Http\Controllers\DepartmentController@create')
+                    ->name('create');
+                
+                Route::post('', 'App\Http\Controllers\DepartmentController@store')
+                    ->name('store');
+
+                Route::get('{id}/borrar', 'App\Http\Controllers\DepartmentController@destroy') 
+                    ->where('id', '[0-9]+')
+                    ->name('destroy');
+
+            });
+
+        });
+    
+    });
     
 });
 

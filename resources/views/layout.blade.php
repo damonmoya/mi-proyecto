@@ -43,6 +43,9 @@
                 <a class="nav-link" href="{{ route('companies.index') }}">Empresas</a>
               </li>
               <li class="nav-item">
+                <a class="nav-link" href="{{ route('departments.index') }}">Departamentos</a>
+              </li>
+              <li class="nav-item">
                 <a class="nav-link" href="{{ route('users.show', $user->id) }}">Perfil</a>
               </li>
             @endif
@@ -142,6 +145,30 @@
         $(document).on('keyup', '#search_companies', function(){
           var query = $(this).val();
           fetch_company_data(query);
+        });
+      });
+    </script>
+    <script>
+      $(document).ready(function(){
+
+        fetch_department_data();
+
+        function fetch_department_data(query = '')
+        {
+          $.ajax({
+            url:"{{ route('departments.search') }}",
+            method:'GET',
+            data:{query:query},
+            dataType:'json',
+            success:function(data)
+            {
+              $('#listado_departamentos').html(data.table_data);
+            }
+          })
+        }
+        $(document).on('keyup', '#search_departments', function(){
+          var query = $(this).val();
+          fetch_department_data(query);
         });
       });
     </script>
