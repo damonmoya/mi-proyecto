@@ -15,7 +15,7 @@ class DepartmentController extends Controller
         $departments = Department::all();
         
         return view('departments.index')
-            ->with('companies', $departments)
+            ->with('departments', $departments)
             ->with('title', 'Listado de departamentos');
         
     }

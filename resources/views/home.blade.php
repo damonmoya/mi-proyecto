@@ -17,6 +17,8 @@
         ?>
         <h3>¡Saludos, {{ $user->name }}!</h3>
         <a href="{{ route('users.index') }}" class="btn btn-outline-primary">Ir a Listado de usuarios</a>
+        <a href="{{ route('companies.index') }}" class="btn btn-outline-primary">Ir a Listado de empresas</a>
+        <a href="{{ route('departments.index') }}" class="btn btn-outline-primary">Ir a Listado de departamentos</a>
       @else
         <h3>¡Bienvenido, visitante!</h3>
         <a href="{{ route('login') }}" class="btn btn-outline-primary">Iniciar sesión</a>

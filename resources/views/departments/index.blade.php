@@ -8,7 +8,7 @@
 
 @section('content')
 
-    @if ($companies->isNotEmpty())
+    @if ($departments->isNotEmpty())
 
     <table class="table table-bordered table-striped">
         <thead class="thead-dark">
