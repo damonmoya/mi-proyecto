@@ -72,6 +72,17 @@ Route::middleware('auth')->group(function () {
 
             Route::get('search', 'App\Http\Controllers\CompanyController@search')
                 ->name('search');
+
+            Route::group(['middleware' => ['role:Administrador']], function () {
+
+                Route::get('nuevo', 'App\Http\Controllers\CompanyController@create')
+                    ->name('create');
+                
+                Route::post('', 'App\Http\Controllers\CompanyController@store')
+                    ->name('store');
+
+            });
+
         });
     
     });

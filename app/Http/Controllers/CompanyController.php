@@ -48,6 +48,37 @@ class CompanyController extends Controller
         return view('companies.show', compact('company', 'cuenta_empleados', 'departments', 'array', 'array2'));
     }
 
+    public function create()
+    {
+        return view('companies.create');
+    }
+
+    public function store()
+    {
+        $data = request()->validate([
+            'name' => 'required',
+            'address' => 'required',
+            'description' => ['required', 'min:20'],
+            'contact' => ['required', 'regex:/[0-9]{3} [0-9]{2} [0-9]{2} [0-9]{2}/']
+        ], [
+            'name.required' => 'El campo nombre es obligatorio',
+            'address.required' => 'El campo dirección es obligatorio',
+            'description.required' => 'El campo descripción es obligatorio',
+            'description.min' => 'La descripción debe tener mínimo 20 caracteres',
+            'contact.required' => 'El campo contacto es obligatorio',
+            'contact.regex' => 'El teléfono introducido no es válido'
+        ]);
+
+        Company::create([
+            'name' => $data['name'],
+            'address' => $data['address'],
+            'description' => $data['description'],
+            'contact' => $data['contact']
+        ]);
+
+        return redirect()->route('companies.index');
+    }
+
     public function search(Request $request)
     {
         if($request->ajax())

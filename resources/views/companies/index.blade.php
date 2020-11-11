@@ -14,8 +14,13 @@
         <thead class="thead-dark">
         <div class="form-group mt-2 mt-md-0 mb-3 row align-items-end">
             <div class="col-10">
-                Buscar Empresa: <input class="form-controller mr-sm-2" type="text" id="search_companies" name="search_companies" placeholder="Buscar..." aria-label="Search">
+                Buscar empresa: <input class="form-controller mr-sm-2" type="text" id="search_companies" name="search_companies" placeholder="Buscar..." aria-label="Search">
             </div>
+            @hasrole('Administrador')
+                <div class="col-2">
+                    <a href="{{ route('companies.create') }}" class="btn btn-primary">Nueva empresa</a>
+                </div>
+            @endhasrole
         </div>
         <tr>
             <th scope="col">ID</th>
