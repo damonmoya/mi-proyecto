@@ -5,7 +5,7 @@
 @section('content')
     <div class="row">
         <div class="col">
-            <h1>Página principall</h1>
+            <h1>Página principal</h1>
         </div>
     </div>
   <div class="row">

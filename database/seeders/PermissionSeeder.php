@@ -18,5 +18,11 @@ class PermissionSeeder extends Seeder
         $permission = Permission::create(['name' => 'Crear usuarios']);
         $permission = Permission::create(['name' => 'Editar usuarios']);
         $permission = Permission::create(['name' => 'Eliminar usuarios']);
+        $permission = Permission::create(['name' => 'Crear empresa']);
+        $permission = Permission::create(['name' => 'Editar empresa']);
+        $permission = Permission::create(['name' => 'Eliminar empresa']);
+        $permission = Permission::create(['name' => 'Crear departamento']);
+        $permission = Permission::create(['name' => 'Editar departamento']);
+        $permission = Permission::create(['name' => 'Eliminar departamento']);
     }
 }
