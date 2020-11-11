@@ -98,9 +98,9 @@ Route::middleware('auth')->group(function () {
             Route::get('', 'App\Http\Controllers\DepartmentController@index')
                 ->name('index');
 
-            //Route::get('{id}', 'App\Http\Controllers\DepartmentController@show') 
-            //    ->where('id', '[0-9]+')
-            //    ->name('show');
+            Route::get('{id}', 'App\Http\Controllers\DepartmentController@show') 
+                ->where('id', '[0-9]+')
+                ->name('show');
 
             Route::get('search', 'App\Http\Controllers\DepartmentController@search')
                 ->name('search');

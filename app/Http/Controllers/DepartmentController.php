@@ -20,6 +20,15 @@ class DepartmentController extends Controller
         
     }
 
+    public function show($id)
+    {
+        $department = Department::findOrFail($id);
+        $dependents = $department->departments;
+        $employees = $department->users;
+            
+        return view('departments.show', compact('department', 'dependents', 'employees'));
+    }
+
 
 
     public function destroy($id)
