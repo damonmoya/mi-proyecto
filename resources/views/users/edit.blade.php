@@ -1,9 +1,3 @@
-@if (auth()->check())
-    @cannot('Editar usuarios')
-        <script>window.location.href = "{{ route('home') }}";</script>
-    @endcannot
-@endif
-
 @extends('layout')
 
 @section('title', "Editar usuario")
