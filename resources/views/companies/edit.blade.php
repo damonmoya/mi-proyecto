@@ -3,7 +3,7 @@
 @section('title', "Editar empresa")
 
 @section('content')
-    <h1>Editar empresa: #{{ $company->name }}</h1>
+    <h1>Editar empresa: {{ $company->name }}</h1>
 
 
     {{--Sección de errores--}}

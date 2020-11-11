@@ -73,10 +73,6 @@ class CompanyController extends Controller
             'contact.regex' => 'El teléfono introducido no es válido'
         ]);
 
-        if ($data['contact'] == null) {
-            unset($data['password']);
-        }
-
         $company->update($data);
 
         return redirect()->route('companies.show', ['id' => $id]);

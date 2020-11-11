@@ -42,26 +42,34 @@
     </table>
 
     <h2>Empleados</h2>
-    <table class="table table-bordered table-striped">
-        <thead class="thead-dark">
-        <tr>
-            <th scope="col">ID</th>
-            <th scope="col">Nombre</th>
-            <th scope="col">Correo</th>
-        </tr>
-        </thead>
-        <tbody>
-        @foreach($employees as $employee)
+    @if($employees->isNotEmpty())
+        <table class="table table-bordered table-striped">
+            <thead class="thead-dark">
             <tr>
-                <td>{{ $employee->id }}</td>
-                <td>{{ $employee->name }}</td>
-                <td>{{ $employee->email }}</td>
+                <th scope="col">ID</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Correo</th>
             </tr>
-        @endforeach
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach($employees as $employee)
+                    <tr>
+                        <td>{{ $employee->id }}</td>
+                        <td>{{ $employee->name }}</td>
+                        <td>{{ $employee->email }}</td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    @else
+        <h3>No hay empleados</h3>
+    @endif
 
-    
+    @can('Editar departamento')
+        <p>
+            <a href="{{ route('departments.edit', [$department->id]) }}" class="btn btn-primary">Editar departamento</a> 
+        </p>
+    @endcan
     
     <p>
         <a href="{{ route('departments.index') }} " class="btn btn-outline-primary">Regresar a listado de departamentos</a>

@@ -125,6 +125,14 @@ Route::middleware('auth')->group(function () {
                     ->where('id', '[0-9]+')
                     ->name('destroy');
 
+                Route::get('{id}/editar', 'App\Http\Controllers\DepartmentController@edit') 
+                    ->where('id', '[0-9]+')
+                    ->name('edit');
+
+                Route::put('{id}', 'App\Http\Controllers\DepartmentController@update') 
+                    ->where('id', '[0-9]+')
+                    ->name('update');
+
             });
 
         });

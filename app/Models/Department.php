@@ -20,6 +20,8 @@ class Department extends Model
         'name',
         'director',
         'director_type',
+        'company_id',
+        'dependent_id',
         'budget',
     ];
 

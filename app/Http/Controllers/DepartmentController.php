@@ -59,21 +59,59 @@ class DepartmentController extends Controller
             'budget.between' => 'El presupuesto debe comprender entre 10.000€ y 100.000€'
         ]);
 
-        $company = $data['company'];
+        $company = null;
 
-        if($data['company'] == "Sin empresa"){
-            $company = null;    
-        }
-
+        if($data['company'] != "Sin empresa"){
+            $company = Company::where('name', $data['company'])->value('id');
+        }      
+        
         Department::create([
             'name' => $data['name'],
             'director' => $data['director'],
             'director_type' => $data['director_type'],
-            'company' => $company,
+            'company_id' => $company,
             'budget' => $data['budget']
         ]);
 
         return redirect()->route('departments.index');
+    }
+
+    public function edit($id)
+    {
+        $department = Department::findOrFail($id);
+        $companies = Company::all();
+        return view('departments.edit', compact('department', 'companies'));
+    }
+
+    public function update($id)
+    {
+        $department = Department::findOrFail($id);
+        
+        $data = request()->validate([
+            'name' => 'required',
+            'director' => 'required',
+            'director_type' => 'required',
+            'company_id' => 'required',
+            'budget' => ['required', 'numeric', 'between:10000,100000'],
+        ], [
+            'name.required' => 'El campo nombre es obligatorio',
+            'director.required' => 'El campo director es obligatorio',
+            'director_type.required' => 'Se debe seleccionar un tipo de director',
+            'company_id.required' => 'Se debe seleccionar una empresa o ninguna',
+            'budget.required' => 'El campo presupuesto es obligatorio',
+            'budget.numeric' => 'El valor de presupuesto introducido no es un número',
+            'budget.between' => 'El presupuesto debe comprender entre 10.000€ y 100.000€'
+        ]);
+
+        if($data['company_id'] != "Sin empresa"){
+            $data['company_id'] = Company::where('name', $data['company_id'])->value('id');
+        } else{
+            $data['company_id'] = null;
+        }
+
+        $department->update($data);
+
+        return redirect()->route('departments.show', ['id' => $id]);
     }
 
 
@@ -117,6 +155,7 @@ class DepartmentController extends Controller
                     "<td>";
                     $output.= 
                         "<a href='/departamentos/{$department->id}' class='btn btn-info'><span class='oi oi-eye'></span></a>
+                        <a href='/departamentos/{$department->id}/editar' class='btn btn-primary'><span class='oi oi-pencil'></span></a>
                         <a href='/departamentos/{$department->id}/borrar' class='btn btn-danger'><span class='oi oi-trash'></span></button>";
                     $output.="</td>".
                     '</tr>';

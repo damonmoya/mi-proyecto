@@ -23,11 +23,17 @@
             <td>{{ $company->name }}</td>
             <td>{{ $company->address }}</td>
             <td>
-                <ul>
-                    @foreach($departments as $department)
-                        <li>{{ $department->name }}</li> 
-                    @endforeach
-                </ul>
+                @if($departments->isNotEmpty())
+                    <ul>
+
+                            @foreach($departments as $department)
+                                <li>{{ $department->name }}</li> 
+                            @endforeach
+
+                    </ul>
+                @else
+                    No hay departamentos
+                @endif
             </td>
             <td>{{ $cuenta_empleados }}</td>
             <td>{{ $company->contact }}</td>
@@ -36,30 +42,41 @@
     </table>
 
     <h2>Departamentos</h2>
-    <table class="table table-bordered table-striped">
-        <thead class="thead-dark">
-        <tr>
-            <th scope="col">Nombre</th>
-            <th scope="col">Director</th>
-            <th scope="col">Cond. Director</th>
-            <th scope="col">Presupuesto</th>
-            <th scope="col">Dept. Dependiente</th>
-            <th scope="col">Nº Empleados</th>
-        </tr>
-        </thead>
-        <tbody>
-        @foreach($departments as $department)
+
+    @if($departments->isNotEmpty())
+        <table class="table table-bordered table-striped">
+            <thead class="thead-dark">
             <tr>
-                <td>{{ $department->name }}</td>
-                <td>{{ $department->director }}</td>
-                <td>{{ $department->director_type }}</td>
-                <td>{{ $department->budget }} €</td>
-                <td> {{ $array2[$department->name] }} </td>
-                <td> {{ $array[$department->name] }} </td>
+                <th scope="col">Nombre</th>
+                <th scope="col">Director</th>
+                <th scope="col">Cond. Director</th>
+                <th scope="col">Presupuesto</th>
+                <th scope="col">Dept. Dependiente</th>
+                <th scope="col">Nº Empleados</th>
             </tr>
-        @endforeach
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            @foreach($departments as $department)
+                <tr>
+                    <td>{{ $department->name }}</td>
+                    <td>{{ $department->director }}</td>
+                    <td>{{ $department->director_type }}</td>
+                    <td>{{ $department->budget }} €</td>
+                    <td> {{ $array2[$department->name] }} </td>
+                    <td> {{ $array[$department->name] }} </td>
+                </tr>
+            @endforeach
+            </tbody>
+        </table>
+    @else
+        <h3>No hay departamentos</h3>
+    @endif
+
+    @can('Editar empresa')
+        <p>
+            <a href="{{ route('companies.edit', [$company->id]) }}" class="btn btn-primary">Editar empresa</a> 
+        </p>
+    @endcan
     
     <p>
         <a href="{{ route('companies.index') }} " class="btn btn-outline-primary">Regresar a listado de empresas</a>
