@@ -15,7 +15,7 @@ class AddDependentIdToDepartments extends Migration
     {
         Schema::table('departments', function (Blueprint $table) {
             $table->unsignedInteger('dependent_id')->nullable();
-            $table->foreign('dependent_id')->references('id')->on('departments');
+            $table->foreign('dependent_id')->references('id')->on('departments')->onDelete('cascade');
         });
     }
 

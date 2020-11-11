@@ -81,6 +81,10 @@ Route::middleware('auth')->group(function () {
                 Route::post('', 'App\Http\Controllers\CompanyController@store')
                     ->name('store');
 
+                Route::get('{id}/borrar', 'App\Http\Controllers\CompanyController@destroy') 
+                    ->where('id', '[0-9]+')
+                    ->name('destroy');
+
             });
 
         });

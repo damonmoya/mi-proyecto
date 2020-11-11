@@ -79,6 +79,14 @@ class CompanyController extends Controller
         return redirect()->route('companies.index');
     }
 
+    public function destroy($id)
+    {
+        $company = Company::findOrFail($id);
+        $company->delete();
+        
+        return redirect()->route('companies.index');
+    }
+
     public function search(Request $request)
     {
         if($request->ajax())
@@ -108,7 +116,8 @@ class CompanyController extends Controller
                     '<td>'.$company->description.'</td>'.
                     "<td>";
                     $output.= 
-                        "<a href='/empresas/{$company->id}' class='btn btn-info'><span class='oi oi-eye'></span></a>";
+                        "<a href='/empresas/{$company->id}' class='btn btn-info'><span class='oi oi-eye'></span></a>
+                        <a href='/empresas/{$company->id}/borrar' class='btn btn-danger'><span class='oi oi-trash'></span></button>";
                     $output.="</td>".
                     '</tr>';
                 }

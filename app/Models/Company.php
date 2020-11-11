@@ -9,6 +9,14 @@ class Company extends Model
 {
     use HasFactory;
 
+    protected static function boot() {
+        parent::boot();
+        
+        static::deleting(function($company) {
+            $company->departments()->delete();
+        });
+    }
+
     /**
      * The attributes that are mass assignable.
      *

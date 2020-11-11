@@ -15,7 +15,7 @@ class AddCompanyIdToDepartments extends Migration
     {
         Schema::table('departments', function (Blueprint $table) {
             $table->unsignedInteger('company_id')->nullable();
-            $table->foreign('company_id')->references('id')->on('companies');
+            $table->foreign('company_id')->references('id')->on('companies')->onUpdate('cascade');
         });
     }
 

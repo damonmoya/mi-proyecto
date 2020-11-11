@@ -9,6 +9,17 @@ class Department extends Model
 {
     use HasFactory;
 
+    protected static function boot() {
+        parent::boot();
+        
+        static::deleting(function() {
+            $this->department()->delete();
+            $this->dependent()->delete();
+            $this->users()->delete();
+            $this->company()->delete();
+        });
+    }
+
     /**
      * The attributes that are mass assignable.
      *
