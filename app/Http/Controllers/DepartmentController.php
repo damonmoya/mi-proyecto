@@ -25,8 +25,55 @@ class DepartmentController extends Controller
         $department = Department::findOrFail($id);
         $dependents = $department->departments;
         $employees = $department->users;
+        $company = $department->company;
+        if($company == null){
+            $company = "Sin empresa asignada";
+        } else {
+            $company = $company->name;
+        }
             
-        return view('departments.show', compact('department', 'dependents', 'employees'));
+        return view('departments.show', compact('department', 'dependents', 'employees', 'company'));
+    }
+
+    public function create()
+    {
+        $companies = Company::all();
+        return view('departments.create', compact('companies'));
+    }
+
+    public function store()
+    {
+        $data = request()->validate([
+            'name' => 'required',
+            'director' => 'required',
+            'director_type' => 'required',
+            'company' => 'required',
+            'budget' => ['required', 'numeric', 'between:10000,100000'],
+        ], [
+            'name.required' => 'El campo nombre es obligatorio',
+            'director.required' => 'El campo director es obligatorio',
+            'director_type.required' => 'Se debe seleccionar un tipo de director',
+            'company.required' => 'Se debe seleccionar una empresa o ninguna',
+            'budget.required' => 'El campo presupuesto es obligatorio',
+            'budget.numeric' => 'El valor de presupuesto introducido no es un número',
+            'budget.between' => 'El presupuesto debe comprender entre 10.000€ y 100.000€'
+        ]);
+
+        $company = $data['company'];
+
+        if($data['company'] == "Sin empresa"){
+            $company = null;    
+        }
+
+        Department::create([
+            'name' => $data['name'],
+            'director' => $data['director'],
+            'director_type' => $data['director_type'],
+            'company' => $company,
+            'budget' => $data['budget']
+        ]);
+
+        return redirect()->route('departments.index');
     }
 
 

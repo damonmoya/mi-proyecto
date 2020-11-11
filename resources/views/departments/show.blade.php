@@ -15,6 +15,7 @@
             <th scope="col">Director</th>
             <th scope="col">Tipo director</th>
             <th scope="col">Presupuesto</th>
+            <th scope="col">Empresa</th>
             <th scope="col">Dept. dependientes</th>
         </tr>
         </thead>
@@ -24,6 +25,7 @@
             <td>{{ $department->director }}</td>
             <td>{{ $department->director_type }}</td>
             <td>{{ $department->budget }}€</td>
+            <td>{{ $company }}</td>
             <td>
                 @if($dependents->isNotEmpty())
                     <ul>
