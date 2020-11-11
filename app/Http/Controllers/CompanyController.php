@@ -48,6 +48,40 @@ class CompanyController extends Controller
         return view('companies.show', compact('company', 'cuenta_empleados', 'departments', 'array', 'array2'));
     }
 
+    public function edit($id)
+    {
+        $company = Company::findOrFail($id);
+
+        return view('companies.edit', compact('company'));
+    }
+
+    public function update($id)
+    {
+        $company = Company::findOrFail($id);
+        
+        $data = request()->validate([
+            'name' => 'required',
+            'address' => 'required',
+            'description' => ['required', 'min:20'],
+            'contact' => ['required', 'regex:/[0-9]{3} [0-9]{2} [0-9]{2} [0-9]{2}/']
+        ], [
+            'name.required' => 'El campo nombre es obligatorio',
+            'address.required' => 'El campo dirección es obligatorio',
+            'description.required' => 'El campo descripción es obligatorio',
+            'description.min' => 'La descripción debe tener mínimo 20 caracteres',
+            'contact.required' => 'El campo contacto es obligatorio',
+            'contact.regex' => 'El teléfono introducido no es válido'
+        ]);
+
+        if ($data['contact'] == null) {
+            unset($data['password']);
+        }
+
+        $company->update($data);
+
+        return redirect()->route('companies.show', ['id' => $id]);
+    }
+
     public function create()
     {
         return view('companies.create');
@@ -117,6 +151,7 @@ class CompanyController extends Controller
                     "<td>";
                     $output.= 
                         "<a href='/empresas/{$company->id}' class='btn btn-info'><span class='oi oi-eye'></span></a>
+                        <a href='/empresas/{$company->id}/editar' class='btn btn-primary'><span class='oi oi-pencil'></span></a>
                         <a href='/empresas/{$company->id}/borrar' class='btn btn-danger'><span class='oi oi-trash'></span></button>";
                     $output.="</td>".
                     '</tr>';

@@ -3,13 +3,13 @@
 @section('title', "Editar usuario")
 
 @section('content')
-    <h1>Editar usuario: #{{ $user->id }}</h1>
+    <h1>Editar usuario: #{{ $user->name }}</h1>
 
 
     {{--Sección de errores--}}
     @if ($errors->any())
         <div class="alert alert-danger">
-            <h5>Error en la creación del usuario:</h5>
+            <h5>Error en la edición del usuario:</h5>
             <ul>
                 @foreach ($errors->all() as $error)
                     <li>{{ $error}}</li>

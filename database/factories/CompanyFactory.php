@@ -25,7 +25,7 @@ class CompanyFactory extends Factory
             'name' => $this->faker->company,
             'address' => $this->faker->address,
             'description' => $this->faker->sentence(6),
-            'contact' => $this->faker->phoneNumber,
+            'contact' => $this->faker->regexify('[0-9]{3} [0-9]{2} [0-9]{2} [0-9]{2}'),
         ];
     }
 }

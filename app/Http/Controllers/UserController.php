@@ -101,7 +101,7 @@ class UserController extends Controller
 
         $user->update($data);
 
-        return redirect("/usuarios/$id");
+        return redirect()->route('users.show', ['id' => $id]);
     }
 
     public function store()
