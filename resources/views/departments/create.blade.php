@@ -50,13 +50,14 @@
         <div class="form-group">
             <label>Empresa:</label>
             <fieldset id="company">
+                <p>@{{message}}</p>
                 <label>
-                    <input type="radio" value="Sin empresa" name="company" checked> Sin empresa
+                    <input type="radio" value="Sin empresa" name="company" @change="onChange($event)" checked> Sin empresa
                 </label>
                 <br> 
                 @foreach($companies as $company)
                     <label>
-                        <input type="radio" value="{{ $company->name }}" name="company"> {{ $company->name }}
+                        <input type="radio" value="{{ $company->name }}" @change="onChange($event)" name="company"> {{ $company->name }}
                     </label>
                     <br> 
                 @endforeach
@@ -73,5 +74,23 @@
         <a href="{{ route('departments.index') }}" class="btn btn-outline-primary">Regresar a listado de departamentos</a>
     </form>
 
-@endsection
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
 
+    <script type="text/javascript">
+
+        var app = new Vue({
+            el: '#company',
+            data:{
+                message: 'Sin empresa',
+            },
+            methods:{
+                onChange(event) {
+                    optionText = event.target.value;
+                    this.message= optionText;
+                }
+            }
+        })
+
+    </script>
+
+@endsection
