@@ -72,13 +72,20 @@
         <h3>No hay departamentos</h3>
     @endif
 
-    @can('Editar empresa')
+    @if (! $hide)
+
+        @can('Editar empresa')
+            <p>
+                <a href="{{ route('companies.edit', [$company->id]) }}" class="btn btn-primary noprint">Editar empresa</a> 
+            </p>
+        @endcan
+
         <p>
-            <a href="{{ route('companies.edit', [$company->id]) }}" class="btn btn-primary">Editar empresa</a> 
+            <a class="btn btn-primary noprint" href="{{route('companies.show', ['id' => $company->id, 'download'=>'pdf'])}}">Descargar en PDF</a>
         </p>
-    @endcan
-    
-    <p>
-        <a href="{{ route('companies.index') }} " class="btn btn-outline-primary">Regresar a listado de empresas</a>
-    </p>
+
+        <p>
+            <a href="{{ route('companies.index') }} " class="btn btn-outline-primary">Regresar a listado de empresas</a>
+        </p>
+    @endif
 @endsection

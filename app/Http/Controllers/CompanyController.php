@@ -7,6 +7,7 @@ use App\Models\Department;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use PDF;
 
 class CompanyController extends Controller
 {
@@ -20,9 +21,11 @@ class CompanyController extends Controller
         
     }
 
-    public function show($id)
+    public function show($id, Request $request)
     {
         $company = Company::findOrFail($id);
+
+        $nombre_pdf = "company.pdf";
 
         $departments = $company->departments;
 
@@ -43,9 +46,16 @@ class CompanyController extends Controller
                 $array2["{$department->name}"] = $department->dependent->name;
             }
         }
-        
 
-        return view('companies.show', compact('company', 'cuenta_empleados', 'departments', 'array', 'array2'));
+        if($request->has('download'))
+        {
+            $hide = true;
+            $pdf = PDF::loadView('companies.show',compact('company', 'cuenta_empleados', 'departments', 'array', 'array2', 'hide'));
+            return $pdf->download($nombre_pdf);
+        }
+        
+        $hide = false;
+        return view('companies.show', compact('company', 'cuenta_empleados', 'departments', 'array', 'array2', 'hide'));
     }
 
     public function edit($id)

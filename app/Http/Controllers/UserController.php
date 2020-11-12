@@ -8,16 +8,18 @@ use App\Models\User;
 use App\Models\Profession;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use PDF;
 
 class UserController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $users = User::all();
+        $title = 'Listado de usuarios';
         
         return view('users.index')
             ->with('users', $users)
-            ->with('title', 'Listado de usuarios');
+            ->with('title', $title);
         
     }
 
