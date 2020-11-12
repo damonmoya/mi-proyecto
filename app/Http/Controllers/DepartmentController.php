@@ -7,6 +7,7 @@ use App\Models\Department;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use PDF;
 
 class DepartmentController extends Controller
 {
@@ -20,7 +21,7 @@ class DepartmentController extends Controller
         
     }
 
-    public function show($id)
+    public function show($id, Request $request)
     {
         $department = Department::findOrFail($id);
         $dependents = $department->departments;
@@ -31,8 +32,17 @@ class DepartmentController extends Controller
         } else {
             $company = $company->name;
         }
-            
-        return view('departments.show', compact('department', 'dependents', 'employees', 'company'));
+
+        if($request->has('download'))
+        {
+            $nombre_pdf = "{$department->name}.pdf";
+            $hide = true;
+            $pdf = PDF::loadView('departments.show', compact('department', 'dependents', 'employees', 'company', 'hide'));
+            return $pdf->download($nombre_pdf);
+        }
+        
+        $hide = false;
+        return view('departments.show', compact('department', 'dependents', 'employees', 'company', 'hide'));
     }
 
     public function create()

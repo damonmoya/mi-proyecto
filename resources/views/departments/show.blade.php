@@ -65,13 +65,21 @@
         <h3>No hay empleados</h3>
     @endif
 
-    @can('Editar departamento')
+    @if(! $hide)
+
+        @can('Editar departamento')
+            <p>
+                <a href="{{ route('departments.edit', [$department->id]) }}" class="btn btn-primary">Editar departamento</a> 
+            </p>
+        @endcan
+
         <p>
-            <a href="{{ route('departments.edit', [$department->id]) }}" class="btn btn-primary">Editar departamento</a> 
+            <a class="btn btn-primary noprint" href="{{route('departments.show', ['id' => $department->id, 'download'=>'pdf'])}}">Descargar en PDF</a>
         </p>
-    @endcan
+
+        <p>
+            <a href="{{ route('departments.index') }} " class="btn btn-outline-primary">Regresar a listado de departamentos</a>
+        </p>
     
-    <p>
-        <a href="{{ route('departments.index') }} " class="btn btn-outline-primary">Regresar a listado de departamentos</a>
-    </p>
+    @endif
 @endsection
