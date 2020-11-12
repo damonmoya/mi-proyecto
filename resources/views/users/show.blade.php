@@ -33,16 +33,24 @@
         </tr>
         </tbody>
     </table>
+
+    @if (! $hide)
     
-    @can('Editar usuarios')
+        @can('Editar usuarios')
+            <p>
+                <a href="{{ route('users.edit', [$user->id]) }}" class="btn btn-primary">Editar usuario</a> 
+            </p>
+        @endcan
+
         <p>
-            <a href="{{ route('users.edit', [$user->id]) }}" class="btn btn-primary">Editar usuario</a> 
+            <a class="btn btn-primary noprint" href="{{route('users.show', ['id' => $user->id, 'download'=>'pdf'])}}">Descargar en PDF</a>
         </p>
-    @endcan
-    
-    <p>
-        <a href="{{ route('users.index') }} " class="btn btn-outline-primary">Regresar a listado de usuarios</a>
-    </p>
+
+        <p>
+            <a href="{{ route('users.index') }} " class="btn btn-outline-primary">Regresar a listado de usuarios</a>
+        </p>
+        
+    @endif
 @endsection
 
 

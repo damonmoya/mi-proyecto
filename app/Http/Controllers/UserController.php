@@ -12,7 +12,7 @@ use PDF;
 
 class UserController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
         $users = User::all();
         $title = 'Listado de usuarios';
@@ -23,7 +23,7 @@ class UserController extends Controller
         
     }
 
-    public function show($id)
+    public function show($id, Request $request)
     {
         $user = User::findOrFail($id);
 
@@ -60,8 +60,18 @@ class UserController extends Controller
             $tipo_usuario = "Usuario normal";
         }
 
+        if($request->has('download'))
+        {
+            $nombre_pdf = "{$user->name}.pdf";
+            $hide = true;
+            $pdf = PDF::loadView('users.show', compact('user', 'oficio', 'departamento_usuario',
+            'departamento_dependiente', 'empresa', 'tipo_usuario', 'hide'));
+            return $pdf->download($nombre_pdf);
+        }
+        
+        $hide = false;
         return view('users.show', compact('user', 'oficio', 'departamento_usuario',
-                    'departamento_dependiente', 'empresa', 'tipo_usuario'));
+                    'departamento_dependiente', 'empresa', 'tipo_usuario', 'hide'));
     }
 
     public function create()

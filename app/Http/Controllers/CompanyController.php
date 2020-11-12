@@ -25,8 +25,6 @@ class CompanyController extends Controller
     {
         $company = Company::findOrFail($id);
 
-        $nombre_pdf = "company.pdf";
-
         $departments = $company->departments;
 
         $cuenta_empleados = 0;
@@ -49,6 +47,7 @@ class CompanyController extends Controller
 
         if($request->has('download'))
         {
+            $nombre_pdf = "{$company->name}.pdf";
             $hide = true;
             $pdf = PDF::loadView('companies.show',compact('company', 'cuenta_empleados', 'departments', 'array', 'array2', 'hide'));
             return $pdf->download($nombre_pdf);
