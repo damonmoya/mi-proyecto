@@ -62,11 +62,9 @@ class UserController extends Controller
         }
 
         $email_sent = false;
-
         if($request->has('download'))
         {
             $loggedUserEmail = auth()->user()->email;
-            $hide = true;
             $email_sent = true;
 
             $email['address'] = "{$loggedUserEmail}";
@@ -74,7 +72,7 @@ class UserController extends Controller
             $email['body'] = "Aquí tienes tu pdf con el detalle del usuario {$user->name}";
             $email['pdf_name'] = "{$user->name}.pdf";
             $email['pdf'] = PDF::loadView('emails.userDetail', compact('user', 'oficio', 'departamento_usuario',
-                    'departamento_dependiente', 'empresa', 'tipo_usuario', 'hide', 'email_sent'));
+                    'departamento_dependiente', 'empresa', 'tipo_usuario', 'email_sent'));
 
             Mail::send([], [], function($message)use($email) {
                 $message->to($email['address'], $email['address'])
@@ -85,10 +83,9 @@ class UserController extends Controller
 
             //return $pdf->download($email['pdf_name']);
         }
-        
-        $hide = false;
+
         return view('users.show', compact('user', 'oficio', 'departamento_usuario',
-                    'departamento_dependiente', 'empresa', 'tipo_usuario', 'hide', 'email_sent'));
+                    'departamento_dependiente', 'empresa', 'tipo_usuario', 'email_sent'));
     }
 
     public function create()

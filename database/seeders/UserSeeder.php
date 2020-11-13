@@ -44,6 +44,18 @@ class UserSeeder extends Seeder
         ])->assignRole('Usuario registrado');
 
         $professionId = Profession::where('title', 'Desarrollador Diseñador Web')->value('id');
+        $departmentId = Department::where('name', 'Tecnología')->value('id');
+
+        $user = User::factory()->create([
+            'name' => 'Ana Marina',
+            'email' => 'divina_ana98@hotmail.com',
+            'password' => bcrypt('prueba'),
+            'profession_id' => $professionId,
+            'department_id' => $departmentId,
+            
+        ])->assignRole('Usuario registrado');
+
+        $professionId = Profession::where('title', 'Desarrollador Diseñador Web')->value('id');
         $departmentId = Department::where('name', 'Mantenimiento')->value('id');
 
         $user = User::factory()->create([
