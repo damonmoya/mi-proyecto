@@ -3,7 +3,25 @@
 @section('title', "Usuario {$user->id}")
 
 @section('header')
-    <h1>Usuario #{{ $user->id }} ({{ $user->name }})</h1>
+    @if (! $hide)
+        @if ($email_sent)
+            <div class="alert alert-success" role="alert">
+                ¡Correo con pdf ajunto enviado!
+            </div>
+        @endif
+    @endif
+        <div class="form-group mt-2 mt-md-0 mb-3 row align-items-end">
+            <div class="col-10">
+                <h1>Usuario #{{ $user->id }} ({{ $user->name }})</h1>
+            </div>
+            @if (! $hide)
+                <div class="col-2">
+
+                    <a class="btn btn-primary noprint" href="{{route('users.show', ['id' => $user->id, 'download'=>'pdf'])}}">Enviar correo con PDF</a>
+
+                </div>
+            @endif
+        </div>
 @endsection
 
 @section('content')
@@ -41,10 +59,6 @@
                 <a href="{{ route('users.edit', [$user->id]) }}" class="btn btn-primary">Editar usuario</a> 
             </p>
         @endcan
-
-        <p>
-            <a class="btn btn-primary noprint" href="{{route('users.show', ['id' => $user->id, 'download'=>'pdf'])}}">Descargar en PDF</a>
-        </p>
 
         <p>
             <a href="{{ route('users.index') }} " class="btn btn-outline-primary">Regresar a listado de usuarios</a>

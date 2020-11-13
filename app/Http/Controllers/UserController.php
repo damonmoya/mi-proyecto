@@ -9,6 +9,7 @@ use App\Models\Profession;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use PDF;
+use Mail;
 
 class UserController extends Controller
 {
@@ -60,18 +61,34 @@ class UserController extends Controller
             $tipo_usuario = "Usuario normal";
         }
 
+        $email_sent = false;
+
         if($request->has('download'))
         {
-            $nombre_pdf = "{$user->name}.pdf";
+            $loggedUserEmail = auth()->user()->email;
             $hide = true;
-            $pdf = PDF::loadView('users.show', compact('user', 'oficio', 'departamento_usuario',
-            'departamento_dependiente', 'empresa', 'tipo_usuario', 'hide'));
-            return $pdf->download($nombre_pdf);
+            $email_sent = true;
+
+            $email['address'] = "{$loggedUserEmail}";
+            $email['title'] = "PDF listo";
+            $email['body'] = "Aquí tienes tu pdf con el detalle del usuario {$user->name}";
+            $email['pdf_name'] = "{$user->name}.pdf";
+            $email['pdf'] = PDF::loadView('emails.userDetail', compact('user', 'oficio', 'departamento_usuario',
+                    'departamento_dependiente', 'empresa', 'tipo_usuario', 'hide', 'email_sent'));
+
+            Mail::send([], [], function($message)use($email) {
+                $message->to($email['address'], $email['address'])
+                        ->attachData($email['pdf']->output(), $email['pdf_name'])
+                        ->subject($email['title'])
+                        ->setBody($email['body']);
+            });
+
+            //return $pdf->download($email['pdf_name']);
         }
         
         $hide = false;
         return view('users.show', compact('user', 'oficio', 'departamento_usuario',
-                    'departamento_dependiente', 'empresa', 'tipo_usuario', 'hide'));
+                    'departamento_dependiente', 'empresa', 'tipo_usuario', 'hide', 'email_sent'));
     }
 
     public function create()

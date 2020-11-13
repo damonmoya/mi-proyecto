@@ -36,7 +36,7 @@ class UserSeeder extends Seeder
 
         $user = User::factory()->create([
             'name' => 'Damon García',
-            'email' => 'correoprueba@hotmail.es',
+            'email' => 'damon99@hotmail.es',
             'password' => bcrypt('prueba'),
             'profession_id' => $professionId,
             'department_id' => $departmentId,

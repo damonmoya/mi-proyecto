@@ -61,6 +61,8 @@
                     </label>
                     <br> 
                 @endforeach
+
+               {{-- <company_depts :="{{ $companies->replies }}"></company_depts> --}} 
             </fieldset>
         </div>
 
