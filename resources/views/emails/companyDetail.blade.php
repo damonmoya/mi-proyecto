@@ -1,24 +1,18 @@
-@extends('layout')
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Detalle usuario</title>
 
-@section('title', "Empresa {$company->id}")
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/open-iconic/1.1.1/font/css/open-iconic-bootstrap.css" integrity="sha512-CdBAHV63xsk13rW8Wd6u6S1SqfW6TXXE/2HvYpeiCaQSJhEuathtzO87zloBMqQKW7JoqTixSvWlm6aj4722WQ==" crossorigin="anonymous" />
+    <!-- Custom styles for this template -->
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
 
-@section('header')
-    @if ($email_sent)
-        <div class="alert alert-success" role="alert">
-            ¡Correo con pdf ajunto enviado!
-        </div>
-    @endif
-    <div class="form-group mt-2 mt-md-0 mb-3 row align-items-end">
-        <div class="col-10">
-            <h1>Empresa #{{ $company->id }} ({{ $company->name }})</h1>
-        </div>
-        <div class="col-2">
-            <a class="btn btn-primary noprint" href="{{route('companies.show', ['id' => $company->id, 'download'=>'pdf'])}}">Enviar correo con PDF</a>
-        </div>
-    </div>
-@endsection
+    <h1>Empresa #{{ $company->id }} ({{ $company->name }})</h1>
 
-@section('content')
     <h2>Detalles</h2>
     <table class="table table-bordered table-striped">
         <thead class="thead-dark">
@@ -84,14 +78,8 @@
         <h3>No hay departamentos</h3>
     @endif
 
-    @can('Editar empresa')
-        <p>
-            <a href="{{ route('companies.edit', [$company->id]) }}" class="btn btn-primary noprint">Editar empresa</a> 
-        </p>
-    @endcan
-    
-    <p>
-        <a href="{{ route('companies.index') }} " class="btn btn-outline-primary">Regresar a listado de empresas</a>
-    </p>
+</body>
+</html>
 
-@endsection
+
+
