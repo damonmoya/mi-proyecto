@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use PDF;
+use Mail;
 
 class DepartmentController extends Controller
 {
@@ -33,16 +34,29 @@ class DepartmentController extends Controller
             $company = $company->name;
         }
 
+        $email_sent = false;
         if($request->has('download'))
         {
-            $nombre_pdf = "{$department->name}.pdf";
-            $hide = true;
-            $pdf = PDF::loadView('departments.show', compact('department', 'dependents', 'employees', 'company', 'hide'));
-            return $pdf->download($nombre_pdf);
+            $loggedUserEmail = auth()->user()->email;
+            $email_sent = true;
+
+            $email['address'] = "{$loggedUserEmail}";
+            $email['title'] = "PDF listo";
+            $email['body'] = "Aquí tienes tu pdf con el detalle del departamento {$department->name}";
+            $email['pdf_name'] = "{$department->name}.pdf";
+            $email['pdf'] = PDF::loadView('emails.departmentDetail', compact('department', 'dependents', 'employees', 'company', 'email_sent'));
+
+            Mail::send([], [], function($message)use($email) {
+                $message->to($email['address'], $email['address'])
+                        ->attachData($email['pdf']->output(), $email['pdf_name'])
+                        ->subject($email['title'])
+                        ->setBody($email['body']);
+            });
+
+            //return $pdf->download($email['pdf_name']);
         }
-        
-        $hide = false;
-        return view('departments.show', compact('department', 'dependents', 'employees', 'company', 'hide'));
+
+        return view('departments.show', compact('department', 'dependents', 'employees', 'company', 'email_sent'));
     }
 
     public function create()

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Detalle usuario</title>
+    <title>Detalle empresa</title>
 
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
@@ -31,11 +31,9 @@
             <td>
                 @if($departments->isNotEmpty())
                     <ul>
-
-                            @foreach($departments as $department)
-                                <li>{{ $department->name }}</li> 
-                            @endforeach
-
+                        @foreach($departments as $department)
+                            <li>{{ $department->name }}</li> 
+                        @endforeach
                     </ul>
                 @else
                     No hay departamentos
