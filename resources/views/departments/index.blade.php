@@ -29,10 +29,10 @@
             </div>
             @hasrole('Administrador')
                 <div class="col-2" id="crear_departamento">
-                    <button type="button" class="btn btn-primary" @click="showModel = true" >
+                    <button type="button" class="btn btn-primary" @click="showCreateModel = true" >
                         Crear departamento
                     </button>
-                    <model v-if="showModel" @close="showModel = false"></model>
+                    <model v-if="showCreateModel" @close="showCreateModel = false"></model>
                 </div>
             @endhasrole
         </div>
@@ -137,7 +137,7 @@
 
         new Vue({ el: '#crear_departamento',
           data:{
-            showModel:false
+            showCreateModel:false
           }
         })
 
