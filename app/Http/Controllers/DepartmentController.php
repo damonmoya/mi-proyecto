@@ -15,10 +15,12 @@ class DepartmentController extends Controller
     public function index()
     {
         $departments = Department::all();
+        $companies = Company::all();
         
         return view('departments.index')
             ->with('departments', $departments)
-            ->with('title', 'Listado de departamentos');
+            ->with('title', 'Listado de departamentos')
+            ->with('companies', $companies);
         
     }
 
