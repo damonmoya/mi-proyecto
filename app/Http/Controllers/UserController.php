@@ -17,10 +17,12 @@ class UserController extends Controller
     {
         $users = User::all();
         $title = 'Listado de usuarios';
+        $user = User::findOrFail(2);
         
         return view('users.index')
             ->with('users', $users)
-            ->with('title', $title);
+            ->with('title', $title)
+            ->with('user', $user);
         
     }
 
@@ -196,12 +198,12 @@ class UserController extends Controller
                         $loggedUser = auth()->user();
                         if ($loggedUser->can('Eliminar usuarios') && $loggedUser->can('Crear usuarios')){
                             $output.= 
-                            "<a href='/usuarios/{$user->id}' class='btn btn-info'><span class='oi oi-eye'></span></a>
-                            <a href='/usuarios/{$user->id}/editar' class='btn btn-primary'><span class='oi oi-pencil'></span></a> 
+                            "<button type='button' class='btn btn-info' @click='showDetailModel = true'><span class='oi oi-eye'></span></button>
+                            <button type='button' class='btn btn-primary' @click='showEditModel = true'><span class='oi oi-pencil'></span></button> 
                             <a href='/usuarios/{$user->id}/borrar' class='btn btn-danger'><span class='oi oi-trash'></span></button>";
                         } else {
                             $output.= 
-                            "<a href='/usuarios/{$user->id}' class='btn btn-info'><span class='oi oi-eye'></span></a>";
+                            "<button type='button' class='btn btn-info' @click='showDetailModel = true'><span class='oi oi-eye'></span></button>";
                         }
                         
                     $output.="</td>".
