@@ -29,8 +29,8 @@
                 <th scope="col">Acciones</th>
             </tr>
             </thead>
-            <tbody>
-                    <tr v-for="user in users">
+            <tbody v-if="users.length > 0">
+                    <tr v-for="user in users" :key="user.id">
                         <td> @{{ user.id }} </td>
                         <td> @{{ user.name }} </td>
                         <td> @{{ user.email }} </td>
@@ -82,6 +82,7 @@
                 this.getUsers();
             },
             data: {
+                keywords: null,
                 users: [],
                 newUserName: '',
                 newUserEmail: '',
@@ -90,7 +91,17 @@
                 fillUser: {'id': '', 'name': '', 'email': '', 'password': '', 'confirm_password': ''},
                 errors: new Errors()
             },
+            watch: {
+                keywords(after, before) {
+                    this.fetch();
+                }
+            },
             methods: {
+                fetch() {
+                    axios.get('/usuarios/search', { params: { keywords: this.keywords } })
+                        .then(response => this.users = response.data)
+                        .catch(error => {});
+                },
                 clearErrors: function(){
                     this.errors.reset();
                 },

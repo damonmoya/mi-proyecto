@@ -155,61 +155,8 @@ class UserController extends Controller
 
     public function search(Request $request)
     {
-        if($request->ajax())
-        {
-            $output='';
-            $query = $request->get('query');
-            if ($query != '')
-            {
-                $users=DB::table('users')
-                    ->where('name','LIKE','%'.$query.'%')
-                    ->orWhere('email','LIKE','%'.$query.'%')
-                    ->orWhere('id','LIKE','%'.$query.'%')
-                    ->orderBy('id', 'asc')
-                    ->get();
-            } else 
-            {
-                $users=DB::table('users')
-                    ->orderBy('id', 'asc')
-                    ->get();
-            }
-            $total_rows = $users->count();
-            if($total_rows > 0)
-            {
-                foreach ($users as $user) {
-                    $output.='<tr>'.
-                    '<td>'.$user->id.'</td>'.
-                    '<td>'.$user->name.'</td>'.
-                    '<td>'.$user->email.'</td>'.
-                    "<td>";
+        $users = User::where('name', 'like', '%' . $request->get('keywords') . '%')->get();
 
-                        $loggedUser = auth()->user();
-                        if ($loggedUser->can('Eliminar usuarios') && $loggedUser->can('Crear usuarios')){
-                            $output.= 
-                            "<button type='button' class='btn btn-info' @click='showDetailModel = true'><span class='oi oi-eye'></span></button>
-                            <button type='button' class='btn btn-primary' @click='showEditModel = true'><span class='oi oi-pencil'></span></button> 
-                            <a href='/usuarios/{$user->id}/borrar' class='btn btn-danger'><span class='oi oi-trash'></span></button>";
-                        } else {
-                            $output.= 
-                            "<button type='button' class='btn btn-info' @click='showDetailModel = true'><span class='oi oi-eye'></span></button>";
-                        }
-                        
-                    $output.="</td>".
-                    '</tr>';
-                }
-            } else
-            {
-                $output.='<tr>
-                    <td align="center" colspan="4">No hay resultados</td>
-                </tr>';
-            }
-            $users = array(
-                'table_data' => $output,
-                'total_data' => $total_rows
-            );
-
-            echo json_encode($users);
-            
-        }
+        return response()->json($users);
     }
 }

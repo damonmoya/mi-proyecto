@@ -105,30 +105,6 @@
     <script>
       $(document).ready(function(){
 
-        fetch_user_data();
-
-        function fetch_user_data(query = '')
-        {
-          $.ajax({
-            url:"{{ route('users.search') }}",
-            method:'GET',
-            data:{query:query},
-            dataType:'json',
-            success:function(data)
-            {
-              $('#listado').html(data.table_data);
-            }
-          })
-        }
-        $(document).on('keyup', '#search', function(){
-          var query = $(this).val();
-          fetch_user_data(query);
-        });
-      });
-    </script>
-    <script>
-      $(document).ready(function(){
-
         fetch_company_data();
 
         function fetch_company_data(query = '')

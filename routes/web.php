@@ -35,7 +35,7 @@ Route::middleware('auth')->group(function () {
                 ->where('id', '[0-9]+')
                 ->name('show');
 
-            Route::get('/usuarios/search', 'App\Http\Controllers\UserController@search')
+            Route::get('search', 'App\Http\Controllers\UserController@search')
                 ->name('search');
 
             //Route::group(['middleware' => ['role:Administrador']], function () {
