@@ -46,11 +46,6 @@
         </tbody>
     </table>
 
-    @can('Editar usuarios')
-        <p>
-            <a href="{{ route('users.edit', [$user->id]) }}" class="btn btn-primary">Editar usuario</a> 
-        </p>
-    @endcan
     <p>
         <a href="{{ route('users.index') }} " class="btn btn-outline-primary">Regresar a listado de usuarios</a>
     </p>

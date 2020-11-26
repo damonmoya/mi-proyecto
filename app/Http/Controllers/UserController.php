@@ -16,14 +16,7 @@ class UserController extends Controller
     public function index()
     {
         $users = User::all();
-        $title = 'Listado de usuarios';
-        $user = User::findOrFail(2);
-        
-        return view('users.index')
-            ->with('users', $users)
-            ->with('title', $title)
-            ->with('user', $user);
-        
+        return $users;       
     }
 
     public function show($id, Request $request)
@@ -102,11 +95,11 @@ class UserController extends Controller
         return view('users.edit', compact('user'));
     }
 
-    public function update($id)
-    {
+    public function update(Request $request, $id)
+    {       
         $user = User::findOrFail($id);
         
-        $data = request()->validate([
+        $data = $request->validate([
             'name' => 'required',
             'email' => ['required', 'email', 'unique:users,email,'.$user->id],
             'password' => ['nullable', 'min:6'],
@@ -120,21 +113,20 @@ class UserController extends Controller
             'confirm_password.same' => 'Las claves no coinciden',
         ]);
 
-        if ($data['password'] != null) {
-            $data['password'] = bcrypt($data['password']);
+        if ($request['password'] != null) {
+            $request['password'] = bcrypt($request['password']);
         } else {
-            unset($data['password']);
+            unset($request['password']);
         }
 
+        $user->update($request->all());
 
-        $user->update($data);
-
-        return redirect()->route('users.show', ['id' => $id]);
+        return;
     }
 
-    public function store()
+    public function store(Request $request)
     {
-        $data = request()->validate([
+        $this->validate($request,[
             'name' => 'required',
             'email' => ['required', 'email', 'unique:users,email'],
             'password' => ['required', 'min:6'],
@@ -150,19 +142,15 @@ class UserController extends Controller
             'confirm_password.same' => 'Las claves no coinciden'
         ]);
 
-        User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => bcrypt($data['password'])
-        ]);
+        User::create($request->all());
 
-        return redirect()->route('users.index');
+        return;
     }
 
     public function destroy($id)
     {
-        $user = User::findOrFail($id)->delete();
-        return redirect()->route('users.index');
+        $user = User::findOrFail($id);
+        $user->delete();
     }
 
     public function search(Request $request)

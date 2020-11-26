@@ -24,9 +24,13 @@ Route::middleware('auth')->group(function () {
 
         Route::name('users.')->group(function () {
 
-            Route::get('', 'App\Http\Controllers\UserController@index')
-                ->name('index');
+            Route::get('', function () {
+                return view('users.index')
+                ->with('title', 'Listado de usuarios'); 
+            })->name('index');
 
+            Route::resource('recursos', 'App\Http\Controllers\UserController', ['except' => 'show', 'create', 'edit']);
+                
             Route::get('{id}', 'App\Http\Controllers\UserController@show') 
                 ->where('id', '[0-9]+')
                 ->name('show');
@@ -34,27 +38,23 @@ Route::middleware('auth')->group(function () {
             Route::get('/usuarios/search', 'App\Http\Controllers\UserController@search')
                 ->name('search');
 
-            Route::group(['middleware' => ['role:Administrador']], function () {
+            //Route::group(['middleware' => ['role:Administrador']], function () {
 
-                Route::get('{id}/borrar', 'App\Http\Controllers\UserController@destroy') 
-                    ->where('id', '[0-9]+')
-                    ->name('destroy');
+                //Route::get('{id}/editar', 'App\Http\Controllers\UserController@edit') 
+                //    ->where('id', '[0-9]+')
+                //    ->name('edit');
 
-                Route::get('{id}/editar', 'App\Http\Controllers\UserController@edit') 
-                    ->where('id', '[0-9]+')
-                    ->name('edit');
+                //Route::get('nuevo', 'App\Http\Controllers\UserController@create')
+                //    ->name('create');
 
-                Route::get('nuevo', 'App\Http\Controllers\UserController@create')
-                    ->name('create');
+                //Route::post('', 'App\Http\Controllers\UserController@store')
+                //    ->name('store');
 
-                Route::post('', 'App\Http\Controllers\UserController@store')
-                    ->name('store');
+                //Route::put('{id}', 'App\Http\Controllers\UserController@update') 
+                //    ->where('id', '[0-9]+')
+                //    ->name('update');
 
-                Route::put('{id}', 'App\Http\Controllers\UserController@update') 
-                    ->where('id', '[0-9]+')
-                    ->name('update');
-
-            });
+            //});
 
         });
     });
