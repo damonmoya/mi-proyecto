@@ -1,4 +1,4 @@
-<div class="modal" id="createDepartmentModal">
+<div class="modal fade" id="createDepartmentModal">
     <div class="modal-dialog">
         <div class="modal-content">
             <!-- Modal Header -->

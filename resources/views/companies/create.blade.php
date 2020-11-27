@@ -1,4 +1,4 @@
-<div class="modal" id="createCompanyModal">
+<div class="modal fade" id="createCompanyModal">
     <div class="modal-dialog">
         <div class="modal-content">
             <!-- Modal Header -->
