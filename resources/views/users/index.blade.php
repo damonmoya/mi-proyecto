@@ -12,9 +12,14 @@
 
         <table class="table table-bordered table-striped">
             <thead class="thead-dark">
-            <div class="form-group mt-2 mt-md-0 mb-3 row align-items-end">
-                <div class="col-10">
-                    Buscar usuario: <input type="text" v-model="keywords">
+                <div class="form-group mt-2 mt-md-0 mb-3 row">
+                    <div class="col-10">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text" id="btnGroupAddon2"><span class="oi oi-magnifying-glass"></span></div>
+                            </div>
+                        <input class="form-control py-2 border-right-0 border" v-model="keywords" type="search" placeholder="Buscar usuario">
+                    </div>
                 </div>
                 @hasrole('Administrador')
                     <div class="col-2">
