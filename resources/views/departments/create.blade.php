@@ -1,98 +1,88 @@
-@extends('layout')
+<div class="modal" id="createDepartmentModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Crear departamento</h4>
+                <button type="button" class="close" data-dismiss="modal" v-on:click.prevent="clearErrors()"><span>&times;</span></button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+                <slot>
+                    {{--Sección de formulario--}}        
+                    <form method="POST" v-on:submit.prevent="createDepartment">
 
-@section('title', "Crear departamento")
+                        <div class="form-group">
+                            <label for="name">Nombre:</label>
+                            <input type="text" class="form-control" name="name" id="newName" v-model="newDepartmentName" aria-describedby="nameHelp" placeholder="Nombre de departamento..." value="{{ old('name') }}">
+                            <small id="nameHelp" class="form-text text-muted">Por ejemplo: Desarrollo</small>
+                            <span class="text-danger" v-text="errors.get('name')"></span>
+                        </div>
 
-@section('content')
-    <h1>Crear departamento</h1>
+                        <div class="form-group">
+                            <label for="director">Director:</label>
+                            <input type="text" class="form-control" name="director" id="newDirector" v-model="newDepartmentDirector" aria-describedby="directorHelp" placeholder="Nombre del director..." value="{{ old('director') }}">
+                            <small id="directorHelp" class="form-text text-muted">Por ejemplo: Pepe Mel</small>
+                            <span class="text-danger" v-text="errors.get('director')"></span>
+                        </div>
 
+                        <div class="form-group">
+                            <label>Tipo de director:</label>
+                            <fieldset id="newDirector_type">
+                                <label>
+                                    <input type="radio" value="En propiedad" name="director_type" v-model="newDepartmentDirector_type"> En propiedad
+                                </label>
+                                <label>
+                                    <input type="radio" value="En funciones" name="director_type" v-model="newDepartmentDirector_type"> En funciones 
+                                </label>
+                            </fieldset>
+                            <span class="text-danger" v-text="errors.get('director_type')"></span>
+                        </div>
 
-    {{--Sección de errores--}}
-    @if ($errors->any())
-        <div class="alert alert-danger">
-            <h5>Error en la creación de departamentos:</h5>
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error}}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
+                        <div class="form-group mt-2 mt-md-0 mb-3 row align-items-end">
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label>Empresa:</label>
+                                    <fieldset v-for="company in companies" :key="company.id">
+                                        <label>
+                                            <input type="radio" :value="company.id" v-model="newDepartmentCompany" @change="onChange($event)" name="company"> @{{ company.name }}<br>
+                                        </label>
+                                        <br> 
+                                    </fieldset>
+                                    <span class="text-danger" v-text="errors.get('company_id')"></span>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label>Departamento dependiente:</label><br>
+                                    
+                                    <fieldset>
+                                        <input type="radio" value="no" v-model="newDepartmentDependent" name="dependent" checked> No<br>
+                                    </fieldset>
+                                    <fieldset v-for="dependent in dependents" :key="dependent.id">
+                                        <label>
+                                            <input type="radio" :value="dependent.id" v-model="newDepartmentDependent" name="dependent"> @{{ dependent.name }}<br>
+                                        </label>
+                                        <br> 
 
-    {{--Sección de formulario--}}        
-    <form method="POST" action="{{ route('departments.index') }}">
-        {{ csrf_field() }}
+                                    </fieldset>
+                                    <span class="text-danger" v-text="errors.get('dependent_id')"></span>
+                                </div>
+                            </div>
+                        </div>
 
-        <div class="form-group">
-            <label for="name">Nombre:</label>
-            <input type="text" class="form-control" name="name" id="name" aria-describedby="nameHelp" placeholder="Nombre de departamento..." value="{{ old('name') }}">
-            <small id="nameHelp" class="form-text text-muted">Por ejemplo: Desarrollo</small>
-        </div>
+                        <div class="form-group">
+                            <label for="budget">Presupuesto:</label>
+                            <input type="number" class="form-control" name="budget" id="newBudget" v-model="newDepartmentBudget" aria-describedby="budgetHelp" value="10000">
+                            <small id="budgetHelp" class="form-text text-muted">Introduce el presupuesto (entre 10.000 y 100.000)</small>
+                            <span class="text-danger" v-text="errors.get('budget')"></span>
+                        </div>
 
-        <div class="form-group">
-            <label for="address">Director:</label>
-            <input type="text" class="form-control" name="director" id="director" aria-describedby="directorHelp" placeholder="Nombre del director..." value="{{ old('director') }}">
-            <small id="directorHelp" class="form-text text-muted">Por ejemplo: Pepe Mel</small>
-        </div>
+                        <button type="submit" class="btn btn-success">Crear Departamento</button>
 
-        <div class="form-group">
-            <label>Tipo de director:</label>
-            <fieldset id="director_type">
-                <label>
-                    <input type="radio" value="En propiedad" name="director_type" checked> En propiedad
-                </label>
-                <br>
-                <label>
-                    <input type="radio" value="En funciones" name="director_type"> En funciones 
-                </label>
-            </fieldset>
-        </div>
-
-        <div class="form-group">
-            <label>Empresa:</label>
-            <fieldset id="company">
-                <p>@{{message}}</p>
-                <label>
-                    <input type="radio" value="Sin empresa" name="company" @change="onChange($event)" checked> Sin empresa
-                </label>
-                <br> 
-                @foreach($companies as $company)
-                    <label>
-                        <input type="radio" value="{{ $company->name }}" @change="onChange($event)" name="company"> {{ $company->name }}
-                    </label>
-                    <br> 
-                @endforeach
-
-               {{-- <company_depts :="{{ $companies->replies }}"></company_depts> --}} 
-            </fieldset>
-        </div>
-
-        <div class="form-group">
-            <label for="budget">Presupuesto:</label>
-            <input type="number" class="form-control" name="budget" id="budget" aria-describedby="budgetHelp" value="10000">
-            <small id="budgetHelp" class="form-text text-muted">Introduce el presupuesto (entre 10.000 y 100.000)</small>
-        </div>
-
-        <button type="submit" class="btn btn-success">Crear empresa</button>
-        <a href="{{ route('departments.index') }}" class="btn btn-outline-primary">Regresar a listado de departamentos</a>
-    </form>
-
-    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
-
-    <script type="text/javascript">
-
-        var app = new Vue({
-            el: '#company',
-            data:{
-                message: 'Sin empresa',
-            },
-            methods:{
-                onChange(event) {
-                    optionText = event.target.value;
-                    this.message= optionText;
-                }
-            }
-        })
-
-    </script>
-
-@endsection
+                    </form>
+                </slot>
+            </div>
+      </div>
+    </div>
+</div>

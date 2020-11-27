@@ -135,4 +135,11 @@ class CompanyController extends Controller
         $companies = Company::where('name', 'like', '%' . $request->get('keywords') . '%')->get();
         return response()->json($companies);
     }
+
+    public function dependents(Request $request)
+    {
+        $company = Company::findOrFail($request->get('company'));
+        $departments = $company->departments;
+        return response()->json($departments);
+    }
 }

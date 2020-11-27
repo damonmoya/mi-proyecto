@@ -77,12 +77,6 @@
         <h3>No hay empleados</h3>
     @endif
 
-        @can('Editar departamento')
-            <p>
-                <a href="{{ route('departments.edit', [$department->id]) }}" class="btn btn-primary">Editar departamento</a> 
-            </p>
-        @endcan
-
         <p>
             <a href="{{ route('departments.index') }} " class="btn btn-outline-primary">Regresar a listado de departamentos</a>
         </p>
