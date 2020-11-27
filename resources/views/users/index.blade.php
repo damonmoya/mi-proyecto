@@ -85,15 +85,21 @@
             el: '#control_usuario',
             created: function() {
                 this.getUsers();
+                this.getDepartments();
+                this.getProfessions();
             },
             data: {
                 keywords: null,
                 users: [],
+                departments: [],
+                professions: [],
                 newUserName: '',
                 newUserEmail: '',
                 newUserPassword: '',
                 newUserConfirm_password: '',
-                fillUser: {'id': '', 'name': '', 'email': '', 'password': '', 'confirm_password': ''},
+                newUserDepartment: '',
+                newUserProfession: '',
+                fillUser: {'id': '', 'name': '', 'email': '', 'password': '', 'confirm_password': '', 'department_id': '', 'profession_id': ''},
                 errors: new Errors()
             },
             watch: {
@@ -120,6 +126,8 @@
                     this.fillUser.id = user.id;
                     this.fillUser.name = user.name;
                     this.fillUser.email = user.email;
+                    this.fillUser.department_id = user.department_id;
+                    this.fillUser.profession_id = user.profession_id;
                     $('#editUserModal').modal('show');
                 },
                 updateUser: function(id) {
@@ -128,12 +136,14 @@
                         name: this.fillUser.name,
                         email: this.fillUser.email,
                         password: this.fillUser.password,
-                        confirm_password: this.fillUser.confirm_password
+                        confirm_password: this.fillUser.confirm_password,
+                        department_id: this.fillUser.department_id,
+                        profession_id: this.fillUser.profession_id,
                     }).then(response => {
                         this.getUsers();
                         var msg = '¡Se ha editado el usuario ' + this.fillUser.name + ' correctamente!';
                         toastr.success(msg, "Usuario modificado", {"positionClass": "toast-bottom-right"});
-                        this.fillUser = {'id': '', 'name': '', 'email': '', 'password': '', 'confirm_password': ''};
+                        this.fillUser = {'id': '', 'name': '', 'email': '', 'password': '', 'confirm_password': '', 'department_id': '', 'profession_id': ''};
                         this.errors.reset();
                         $('#editUserModal').modal('hide');
                     }).catch(error => {
@@ -156,7 +166,9 @@
                         name: this.newUserName,
                         email: this.newUserEmail,
                         password: this.newUserPassword,
-                        confirm_password: this.newUserConfirm_password
+                        confirm_password: this.newUserConfirm_password,
+                        department_id: this.newUserDepartment,
+                        profession_id: this.newUserProfession
                     }).then(response => {
                         this.getUsers();
                         var msg = '¡Se ha creado el usuario ' + this.newUserName + ' correctamente!';
@@ -165,11 +177,38 @@
                         this.email = '';
                         this.password = '';
                         this.confirm_password = '';
+                        this.department_id = '';
+                        this.profession_id = '';
                         this.errors.reset();
                         $('#createUserModal').modal('hide');
                     }).catch(error => {
                         this.errors.record(error.response.data.errors);
                         toastr.error("No se ha podido crear el usuario, por favor revisa los errores", "Error al crear usuario", {"positionClass": "toast-bottom-right"});
+                    });
+                },
+                onChange(event) {
+                    this.newUserDepartment= '';
+                    this.fillUser.department_id= '';
+                    axios.get('/empresas/dependents', { params: { company: event.target.value } })
+                        .then(response => this.departments = response.data)
+                        .catch(error => {});
+                },
+                onEdit(id) {
+                    axios.get('/empresas/dependents', { params: { company: id} })
+                        .then(response => this.departments = response.data)
+                        .catch(error => {});
+                    this.getCompanies();
+                },
+                getDepartments: function(){
+                    var urlDepartment = '/departamentos/recursos';
+                    axios.get(urlDepartment).then(response => {
+                        this.departments = response.data
+                    });
+                },
+                getProfessions: function(){
+                    var urlProfession = '/profesiones/recursos';
+                    axios.get(urlProfession).then(response => {
+                        this.professions = response.data
                     });
                 }
             }

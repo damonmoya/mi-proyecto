@@ -64,7 +64,10 @@ class UserSeeder extends Seeder
             
         ])->assignRole('Usuario registrado');
 
-        $randomUser = User::factory(48)->create();
+        $randomUser = User::factory(8)->create([
+            'profession_id' => $professionId,
+            'department_id' => $departmentId,
+        ]);
         foreach($randomUser as $user){
             $user->assignRole('Usuario registrado');
          }

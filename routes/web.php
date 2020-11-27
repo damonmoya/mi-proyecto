@@ -154,6 +154,31 @@ Route::middleware('auth')->group(function () {
         });
     
     });
+
+    Route::prefix('profesiones')->group(function () {
+
+        Route::name('professions.')->group(function () {
+
+            Route::get('', function () {
+                return view('professions.index')
+                ->with('title', 'Listado de profesiones'); 
+            })->name('index');
+
+            Route::resource('recursos', 'App\Http\Controllers\ProfessionController', ['except' => 'show', 'create', 'edit']);
+
+            Route::get('{id}', 'App\Http\Controllers\ProfessionController@show') 
+                ->where('id', '[0-9]+')
+                ->name('show');
+
+            Route::get('search', 'App\Http\Controllers\ProfessionController@search')
+                ->name('search');
+
+            Route::get('send_email', 'App\Http\Controllers\ProfessionController@send_email')
+                ->name('send_email');
+
+        });
+    
+    });
     
 });
 

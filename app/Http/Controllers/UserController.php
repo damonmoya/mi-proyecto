@@ -69,7 +69,9 @@ class UserController extends Controller
             'name' => 'required',
             'email' => ['required', 'email', 'unique:users,email,'.$user->id],
             'password' => ['nullable', 'min:6'],
-            'confirm_password' => 'same:password'
+            'confirm_password' => 'same:password',
+            'department_id' => 'required',
+            'profession_id' => 'required'
         ], [
             'name.required' => 'El campo nombre es obligatorio',
             'email.required' => 'El campo correo es obligatorio',
@@ -77,6 +79,8 @@ class UserController extends Controller
             'email.unique' => 'El correo ya está en uso',
             'password.min' => 'La clave debe tener mínimo 6 caracteres',
             'confirm_password.same' => 'Las claves no coinciden',
+            'department_id.required' => 'Se debe seleccionar un departamento',
+            'profession_id.required' => 'Se debe seleccionar una profesión',
         ]);
 
         if ($request['password'] != null) {
@@ -96,7 +100,9 @@ class UserController extends Controller
             'name' => 'required',
             'email' => ['required', 'email', 'unique:users,email'],
             'password' => ['required', 'min:6'],
-            'confirm_password' => ['required', 'same:password']
+            'confirm_password' => ['required', 'same:password'],
+            'department_id' => 'required',
+            'profession_id' => 'required'
         ], [
             'name.required' => 'El campo nombre es obligatorio',
             'email.required' => 'El campo correo es obligatorio',
@@ -105,7 +111,9 @@ class UserController extends Controller
             'password.required' => 'El campo clave es obligatorio',
             'password.min' => 'La clave debe tener mínimo 6 caracteres',
             'confirm_password.required' => 'Se debe confirmar la clave',
-            'confirm_password.same' => 'Las claves no coinciden'
+            'confirm_password.same' => 'Las claves no coinciden',
+            'department_id.required' => 'Se debe seleccionar un departamento',
+            'profession_id.required' => 'Se debe seleccionar una profesión',
         ]);
 
         User::create($request->all());
