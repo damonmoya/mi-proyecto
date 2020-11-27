@@ -68,13 +68,6 @@ class CompanyController extends Controller
         return view('companies.show', compact('company', 'cuenta_empleados', 'departments', 'array', 'array2', 'email_sent'));
     }
 
-    public function edit($id)
-    {
-        $company = Company::findOrFail($id);
-
-        return view('companies.edit', compact('company'));
-    }
-
     public function update(Request $request, $id)
     {
         $company = Company::findOrFail($id);
@@ -96,11 +89,6 @@ class CompanyController extends Controller
         $company->update($request->all());
 
         return;
-    }
-
-    public function create()
-    {
-        return view('companies.create');
     }
 
     public function store(Request $request)

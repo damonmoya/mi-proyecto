@@ -57,12 +57,6 @@ class DepartmentController extends Controller
         return view('departments.show', compact('department', 'dependents', 'employees', 'company', 'email_sent'));
     }
 
-    public function create()
-    {
-        $companies = Company::all();
-        return view('departments.create', compact('companies'));
-    }
-
     public function store(Request $request)
     {
         $this->validate($request,[
@@ -90,13 +84,6 @@ class DepartmentController extends Controller
         Department::create($request->all());
 
         return;
-    }
-
-    public function edit($id)
-    {
-        $department = Department::findOrFail($id);
-        $companies = Company::all();
-        return view('departments.edit', compact('department', 'companies'));
     }
 
     public function update(Request $request, $id)

@@ -83,18 +83,6 @@ class UserController extends Controller
                     'departamento_dependiente', 'empresa', 'tipo_usuario', 'email_sent'));
     }
 
-    public function create()
-    {
-        return view('users.create');
-    }
-
-    public function edit($id)
-    {
-        $user = User::findOrFail($id);
-
-        return view('users.edit', compact('user'));
-    }
-
     public function update(Request $request, $id)
     {       
         $user = User::findOrFail($id);
