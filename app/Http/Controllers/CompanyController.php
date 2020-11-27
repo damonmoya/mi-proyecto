@@ -15,11 +15,7 @@ class CompanyController extends Controller
     public function index()
     {
         $companies = Company::all();
-        
-        return view('companies.index')
-            ->with('companies', $companies)
-            ->with('title', 'Listado de empresas');
-        
+        return $companies;
     }
 
     public function show($id, Request $request)
@@ -79,11 +75,11 @@ class CompanyController extends Controller
         return view('companies.edit', compact('company'));
     }
 
-    public function update($id)
+    public function update(Request $request, $id)
     {
         $company = Company::findOrFail($id);
         
-        $data = request()->validate([
+        $data = $request->validate([
             'name' => 'required',
             'address' => 'required',
             'description' => ['required', 'min:20'],
@@ -97,9 +93,9 @@ class CompanyController extends Controller
             'contact.regex' => 'El teléfono introducido no es válido'
         ]);
 
-        $company->update($data);
+        $company->update($request->all());
 
-        return redirect()->route('companies.show', ['id' => $id]);
+        return;
     }
 
     public function create()
@@ -107,9 +103,9 @@ class CompanyController extends Controller
         return view('companies.create');
     }
 
-    public function store()
+    public function store(Request $request)
     {
-        $data = request()->validate([
+        $this->validate($request,[
             'name' => 'required',
             'address' => 'required',
             'description' => ['required', 'min:20'],
@@ -123,72 +119,20 @@ class CompanyController extends Controller
             'contact.regex' => 'El teléfono introducido no es válido'
         ]);
 
-        Company::create([
-            'name' => $data['name'],
-            'address' => $data['address'],
-            'description' => $data['description'],
-            'contact' => $data['contact']
-        ]);
+        Company::create($request->all());
 
-        return redirect()->route('companies.index');
+        return;
     }
 
     public function destroy($id)
     {
         $company = Company::findOrFail($id);
         $company->delete();
-        
-        return redirect()->route('companies.index');
     }
 
     public function search(Request $request)
     {
-        if($request->ajax())
-        {
-            $output='';
-            $query = $request->get('query');
-            if ($query != '')
-            {
-                $companies=DB::table('companies')
-                    ->where('name','LIKE','%'.$query.'%')
-                    ->orWhere('id','LIKE','%'.$query.'%')
-                    ->orderBy('id', 'asc')
-                    ->get();
-            } else 
-            {
-                $companies=DB::table('companies')
-                    ->orderBy('id', 'asc')
-                    ->get();
-            }
-            $total_rows = $companies->count();
-            if($total_rows > 0)
-            {
-                foreach ($companies as $company) {
-                    $output.='<tr>'.
-                    '<td>'.$company->id.'</td>'.
-                    '<td>'.$company->name.'</td>'.
-                    '<td>'.$company->description.'</td>'.
-                    "<td>";
-                    $output.= 
-                        "<a href='/empresas/{$company->id}' class='btn btn-info'><span class='oi oi-eye'></span></a>
-                        <a href='/empresas/{$company->id}/editar' class='btn btn-primary'><span class='oi oi-pencil'></span></a>
-                        <a href='/empresas/{$company->id}/borrar' class='btn btn-danger'><span class='oi oi-trash'></span></button>";
-                    $output.="</td>".
-                    '</tr>';
-                }
-            } else
-            {
-                $output.='<tr>
-                    <td align="center" colspan="4">No hay resultados</td>
-                </tr>';
-            }
-            $companies = array(
-                'table_data' => $output,
-                'total_data' => $total_rows
-            );
-
-            echo json_encode($companies);
-            
-        }
+        $companies = Company::where('name', 'like', '%' . $request->get('keywords') . '%')->get();
+        return response()->json($companies);
     }
 }

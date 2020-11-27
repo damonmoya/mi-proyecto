@@ -63,8 +63,12 @@ Route::middleware('auth')->group(function () {
 
         Route::name('companies.')->group(function () {
 
-            Route::get('', 'App\Http\Controllers\CompanyController@index')
-                ->name('index');
+            Route::get('', function () {
+                return view('companies.index')
+                ->with('title', 'Listado de empresas'); 
+            })->name('index');
+
+            Route::resource('recursos', 'App\Http\Controllers\CompanyController', ['except' => 'show', 'create', 'edit']);
 
             Route::get('{id}', 'App\Http\Controllers\CompanyController@show') 
                 ->where('id', '[0-9]+')
@@ -73,27 +77,23 @@ Route::middleware('auth')->group(function () {
             Route::get('search', 'App\Http\Controllers\CompanyController@search')
                 ->name('search');
 
-            Route::group(['middleware' => ['role:Administrador']], function () {
+            //Route::group(['middleware' => ['role:Administrador']], function () {
 
-                Route::get('nuevo', 'App\Http\Controllers\CompanyController@create')
-                    ->name('create');
-                
-                Route::post('', 'App\Http\Controllers\CompanyController@store')
-                    ->name('store');
+            //    Route::get('nuevo', 'App\Http\Controllers\CompanyController@create')
+            //        ->name('create');
+            //    
+            //    Route::post('', 'App\Http\Controllers\CompanyController@store')
+            //        ->name('store');
 
-                Route::get('{id}/borrar', 'App\Http\Controllers\CompanyController@destroy') 
-                    ->where('id', '[0-9]+')
-                    ->name('destroy');
+            //    Route::get('{id}/editar', 'App\Http\Controllers\CompanyController@edit') 
+            //        ->where('id', '[0-9]+')
+            //        ->name('edit');
 
-                Route::get('{id}/editar', 'App\Http\Controllers\CompanyController@edit') 
-                    ->where('id', '[0-9]+')
-                    ->name('edit');
+            //    Route::put('{id}', 'App\Http\Controllers\CompanyController@update') 
+            //        ->where('id', '[0-9]+')
+            //        ->name('update');
 
-                Route::put('{id}', 'App\Http\Controllers\CompanyController@update') 
-                    ->where('id', '[0-9]+')
-                    ->name('update');
-
-            });
+            //});
 
         });
     

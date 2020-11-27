@@ -102,53 +102,5 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script src="http://cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script>
-    <script>
-      $(document).ready(function(){
-
-        fetch_company_data();
-
-        function fetch_company_data(query = '')
-        {
-          $.ajax({
-            url:"{{ route('companies.search') }}",
-            method:'GET',
-            data:{query:query},
-            dataType:'json',
-            success:function(data)
-            {
-              $('#listado_empresas').html(data.table_data);
-            }
-          })
-        }
-        $(document).on('keyup', '#search_companies', function(){
-          var query = $(this).val();
-          fetch_company_data(query);
-        });
-      });
-    </script>
-    <script>
-      $(document).ready(function(){
-
-        fetch_department_data();
-
-        function fetch_department_data(query = '')
-        {
-          $.ajax({
-            url:"{{ route('departments.search') }}",
-            method:'GET',
-            data:{query:query},
-            dataType:'json',
-            success:function(data)
-            {
-              $('#listado_departamentos').html(data.table_data);
-            }
-          })
-        }
-        $(document).on('keyup', '#search_departments', function(){
-          var query = $(this).val();
-          fetch_department_data(query);
-        });
-      });
-    </script>
   </body>
 </html>

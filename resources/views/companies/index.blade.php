@@ -4,118 +4,170 @@
 
 @section('header')
     <h1 class="mb-3">{{ $title }}</h1>
-    {{--Sección de errores--}}
-    @if ($errors->any())
-        <div class="alert alert-danger">
-            <h5>Error en la creación de empresa:</h5>
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error}}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
 @endsection
 
 @section('content')
 
-    @if ($companies->isNotEmpty())
+    <div id="control_empresa">
 
-    <table class="table table-bordered table-striped">
-        <thead class="thead-dark">
-        <div class="form-group mt-2 mt-md-0 mb-3 row align-items-end">
-            <div class="col-10">
-                Buscar empresa: <input class="form-controller mr-sm-2" type="text" id="search_companies" name="search_companies" placeholder="Buscar..." aria-label="Search">
-            </div>
-            @hasrole('Administrador')
-                <div class="col-2" id="crear_empresa">
-                    <button type="button" class="btn btn-primary" @click="showCreateModel = true" >
-                        Crear empresa
-                    </button>
-                    <model v-if="showCreateModel" @close="showCreateModel = false"></model>
+        <table class="table table-bordered table-striped">
+            <thead class="thead-dark">
+            <div class="form-group mt-2 mt-md-0 mb-3 row align-items-end">
+                <div class="col-10">
+                    <input type="text" v-model="keywords" placeholder="Buscar empresa...">                
                 </div>
-            @endhasrole
-        </div>
-        <tr>
-            <th scope="col">ID</th>
-            <th scope="col">Nombre</th>
-            <th scope="col">Descripción</th>
-            <th scope="col">Acciones</th>
-        </tr>
-        </thead>
-        <tbody id="listado_empresas">
+                @hasrole('Administrador')
+                    <div class="col-2">
+                        <a href="#" class="btn btn-primary pull-right" data-toggle="modal" data-target="#createCompanyModal">Crear empresa</a>
+                    </div>
+                @endhasrole
+            </div>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Descripción</th>
+                <th scope="col">Acciones</th>
+            </tr>
+            </thead>
+            <tbody v-if="companies.length > 0">
+                <tr v-for="company in companies" :key="company.id">
+                    <td> @{{ company.id }} </td>
+                    <td> @{{ company.name }} </td>
+                    <td> @{{ company.description }} </td>
+                    <td>
+                        <a :href="'/empresas/' + company.id" class='btn btn-info'><span class='oi oi-eye'></span></a>
+                        @hasrole('Administrador')
+                            <a href='#' class='btn btn-primary' v-on:click.prevent="editCompany(company)"><span class='oi oi-pencil'></span></a> 
+                            <a href='#' class='btn btn-danger' v-on:click.prevent="deleteCompany(company)"><span class='oi oi-trash'></span></a>
+                        @endhasrole
+                    </td>
+                </tr>
+            </tbody>
+        </table>
         
-        </tbody>
-    </table>
-    @else
-        <p>No hay empresas registradas</p>
-    @endif
+        @include('companies.create')
+        @include('companies.edit')
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.18/vue.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script>
-        Vue.component('model', {
-          template: `<!-- The Modal -->
-                  <div class="modal" id="createCompanyModal" style="display: block;">
-                    <div class="modal-dialog">
-                      <div class="modal-content">
-                        <!-- Modal Header -->
-                        <div class="modal-header">
-                            <h4 class="modal-title">Crear empresa</h4>
-                            <button type="button" @click="$emit('close')" class="close"><span>&times;</span></button>
-                        </div>
-                        <!-- Modal body -->
-                        <div class="modal-body">
-                            <slot>
-                            {{--Sección de formulario--}}        
-                            <form method="POST" id="crtCompForm" action="{{ route('companies.index') }}">
-                                {{ csrf_field() }}
 
-                                <div class="form-group">
-                                    <label for="name">Nombre:</label>
-                                    <input type="text" class="form-control" name="name" id="name" aria-describedby="nameHelp" placeholder="Nombre de empresa..." value="{{ old('name') }}">
-                                    <small id="nameHelp" class="form-text text-muted">Por ejemplo: Digital Art & Designers</small>
-                                </div>
+        class Errors {
+            constructor() {
+                this.errors = {};
+            }
 
-                                <div class="form-group">
-                                    <label for="address">Dirección:</label>
-                                    <input type="text" class="form-control" name="address" id="address" aria-describedby="addressHelp" placeholder="Pon tu correo aquí..." value="{{ old('address') }}">
-                                    <small id="addressHelp" class="form-text text-muted">Por ejemplo: Agustín Millares Carló, 18. Las Palmas, España</small>
-                                </div>
+            get(field){
+                if (this.errors[field]) {
+                    return this.errors[field][0];
+                }
+            }
 
-                                <div class="form-group">
-                                    <label for="description">Descripción:</label><br>
-                                    <textarea rows="4" cols="50" class="form-control" name="description" id="description" form="crtCompForm" aria-describedby="descriptionHelp">
-                                    {{ old('description') }}
-                                    </textarea>
-                                    <small id="descriptionHelp" class="form-text text-muted">Mínimo: 20 caracteres</small>
-                                </div>
+            record(errors) {
+                this.errors = errors;
+            }
 
-                                <div class="form-group">
-                                    <label for="contact">Contacto:</label>
-                                    <input type="tel" class="form-control" name="contact" id="contact" aria-describedby="contactHelp" pattern="[0-9]{3} [0-9]{2} [0-9]{2} [0-9]{2}" value="{{ old('contact') }}">
-                                    <small id="contactHelp" class="form-text text-muted">Formato: 123 45 67 89</small>
-                                </div>
+            reset(){
+                this.errors = {}; 
+            }
 
-                                <button type="submit" class="btn btn-success">Crear empresa</button>
-                            </form>
-                            </slot>
-                        </div>
-                        <!-- Modal footer -->
-                        <div class="modal-footer">
-                          <button type="button" @click="$emit('close')" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                    `
-        });
+        }
 
-        new Vue({ el: '#crear_empresa',
-          data:{
-            showCreateModel:false    
-          }
+        const app = new Vue({ 
+            el: '#control_empresa',
+            created: function() {
+                this.getCompanies();
+            },
+            data: {
+                keywords: null,
+                companies: [],
+                newCompanyName: '',
+                newCompanyAddress: '',
+                newCompanyDescription: '',
+                newCompanyContact: '',
+                fillCompany: {'id': '', 'name': '', 'address': '', 'description': '', 'contact': ''},
+                errors: new Errors()
+            },
+            watch: {
+                keywords(after, before) {
+                    this.fetch();
+                }
+            },
+            methods: {
+                fetch() {
+                    axios.get('/empresas/search', { params: { keywords: this.keywords } })
+                        .then(response => this.companies = response.data)
+                        .catch(error => {});
+                },
+                clearErrors: function(){
+                    this.errors.reset();
+                },
+                getCompanies: function(){
+                    var urlCompanies = '/empresas/recursos';
+                    axios.get(urlCompanies).then(response => {
+                        this.companies = response.data
+                    });
+                },
+                editCompany: function(company) {
+                    this.fillCompany.id = company.id;
+                    this.fillCompany.name = company.name;
+                    this.fillCompany.address = company.address;
+                    this.fillCompany.description = company.description;
+                    this.fillCompany.contact = company.contact;
+                    $('#editCompanyModal').modal('show');
+                },
+                updateCompany: function(id) {
+                    var url = '/empresas/recursos/' + id;
+                    axios.put(url, {
+                        name: this.fillCompany.name,
+                        address: this.fillCompany.address,
+                        description: this.fillCompany.description,
+                        contact: this.fillCompany.contact
+                    }).then(response => {
+                        this.getCompanies();
+                        var msg = '¡Se ha editado la empresa ' + this.fillCompany.name + ' correctamente!';
+                        toastr.success(msg);
+                        this.fillCompany = {'id': '', 'name': '', 'address': '', 'description': '', 'contact': ''};
+                        this.errors.reset();
+                        $('#editCompanyModal').modal('hide');
+                    }).catch(error => 
+                        this.errors.record(error.response.data.errors)
+                    );
+                },
+                deleteCompany: function(company) {
+                    var url = '/empresas/recursos/' + company.id;
+                    var companyName = company.name;
+                    var msg = 'Empresa ' + companyName + ' eliminada correctamente!';
+                    axios.delete(url).then(response => {
+                        this.getCompanies();  
+                        toastr.success(msg);
+                    });
+                },
+                createCompany: function() {
+                    var url = '/empresas/recursos';
+                    axios.post(url, {
+                        name: this.newCompanyName,
+                        address: this.newCompanyAddress,
+                        description: this.newCompanyDescription,
+                        contact: this.newCompanyContact
+                    }).then(response => {
+                        this.getCompanies();
+                        var msg = '¡Se ha creado la empresa ' + this.newCompanyName + ' correctamente!';
+                        toastr.success(msg);
+                        this.name = '';
+                        this.address = '';
+                        this.description = '';
+                        this.contact = '';
+                        this.errors.reset();
+                        $('#createCompanyModal').modal('hide');
+                    }).catch(error => 
+                        this.errors.record(error.response.data.errors)
+                    );
+                }
+            }
         })
+
 </script>
 
 @endsection

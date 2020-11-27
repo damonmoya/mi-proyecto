@@ -83,12 +83,6 @@
     @else
         <h3>No hay departamentos</h3>
     @endif
-
-    @can('Editar empresa')
-        <p>
-            <a href="{{ route('companies.edit', [$company->id]) }}" class="btn btn-primary noprint">Editar empresa</a> 
-        </p>
-    @endcan
     
     <p>
         <a href="{{ route('companies.index') }} " class="btn btn-outline-primary">Regresar a listado de empresas</a>
