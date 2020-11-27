@@ -38,6 +38,9 @@ Route::middleware('auth')->group(function () {
             Route::get('search', 'App\Http\Controllers\UserController@search')
                 ->name('search');
 
+            Route::get('send_email', 'App\Http\Controllers\UserController@send_email')
+                ->name('send_email');
+
             //Route::group(['middleware' => ['role:Administrador']], function () {
 
                 //Route::get('{id}/editar', 'App\Http\Controllers\UserController@edit') 
@@ -80,6 +83,9 @@ Route::middleware('auth')->group(function () {
             Route::get('dependents', 'App\Http\Controllers\CompanyController@dependents')
                 ->name('dependents');
 
+            Route::get('send_email', 'App\Http\Controllers\CompanyController@send_email')
+                ->name('send_email');
+
             //Route::group(['middleware' => ['role:Administrador']], function () {
 
             //    Route::get('nuevo', 'App\Http\Controllers\CompanyController@create')
@@ -119,6 +125,9 @@ Route::middleware('auth')->group(function () {
 
             Route::get('search', 'App\Http\Controllers\DepartmentController@search')
                 ->name('search');
+
+            Route::get('send_email', 'App\Http\Controllers\DepartmentController@send_email')
+                ->name('send_email');
 
             //Route::group(['middleware' => ['role:Administrador']], function () {
 //

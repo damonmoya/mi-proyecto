@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use PDF;
 use Mail;
+use Toastr;
 
 class UserController extends Controller
 {
@@ -56,31 +57,8 @@ class UserController extends Controller
             $tipo_usuario = "Usuario normal";
         }
 
-        $email_sent = false;
-        if($request->has('download'))
-        {
-            $loggedUserEmail = auth()->user()->email;
-            $email_sent = true;
-
-            $email['address'] = "{$loggedUserEmail}";
-            $email['title'] = "PDF listo";
-            $email['body'] = "Aquí tienes tu pdf con el detalle del usuario {$user->name}";
-            $email['pdf_name'] = "{$user->name}.pdf";
-            $email['pdf'] = PDF::loadView('emails.userDetail', compact('user', 'oficio', 'departamento_usuario',
-                    'departamento_dependiente', 'empresa', 'tipo_usuario', 'email_sent'));
-
-            Mail::send([], [], function($message)use($email) {
-                $message->to($email['address'], $email['address'])
-                        ->attachData($email['pdf']->output(), $email['pdf_name'])
-                        ->subject($email['title'])
-                        ->setBody($email['body']);
-            });
-
-            //return $pdf->download($email['pdf_name']);
-        }
-
         return view('users.show', compact('user', 'oficio', 'departamento_usuario',
-                    'departamento_dependiente', 'empresa', 'tipo_usuario', 'email_sent'));
+                    'departamento_dependiente', 'empresa', 'tipo_usuario'));
     }
 
     public function update(Request $request, $id)
@@ -146,5 +124,61 @@ class UserController extends Controller
         $users = User::where('name', 'like', '%' . $request->get('keywords') . '%')->get();
 
         return response()->json($users);
+    }
+
+    public function send_email(Request $request)
+    {
+        $user = User::findOrFail($request['id']);   
+        
+        $profession = $user->profession;
+        $department = $user->department;
+
+        if ($profession == null){
+            $oficio = "Sin profesión asignada";
+        } else {
+            $oficio = $profession->title;
+        }
+
+        if ($department == null){
+            $departamento_usuario = "Sin departamento asignado";
+            $departamento_dependiente = "-";
+            $empresa = "-";
+        } else {
+            $departamento_usuario = $department->name;
+            $empresa = $department->company
+                ->name;
+        
+            if ($department->dependent_id == null){
+                $departamento_dependiente = "No";
+            } else {
+                $departamento_dependiente = $department->dependent
+                    ->name;
+            }
+
+        }
+
+        if ($user->hasrole('Administrador')){
+            $tipo_usuario = "Administrador";
+        } else {
+            $tipo_usuario = "Usuario normal";
+        }
+
+        $loggedUserEmail = auth()->user()->email;
+        $email['address'] = "{$loggedUserEmail}";
+        $email['title'] = "PDF listo";
+        $email['body'] = "Aquí tienes tu pdf con el detalle del usuario {$user->name}";
+        $email['pdf_name'] = "{$user->name}.pdf";
+        $email['pdf'] = PDF::loadView('emails.userDetail', compact('user', 'oficio', 'departamento_usuario',
+                'departamento_dependiente', 'empresa', 'tipo_usuario'));
+
+        Mail::send([], [], function($message)use($email) {
+            $message->to($email['address'], $email['address'])
+                    ->attachData($email['pdf']->output(), $email['pdf_name'])
+                    ->subject($email['title'])
+                    ->setBody($email['body']);
+        });
+
+        return response()->json($loggedUserEmail);
+        
     }
 }

@@ -32,29 +32,7 @@ class DepartmentController extends Controller
             $company = $company->name;
         }
 
-        $email_sent = false;
-        if($request->has('download'))
-        {
-            $loggedUserEmail = auth()->user()->email;
-            $email_sent = true;
-
-            $email['address'] = "{$loggedUserEmail}";
-            $email['title'] = "PDF listo";
-            $email['body'] = "Aquí tienes tu pdf con el detalle del departamento {$department->name}";
-            $email['pdf_name'] = "{$department->name}.pdf";
-            $email['pdf'] = PDF::loadView('emails.departmentDetail', compact('department', 'dependents', 'employees', 'company', 'email_sent'));
-
-            Mail::send([], [], function($message)use($email) {
-                $message->to($email['address'], $email['address'])
-                        ->attachData($email['pdf']->output(), $email['pdf_name'])
-                        ->subject($email['title'])
-                        ->setBody($email['body']);
-            });
-
-            //return $pdf->download($email['pdf_name']);
-        }
-
-        return view('departments.show', compact('department', 'dependents', 'employees', 'company', 'email_sent'));
+        return view('departments.show', compact('department', 'dependents', 'employees', 'company'));
     }
 
     public function store(Request $request)
@@ -130,5 +108,34 @@ class DepartmentController extends Controller
         $departments = Department::where('name', 'like', '%' . $request->get('keywords') . '%')->get();
 
         return response()->json($departments);
+    }
+
+    public function send_email(Request $request)
+    {
+        $department = Department::findOrFail($request['id']);
+        $dependents = $department->departments;
+        $employees = $department->users;
+        $company = $department->company;
+        if($company == null){
+            $company = "Sin empresa asignada";
+        } else {
+            $company = $company->name;
+        }
+
+        $loggedUserEmail = auth()->user()->email;
+        $email['address'] = "{$loggedUserEmail}";
+        $email['title'] = "PDF listo";
+        $email['body'] = "Aquí tienes tu pdf con el detalle del departamento {$department->name}";
+        $email['pdf_name'] = "{$department->name}.pdf";
+        $email['pdf'] = PDF::loadView('emails.departmentDetail', compact('department', 'dependents', 'employees', 'company'));
+        Mail::send([], [], function($message)use($email) {
+            $message->to($email['address'], $email['address'])
+                    ->attachData($email['pdf']->output(), $email['pdf_name'])
+                    ->subject($email['title'])
+                    ->setBody($email['body']);
+        });
+
+        return response()->json($loggedUserEmail);
+        
     }
 }

@@ -3,17 +3,12 @@
 @section('title', "Empresa {$company->id}")
 
 @section('header')
-    @if ($email_sent)
-        <div class="alert alert-success" role="alert">
-            ¡Correo con pdf ajunto enviado!
-        </div>
-    @endif
     <div class="form-group mt-2 mt-md-0 mb-3 row align-items-end">
         <div class="col-10">
             <h1>Empresa #{{ $company->id }} ({{ $company->name }})</h1>
         </div>
-        <div class="col-2">
-            <a class="btn btn-primary noprint" href="{{route('companies.show', ['id' => $company->id, 'download'=>'pdf'])}}">Enviar correo con PDF</a>
+        <div class="col-2" id="enviar_pdf">
+            <a a href='#' class="btn btn-primary" v-on:click.prevent="send_email_pdf">Enviar correo con PDF</a>
         </div>
     </div>
 @endsection
@@ -87,5 +82,28 @@
     <p>
         <a href="{{ route('companies.index') }} " class="btn btn-outline-primary">Regresar a listado de empresas</a>
     </p>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.18/vue.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+        const app = new Vue({ 
+            el: '#enviar_pdf',
+            data: {
+                company: @json($company)
+            },
+            methods: {
+                send_email_pdf() {
+                    var msg = 'Generando PDF con detalle de la empresa ' + this.company.name + '...';
+                    toastr.info(msg, "Info", {"positionClass": "toast-bottom-right"});
+                    axios.get('/empresas/send_email', { params: { id: this.company.id } })
+                            .then(response => {
+                                var msg = '¡Se ha enviado el pdf a tu correo (' + response.data + ')!';
+                                toastr.success(msg, "Correo enviado", {"positionClass": "toast-bottom-right"});  
+                            }).catch(error => {});
+                }
+            }
+        })
+    </script>
 
 @endsection

@@ -41,31 +41,8 @@ class CompanyController extends Controller
                 $array2["{$department->name}"] = $department->dependent->name;
             }
         }
-
-        $email_sent = false;
-        if($request->has('download'))
-        {
-            $loggedUserEmail = auth()->user()->email;
-            $email_sent = true;
-
-            $email['address'] = "{$loggedUserEmail}";
-            $email['title'] = "PDF listo";
-            $email['body'] = "Aquí tienes tu pdf con el detalle de la empresa {$company->name}";
-            $email['pdf_name'] = "{$company->name}.pdf";
-            $email['pdf'] = PDF::loadView('emails.companyDetail', compact('company', 'cuenta_empleados', 'departments', 'array', 'array2', 'email_sent'));
-
-            Mail::send([], [], function($message)use($email) {
-                $message->to($email['address'], $email['address'])
-                        ->attachData($email['pdf']->output(), $email['pdf_name'])
-                        ->subject($email['title'])
-                        ->setBody($email['body']);
-            });
-
-            //return $pdf->download($email['pdf_name']);
-        }
         
-        $hide = false;
-        return view('companies.show', compact('company', 'cuenta_empleados', 'departments', 'array', 'array2', 'email_sent'));
+        return view('companies.show', compact('company', 'cuenta_empleados', 'departments', 'array', 'array2'));
     }
 
     public function update(Request $request, $id)
@@ -129,5 +106,46 @@ class CompanyController extends Controller
         $company = Company::findOrFail($request->get('company'));
         $departments = $company->departments;
         return response()->json($departments);
+    }
+
+    public function send_email(Request $request)
+    {
+        $company = Company::findOrFail($request['id']);
+
+        $departments = $company->departments;
+
+        $cuenta_empleados = 0;
+
+        $array = array();
+        $array2 = array();
+
+        foreach($departments as $department){
+
+            $cuenta_departamento = $department->users->count();          
+            $cuenta_empleados += $cuenta_departamento;
+            $array["{$department->name}"] = $cuenta_departamento;
+
+            if($department->dependent_id == null){
+                $array2["{$department->name}"] = "No";
+            } else {
+                $array2["{$department->name}"] = $department->dependent->name;
+            }
+        }
+
+        $loggedUserEmail = auth()->user()->email;
+        $email['address'] = "{$loggedUserEmail}";
+        $email['title'] = "PDF listo";
+        $email['body'] = "Aquí tienes tu pdf con el detalle de la empresa {$company->name}";
+        $email['pdf_name'] = "{$company->name}.pdf";
+        $email['pdf'] = PDF::loadView('emails.companyDetail', compact('company', 'cuenta_empleados', 'departments', 'array', 'array2'));
+        Mail::send([], [], function($message)use($email) {
+            $message->to($email['address'], $email['address'])
+                    ->attachData($email['pdf']->output(), $email['pdf_name'])
+                    ->subject($email['title'])
+                    ->setBody($email['body']);
+        });
+
+        return response()->json($loggedUserEmail);
+        
     }
 }
