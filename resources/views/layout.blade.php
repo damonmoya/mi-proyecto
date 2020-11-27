@@ -47,6 +47,9 @@
                 <a class="nav-link" href="{{ route('departments.index') }}">Departamentos</a>
               </li>
               <li class="nav-item">
+                <a class="nav-link" href="{{ route('professions.index') }}">Profesiones</a>
+              </li>
+              <li class="nav-item">
                 <a class="nav-link" href="{{ route('users.show', $user->id) }}">Perfil</a>
               </li>
             @endif

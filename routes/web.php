@@ -173,9 +173,6 @@ Route::middleware('auth')->group(function () {
             Route::get('search', 'App\Http\Controllers\ProfessionController@search')
                 ->name('search');
 
-            Route::get('send_email', 'App\Http\Controllers\ProfessionController@send_email')
-                ->name('send_email');
-
         });
     
     });
