@@ -132,13 +132,14 @@
                     }).then(response => {
                         this.getUsers();
                         var msg = '¡Se ha editado el usuario ' + this.fillUser.name + ' correctamente!';
-                        toastr.success(msg);
+                        toastr.success(msg, "Usuario modificado", {"positionClass": "toast-bottom-right"});
                         this.fillUser = {'id': '', 'name': '', 'email': '', 'password': '', 'confirm_password': ''};
                         this.errors.reset();
                         $('#editUserModal').modal('hide');
-                    }).catch(error => 
-                        this.errors.record(error.response.data.errors)
-                    );
+                    }).catch(error => {
+                        this.errors.record(error.response.data.errors);
+                        toastr.error("No se ha podido actualizar el usuario, por favor revisa los errores", "Error al editar usuario", {"positionClass": "toast-bottom-right"});
+                    });
                 },
                 deleteUser: function(user) {
                     var url = '/usuarios/recursos/' + user.id;
@@ -146,7 +147,7 @@
                     var msg = '¡Usuario ' + userName + ' eliminado correctamente!';
                     axios.delete(url).then(response => {
                         this.getUsers();  
-                        toastr.success(msg);
+                        toastr.success(msg, "Usuario eliminado", {"positionClass": "toast-bottom-right"});
                     });
                 },
                 createUser: function() {
@@ -159,16 +160,17 @@
                     }).then(response => {
                         this.getUsers();
                         var msg = '¡Se ha creado el usuario ' + this.newUserName + ' correctamente!';
-                        toastr.success(msg);
+                        toastr.success(msg, "Usuario creado", {"positionClass": "toast-bottom-right"});
                         this.name = '';
                         this.email = '';
                         this.password = '';
                         this.confirm_password = '';
                         this.errors.reset();
                         $('#createUserModal').modal('hide');
-                    }).catch(error => 
-                        this.errors.record(error.response.data.errors)
-                    );
+                    }).catch(error => {
+                        this.errors.record(error.response.data.errors);
+                        toastr.error("No se ha podido crear el usuario, por favor revisa los errores", "Error al crear usuario", {"positionClass": "toast-bottom-right"});
+                    });
                 }
             }
         })

@@ -132,13 +132,15 @@
                     }).then(response => {
                         this.getCompanies();
                         var msg = '¡Se ha editado la empresa ' + this.fillCompany.name + ' correctamente!';
-                        toastr.success(msg);
+                        toastr.success(msg, "Empresa modificada", {"positionClass": "toast-bottom-right"});
                         this.fillCompany = {'id': '', 'name': '', 'address': '', 'description': '', 'contact': ''};
                         this.errors.reset();
                         $('#editCompanyModal').modal('hide');
-                    }).catch(error => 
-                        this.errors.record(error.response.data.errors)
-                    );
+                    }).catch(error => {
+                        this.errors.record(error.response.data.errors);
+                        toastr.error("No se ha podido actualizar la empresa, por favor revisa los errores", "Error al editar empresa", {"positionClass": "toast-bottom-right"});
+
+                    });
                 },
                 deleteCompany: function(company) {
                     var url = '/empresas/recursos/' + company.id;
@@ -146,7 +148,7 @@
                     var msg = 'Empresa ' + companyName + ' eliminada correctamente!';
                     axios.delete(url).then(response => {
                         this.getCompanies();  
-                        toastr.success(msg);
+                        toastr.success(msg, "Empresa eliminada", {"positionClass": "toast-bottom-right"});
                     });
                 },
                 createCompany: function() {
@@ -159,16 +161,17 @@
                     }).then(response => {
                         this.getCompanies();
                         var msg = '¡Se ha creado la empresa ' + this.newCompanyName + ' correctamente!';
-                        toastr.success(msg);
+                        toastr.success(msg, "Empresa creada", {"positionClass": "toast-bottom-right"});
                         this.name = '';
                         this.address = '';
                         this.description = '';
                         this.contact = '';
                         this.errors.reset();
                         $('#createCompanyModal').modal('hide');
-                    }).catch(error => 
-                        this.errors.record(error.response.data.errors)
-                    );
+                    }).catch(error => {
+                        this.errors.record(error.response.data.errors);
+                        toastr.error("No se ha podido crear la empresa, por favor revisa los errores", "Error al crear empresa", {"positionClass": "toast-bottom-right"});
+                    });
                 }
             }
         })

@@ -148,21 +148,23 @@
                     }).then(response => {
                         this.getDepartments();
                         var msg = '¡Se ha editado el departamento ' + this.fillDepartment.name + ' correctamente!';
-                        toastr.success(msg);
+                        toastr.success(msg, "Departamento modificado", {"positionClass": "toast-bottom-right"});
                         this.fillDepartment = {'id': '', 'name': '', 'director': '', 'director_type': '', 'company_id': '', 'dependent_id': '', 'budget': ''};
                         this.errors.reset();
                         $('#editDepartmentModal').modal('hide');
-                    }).catch(error => 
-                        this.errors.record(error.response.data.errors)
-                    );
+                    }).catch(error => {
+                        this.errors.record(error.response.data.errors);
+                        toastr.error("No se ha podido actualizar el departamento, por favor revisa los errores", "Error al editar departamento", {"positionClass": "toast-bottom-right"});
+
+                    });
                 },
                 deleteDepartment: function(department) {
                     var url = '/departamentos/recursos/' + department.id;
                     var departmentName = department.name;
-                    var msg = 'Departamento ' + departmentName + ' eliminado correctamente!';
+                    var msg = '¡Departamento ' + departmentName + ' eliminado correctamente!';
                     axios.delete(url).then(response => {
                         this.getDepartments();  
-                        toastr.success(msg);
+                        toastr.success(msg, "Departamento eliminado", {"positionClass": "toast-bottom-right"});
                     });
                 },
                 createDepartment: function() {
@@ -177,7 +179,7 @@
                     }).then(response => {
                         this.getDepartments();
                         var msg = '¡Se ha creado el departamento ' + this.newDepartmentName + ' correctamente!';
-                        toastr.success(msg);
+                        toastr.success(msg, "Departamento creado", {"positionClass": "toast-bottom-right"});
                         this.name = '';
                         this.director = '';
                         this.director_type = '';
@@ -186,9 +188,11 @@
                         this.budget = '';
                         this.errors.reset();
                         $('#createDepartmentModal').modal('hide');
-                    }).catch(error => 
-                        this.errors.record(error.response.data.errors)
-                    );
+                    }).catch(error => {
+                        this.errors.record(error.response.data.errors);
+                        toastr.error("No se ha podido crear el departamento, por favor revisa los errores", "Error al crear departamento", {"positionClass": "toast-bottom-right"});
+
+                    });
                 },
                 onChange(event) {
                     this.newDepartmentDependent= '';
