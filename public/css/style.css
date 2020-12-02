@@ -41,3 +41,7 @@ html {
   code {
     font-size: 80%;
   }
+
+  .fixed{
+    width: 400px;
+}

@@ -29,16 +29,16 @@
             </div>
             <tr>
                 <th scope="col">ID</th>
-                <th scope="col">Nombre</th>
-                <th scope="col">Descripción</th>
+                <th scope="col" class="fixed">Nombre</th>
+                <th scope="col" class="fixed">Descripción</th>
                 <th scope="col">Acciones</th>
             </tr>
             </thead>
             <tbody v-if="companies.length > 0">
                 <tr v-for="company in companies" :key="company.id">
                     <td> @{{ company.id }} </td>
-                    <td> @{{ company.name }} </td>
-                    <td> @{{ company.description }} </td>
+                    <td class="fixed"> @{{ company.name }} </td>
+                    <td class="fixed"> @{{ company.description }} </td>
                     <td>
                         <a :href="'/empresas/' + company.id" class='btn btn-info'><span class='oi oi-eye'></span></a>
                         @hasrole('Administrador')
