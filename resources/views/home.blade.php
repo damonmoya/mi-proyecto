@@ -61,52 +61,49 @@
   </div>
 
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.18/vue.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script>
-
-        const app = new Vue({ 
-            el: '#control_home',
-            created: function() {
-                this.getUsers();
-                this.getDepartments();
-                this.getProfessions();
-                this.getCompanies();
-            },
-            data: {
-                totalUsers: 0,
-                totalDepartments: 0,
-                totalProfessions: 0,
-                totalCompanies: 0
-            },
-            methods: {
-                getUsers: function(){
-                    var urlUsers = '/usuarios/recursos';
-                    axios.get(urlUsers).then(response => {
-                        this.totalUsers = response.data.length
-                    });
-                },
-                getDepartments: function(){
-                    var urlDepartment = '/departamentos/recursos';
-                    axios.get(urlDepartment).then(response => {
-                        this.totalDepartments = response.data.length
-                    });
-                },
-                getCompanies: function(){
-                    var urlCompanies = '/empresas/recursos';
-                    axios.get(urlCompanies).then(response => {
-                        this.totalCompanies = response.data.length
-                    });
-                },
-                getProfessions: function(){
-                    var urlProfession = '/profesiones/recursos';
-                    axios.get(urlProfession).then(response => {
-                        this.totalProfessions = response.data.length
-                    });
-                }
-            }
-        })
+  
+<script>
+      const app = new Vue({ 
+          el: '#control_home',
+          created: function() {
+              this.getUsers();
+              this.getDepartments();
+              this.getProfessions();
+              this.getCompanies();
+          },
+          data: {
+              totalUsers: 0,
+              totalDepartments: 0,
+              totalProfessions: 0,
+              totalCompanies: 0
+          },
+          methods: {
+              getUsers: function(){
+                  var urlUsers = '/usuarios/recursos';
+                  axios.get(urlUsers).then(response => {
+                      this.totalUsers = response.data.length
+                  });
+              },
+              getDepartments: function(){
+                  var urlDepartment = '/departamentos/recursos';
+                  axios.get(urlDepartment).then(response => {
+                      this.totalDepartments = response.data.length
+                  });
+              },
+              getCompanies: function(){
+                  var urlCompanies = '/empresas/recursos';
+                  axios.get(urlCompanies).then(response => {
+                      this.totalCompanies = response.data.length
+                  });
+              },
+              getProfessions: function(){
+                  var urlProfession = '/profesiones/recursos';
+                  axios.get(urlProfession).then(response => {
+                      this.totalProfessions = response.data.length
+                  });
+              }
+          }
+      })
 
 </script>
             
