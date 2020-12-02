@@ -152,12 +152,24 @@
                     });
                 },
                 deleteUser: function(user) {
-                    var url = '/usuarios/recursos/' + user.id;
                     var userName = user.name;
-                    var msg = '¡Usuario ' + userName + ' eliminado correctamente!';
-                    axios.delete(url).then(response => {
-                        this.getUsers();  
-                        toastr.success(msg, "Usuario eliminado", {"positionClass": "toast-bottom-right"});
+                    var msg = '¿Borrar el usuario "' + userName + '"?';
+                    swal({
+                        title: "Borrar usuario",
+                        text: msg,
+                        icon: "warning",
+                        buttons: true,
+                        dangerMode: true,
+                    })
+                    .then((willDelete) => {
+                        if (willDelete) {
+                            var url = '/usuarios/recursos/' + user.id;
+                            var msg = '¡Usuario ' + userName + ' eliminado correctamente!';
+                            axios.delete(url).then(response => {
+                                this.getUsers();  
+                                toastr.success(msg, "Usuario eliminado", {"positionClass": "toast-bottom-right"});
+                            });
+                        }
                     });
                 },
                 createUser: function() {

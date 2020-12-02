@@ -159,12 +159,24 @@
                     });
                 },
                 deleteDepartment: function(department) {
-                    var url = '/departamentos/recursos/' + department.id;
                     var departmentName = department.name;
-                    var msg = '¡Departamento ' + departmentName + ' eliminado correctamente!';
-                    axios.delete(url).then(response => {
-                        this.getDepartments();  
-                        toastr.success(msg, "Departamento eliminado", {"positionClass": "toast-bottom-right"});
+                    var msg = '¿Borrar el departamento "' + departmentName + '"?';
+                    swal({
+                        title: "Borrar departamento",
+                        text: msg,
+                        icon: "warning",
+                        buttons: true,
+                        dangerMode: true,
+                    })
+                    .then((willDelete) => {
+                        if (willDelete) {
+                            var url = '/departamentos/recursos/' + department.id;
+                            var msg = '¡Departamento ' + departmentName + ' eliminado correctamente!';
+                            axios.delete(url).then(response => {
+                                this.getDepartments();  
+                                toastr.success(msg, "Departamento eliminado", {"positionClass": "toast-bottom-right"});
+                            });
+                        }
                     });
                 },
                 createDepartment: function() {

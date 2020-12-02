@@ -133,12 +133,24 @@
                     });
                 },
                 deleteProfession: function(profession) {
-                    var url = '/profesiones/recursos/' + profession.id;
                     var professionTitle = profession.title;
-                    var msg = 'Profesión ' + professionTitle + ' eliminada correctamente!';
-                    axios.delete(url).then(response => {
-                        this.getProfessions();  
-                        toastr.success(msg, "Profesión eliminada", {"positionClass": "toast-bottom-right"});
+                    var msg = '¿Borrar la profesión "' + professionTitle + '"?';
+                    swal({
+                        title: "Borrar profesión",
+                        text: msg,
+                        icon: "warning",
+                        buttons: true,
+                        dangerMode: true,
+                    })
+                    .then((willDelete) => {
+                        if (willDelete) {
+                            var url = '/profesiones/recursos/' + profession.id;
+                            var msg = 'Profesión ' + professionTitle + ' eliminada correctamente!';
+                            axios.delete(url).then(response => {
+                                this.getProfessions();  
+                                toastr.success(msg, "Profesión eliminada", {"positionClass": "toast-bottom-right"});
+                            });
+                        }
                     });
                 },
                 createProfession: function() {

@@ -143,12 +143,24 @@
                     });
                 },
                 deleteCompany: function(company) {
-                    var url = '/empresas/recursos/' + company.id;
                     var companyName = company.name;
-                    var msg = 'Empresa ' + companyName + ' eliminada correctamente!';
-                    axios.delete(url).then(response => {
-                        this.getCompanies();  
-                        toastr.success(msg, "Empresa eliminada", {"positionClass": "toast-bottom-right"});
+                    var msg = '¿Borrar la empresa "' + companyName + '"?';
+                    swal({
+                        title: "Borrar empresa",
+                        text: msg,
+                        icon: "warning",
+                        buttons: true,
+                        dangerMode: true,
+                    })
+                    .then((willDelete) => {
+                        if (willDelete) {
+                            var url = '/empresas/recursos/' + company.id;
+                            var msg = 'Empresa ' + companyName + ' eliminada correctamente!';
+                            axios.delete(url).then(response => {
+                                this.getCompanies();  
+                                toastr.success(msg, "Empresa eliminada", {"positionClass": "toast-bottom-right"});
+                            });
+                        }
                     });
                 },
                 createCompany: function() {
