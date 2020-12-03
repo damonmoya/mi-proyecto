@@ -52,8 +52,9 @@
 
 </div>
 
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous"></script>
 <script>
+
     const app = new Vue({ 
         el: '#control_usuario',
         created: function() {
@@ -116,7 +117,7 @@
                 });
             },
             formatTimestamp: function(date) {
-        		return moment(date, 'DD/MM/YYYY').format('YYYY-MM-DD');
+        		return moment(date).format('DD-MM-YYYY | hh:mm a');
         	},
             eliminateUser: function(user) {
                 var userName = user.name;
