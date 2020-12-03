@@ -52,6 +52,11 @@
               <li class="nav-item">
                 <a class="nav-link" href="{{ route('users.show', $user->id) }}">Perfil</a>
               </li>
+              @hasrole('Administrador')
+                <li class="nav-item">
+                  <a class="nav-link" href="{{ route('admin.index') }}">Admin</a>
+                </li>
+              @endhasrole
             @endif
           </ul>
         </div>

@@ -29,8 +29,7 @@ Route::middleware('auth')->group(function () {
                 ->with('title', 'Listado de usuarios'); 
             })->name('index');
 
-            Route::resource('recursos', 'App\Http\Controllers\UserController', ['except' => 'show', 'create', 'edit'])
-                ->name('resources');
+            Route::resource('recursos', 'App\Http\Controllers\UserController', ['except' => 'show', 'create', 'edit']);
                 
             Route::get('{id}', 'App\Http\Controllers\UserController@show') 
                 ->where('id', '[0-9]+')
@@ -72,8 +71,7 @@ Route::middleware('auth')->group(function () {
                 ->with('title', 'Listado de empresas'); 
             })->name('index');
 
-            Route::resource('recursos', 'App\Http\Controllers\CompanyController', ['except' => 'show', 'create', 'edit'])
-                ->name('resources');
+            Route::resource('recursos', 'App\Http\Controllers\CompanyController', ['except' => 'show', 'create', 'edit']);
 
             Route::get('{id}', 'App\Http\Controllers\CompanyController@show') 
                 ->where('id', '[0-9]+')
@@ -119,8 +117,7 @@ Route::middleware('auth')->group(function () {
                 ->with('title', 'Listado de departamentos'); 
             })->name('index');
 
-            Route::resource('recursos', 'App\Http\Controllers\DepartmentController', ['except' => 'show', 'create', 'edit'])
-                ->name('resources');
+            Route::resource('recursos', 'App\Http\Controllers\DepartmentController', ['except' => 'show', 'create', 'edit']);
 
             Route::get('{id}', 'App\Http\Controllers\DepartmentController@show') 
                 ->where('id', '[0-9]+')
@@ -167,8 +164,7 @@ Route::middleware('auth')->group(function () {
                 ->with('title', 'Listado de profesiones'); 
             })->name('index');
 
-            Route::resource('recursos', 'App\Http\Controllers\ProfessionController', ['except' => 'show', 'create', 'edit'])
-                ->name('resources');
+            Route::resource('recursos', 'App\Http\Controllers\ProfessionController', ['except' => 'show', 'create', 'edit']);
 
             Route::get('{id}', 'App\Http\Controllers\ProfessionController@show') 
                 ->where('id', '[0-9]+')
@@ -194,8 +190,16 @@ Route::prefix('admin')->group(function () {
                 ->with('title', 'Panel de Administración'); 
             })->name('index');
 
-            //Route::get('search', 'App\Http\Controllers\DepartmentController@search')
-            //    ->name('search');
+            Route::get('searchUsers', 'App\Http\Controllers\AdminController@searchUsers')
+                ->name('searchUsers');
+
+            Route::get('{id}/restaurar', 'App\Http\Controllers\AdminController@restoreUser') 
+                ->where('id', '[0-9]+')
+                ->name('restoreUser');
+            
+            Route::get('{id}/eliminar', 'App\Http\Controllers\AdminController@eliminateUser') 
+                ->where('id', '[0-9]+')
+                ->name('eliminateUser');
 
             //Route::get('{id}/borrar', 'App\Http\Controllers\DepartmentController@destroy') 
             //    ->where('id', '[0-9]+')
