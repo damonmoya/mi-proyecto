@@ -193,13 +193,46 @@ Route::prefix('admin')->group(function () {
             Route::get('searchUsers', 'App\Http\Controllers\AdminController@searchUsers')
                 ->name('searchUsers');
 
-            Route::get('{id}/restaurar', 'App\Http\Controllers\AdminController@restoreUser') 
+            Route::get('searchProfessions', 'App\Http\Controllers\AdminController@searchProfessions')
+                ->name('searchProfessions');
+
+            Route::get('searchCompanies', 'App\Http\Controllers\AdminController@searchCompanies')
+                ->name('searchCompanies');
+
+            Route::get('searchDepartments', 'App\Http\Controllers\AdminController@searchDepartments')
+                ->name('searchDepartments');
+
+            Route::get('{id}/restaurarUsuario', 'App\Http\Controllers\AdminController@restoreUser') 
                 ->where('id', '[0-9]+')
                 ->name('restoreUser');
+
+            Route::get('{id}/restaurarProfesion', 'App\Http\Controllers\AdminController@restoreProfession') 
+                ->where('id', '[0-9]+')
+                ->name('restoreProfession');
+
+            Route::get('{id}/restaurarEmpresa', 'App\Http\Controllers\AdminController@restoreCompany') 
+                ->where('id', '[0-9]+')
+                ->name('restoreCompany');
+
+            Route::get('{id}/restaurarDepartamento', 'App\Http\Controllers\AdminController@restoreDepartment') 
+                ->where('id', '[0-9]+')
+                ->name('restoreDepartment');
             
-            Route::get('{id}/eliminar', 'App\Http\Controllers\AdminController@eliminateUser') 
+            Route::get('{id}/eliminarUsuario', 'App\Http\Controllers\AdminController@eliminateUser') 
                 ->where('id', '[0-9]+')
                 ->name('eliminateUser');
+
+            Route::get('{id}/eliminarProfesion', 'App\Http\Controllers\AdminController@eliminateProfession') 
+                ->where('id', '[0-9]+')
+                ->name('eliminateProfession');
+
+            Route::get('{id}/eliminarEmpresa', 'App\Http\Controllers\AdminController@eliminateCompany') 
+                ->where('id', '[0-9]+')
+                ->name('eliminateCompany');
+
+            Route::get('{id}/eliminarDepartamento', 'App\Http\Controllers\AdminController@eliminateDepartment') 
+                ->where('id', '[0-9]+')
+                ->name('eliminateDepartment');
 
             //Route::get('{id}/borrar', 'App\Http\Controllers\DepartmentController@destroy') 
             //    ->where('id', '[0-9]+')
