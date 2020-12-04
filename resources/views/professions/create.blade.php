@@ -4,7 +4,7 @@
             <!-- Modal Header -->
             <div class="modal-header">
                 <h4 class="modal-title">Crear profesión</h4>
-                <button type="button" class="close" data-dismiss="modal" v-on:click.prevent="clearErrors()"><span>&times;</span></button>
+                <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
             </div>
             <!-- Modal body -->
             <div class="modal-body">

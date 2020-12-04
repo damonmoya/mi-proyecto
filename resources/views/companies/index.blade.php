@@ -55,26 +55,29 @@
 
     <script>
 
-        class Errors {
-            constructor() {
-                this.errors = {};
-            }
-
-            get(field){
-                if (this.errors[field]) {
-                    return this.errors[field][0];
+        VeeValidate.localize({
+            en: {
+                fields: {
+                    name: {
+                        required: 'El campo nombre es obligatorio',
+                    },
+                    address: {
+                        required: 'El campo dirección es obligatorio',
+                    },
+                    description: {
+                        required: 'El campo descripción es obligatorio',
+                        min: 'La descripción debe tener mínimo 20 caracteres',
+                    },
+                    contact: {
+                        required: 'El campo contacto es obligatorio',
+                        regex: 'El teléfono introducido no es válido',
+                    }
                 }
             }
+        });
 
-            record(errors) {
-                this.errors = errors;
-            }
-
-            reset(){
-                this.errors = {}; 
-            }
-
-        }
+        Vue.component('validation-provider', VeeValidate.ValidationProvider);
+        Vue.component('validation-observer', VeeValidate.ValidationObserver);
 
         const app = new Vue({ 
             el: '#control_empresa',
@@ -89,7 +92,6 @@
                 newCompanyDescription: '',
                 newCompanyContact: '',
                 fillCompany: {'id': '', 'name': '', 'address': '', 'description': '', 'contact': ''},
-                errors: new Errors()
             },
             watch: {
                 keywords(after, before) {
@@ -101,9 +103,6 @@
                     axios.get('/empresas/search', { params: { keywords: this.keywords } })
                         .then(response => this.companies = response.data)
                         .catch(error => {});
-                },
-                clearErrors: function(){
-                    this.errors.reset();
                 },
                 getCompanies: function(){
                     var urlCompanies = '/empresas/recursos';
@@ -131,10 +130,8 @@
                         var msg = '¡Se ha editado la empresa ' + this.fillCompany.name + ' correctamente!';
                         toastr.success(msg, "Empresa modificada", {"positionClass": "toast-bottom-right"});
                         this.fillCompany = {'id': '', 'name': '', 'address': '', 'description': '', 'contact': ''};
-                        this.errors.reset();
                         $('#editCompanyModal').modal('hide');
                     }).catch(error => {
-                        this.errors.record(error.response.data.errors);
                         toastr.error("No se ha podido actualizar la empresa, por favor revisa los errores", "Error al editar empresa", {"positionClass": "toast-bottom-right"});
 
                     });
@@ -175,10 +172,8 @@
                         this.address = '';
                         this.description = '';
                         this.contact = '';
-                        this.errors.reset();
                         $('#createCompanyModal').modal('hide');
                     }).catch(error => {
-                        this.errors.record(error.response.data.errors);
                         toastr.error("No se ha podido crear la empresa, por favor revisa los errores", "Error al crear empresa", {"positionClass": "toast-bottom-right"});
                     });
                 }
