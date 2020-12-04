@@ -56,27 +56,36 @@
     </div>
 
     <script>
-        
-        class Errors {
-            constructor() {
-                this.errors = {};
-            }
 
-            get(field){
-                if (this.errors[field]) {
-                    return this.errors[field][0];
+        VeeValidate.localize({
+            en: {
+                fields: {
+                    name: {
+                        required: 'El campo nombre es obligatorio',
+                    },
+                    director: {
+                        required: 'El campo director es obligatorio',
+                    },
+                    director_type: {
+                        required: 'Se debe seleccionar un tipo de director',
+                    },
+                    company_id: {
+                        required: 'Se debe seleccionar una empresa o ninguna',
+                    },
+                    dependent_id: {
+                        required: 'Se debe seleccionar un departamento dependiente o ninguno',
+                    },
+                    budget: {
+                        required: 'El campo presupuesto es obligatorio',
+                        numeric: 'El valor de presupuesto introducido no es un número',
+                        between: 'El presupuesto debe comprender entre 10.000€ y 100.000€',
+                    }
                 }
             }
+        });
 
-            record(errors) {
-                this.errors = errors;
-            }
-
-            reset(){
-                this.errors = {}; 
-            }
-
-        }
+        Vue.component('validation-provider', VeeValidate.ValidationProvider);
+        Vue.component('validation-observer', VeeValidate.ValidationObserver);
 
         const app = new Vue({ 
             el: '#control_departamento',
@@ -91,12 +100,11 @@
                 dependents: [],
                 newDepartmentName: '',
                 newDepartmentDirector: '',
-                newDepartmentDirector_type: '',
+                newDepartmentDirector_type: 'En propiedad',
                 newDepartmentCompany: '',
-                newDepartmentDependent: '',
+                newDepartmentDependent: 'no',
                 newDepartmentBudget: '',
                 fillDepartment: {'id': '', 'name': '', 'director': '', 'director_type': '', 'company_id': '', 'dependent_id': '', 'budget': ''},
-                errors: new Errors()
             },
             watch: {
                 keywords(after, before) {
@@ -108,9 +116,6 @@
                     axios.get('/departamentos/search', { params: { keywords: this.keywords } })
                         .then(response => this.departments = response.data)
                         .catch(error => {});
-                },
-                clearErrors: function(){
-                    this.errors.reset();
                 },
                 getDepartments: function(){
                     var urlDepartment = '/departamentos/recursos';
@@ -147,10 +152,8 @@
                         var msg = '¡Se ha editado el departamento ' + this.fillDepartment.name + ' correctamente!';
                         toastr.success(msg, "Departamento modificado", {"positionClass": "toast-bottom-right"});
                         this.fillDepartment = {'id': '', 'name': '', 'director': '', 'director_type': '', 'company_id': '', 'dependent_id': '', 'budget': ''};
-                        this.errors.reset();
                         $('#editDepartmentModal').modal('hide');
                     }).catch(error => {
-                        this.errors.record(error.response.data.errors);
                         toastr.error("No se ha podido actualizar el departamento, por favor revisa los errores", "Error al editar departamento", {"positionClass": "toast-bottom-right"});
 
                     });
@@ -195,16 +198,14 @@
                         this.company_id = '';
                         this.dependent_id = '';
                         this.budget = '';
-                        this.errors.reset();
                         $('#createDepartmentModal').modal('hide');
                     }).catch(error => {
-                        this.errors.record(error.response.data.errors);
                         toastr.error("No se ha podido crear el departamento, por favor revisa los errores", "Error al crear departamento", {"positionClass": "toast-bottom-right"});
 
                     });
                 },
                 onChange(event) {
-                    this.newDepartmentDependent= '';
+                    this.newDepartmentDependent= 'no';
                     this.fillDepartment.dependent_id= '';
                     axios.get('/empresas/dependents', { params: { company: event.target.value } })
                         .then(response => this.dependents = response.data)
