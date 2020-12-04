@@ -9,19 +9,22 @@
             <!-- Modal body -->
             <div class="modal-body">
                 <slot>
-                    {{--Sección de formulario--}}        
-                    <form method="POST" v-on:submit.prevent="updateProfession(fillProfession.id)">
+                    {{--Sección de formulario--}}   
+                    <validation-observer v-slot="{ invalid }">              
+                        <form method="POST" v-on:submit.prevent="updateProfession(fillProfession.id)">
 
-                        <div class="form-group">
-                            <label for="title">Nombre:</label>
-                            <input type="text" class="form-control" name="title" id="title" v-model="fillProfession.title" aria-describedby="titleHelp" placeholder="Nombre...">
-                            <small id="titleHelp" class="form-text text-muted">Por ejemplo: Coordinador</small>
-                            <span class="text-danger" v-text="errors.get('title')"></span>
-                        </div>
-                            
-                        <button type="submit" class="btn btn-success">Editar profesión</button>
+                            <div class="form-group">
+                                <label for="title">Nombre:</label>
+                                <validation-provider rules="required" v-slot="{ errors }">
+                                    <input type="text" class="form-control" name="title" id="title" v-model="fillProfession.title" aria-describedby="titleHelp" placeholder="Nombre...">
+                                    <span class="text-danger">@{{ errors[0] }}</span>
+                                    <small id="titleHelp" class="form-text text-muted">Por ejemplo: Coordinador</small>
+                                </validation-provider>
+                            </div>
 
-                    </form>
+                            <button type="submit" class="btn btn-success" :disabled="invalid">Editar profesión</button>
+                        </form>
+                    </validation-observer>
                 </slot>
             </div>
       </div>

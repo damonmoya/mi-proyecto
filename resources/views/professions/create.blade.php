@@ -9,19 +9,22 @@
             <!-- Modal body -->
             <div class="modal-body">
                 <slot>
-                    {{--Sección de formulario--}}        
-                    <form method="POST" v-on:submit.prevent="createProfession">
+                    {{--Sección de formulario--}} 
+                    <validation-observer v-slot="{ invalid }">         
+                        <form method="POST" v-on:submit.prevent="createProfession">
 
-                        <div class="form-group">
-                            <label for="title">Nombre:</label>
-                            <input type="text" class="form-control" name="title" id="newTitle" v-model="newProfessionTitle" aria-describedby="titleHelp" placeholder="Nombre..." value="{{ old('title') }}">
-                            <small id="titleHelp" class="form-text text-muted">Por ejemplo: Coordinador</small>
-                            <span class="text-danger" v-text="errors.get('title')"></span>
-                        </div>
-                            
-                        <button type="submit" class="btn btn-success">Crear profesión</button>
+                            <div class="form-group">
+                                <label for="title">Nombre:</label>
+                                <validation-provider rules="required" v-slot="{ errors }">
+                                    <input type="text" class="form-control" name="title" id="newTitle" v-model="newProfessionTitle" aria-describedby="titleHelp" placeholder="Nombre..." value="{{ old('title') }}">
+                                    <span class="text-danger">@{{ errors[0] }}</span>
+                                    <small id="titleHelp" class="form-text text-muted">Por ejemplo: Coordinador</small>
+                                </validation-provider>
+                            </div>
 
-                    </form>
+                            <button type="submit" class="btn btn-success" :disabled="invalid">Crear profesión</button>
+                        </form>
+                    </validation-observer>
                 </slot>
             </div>
       </div>

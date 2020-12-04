@@ -54,27 +54,19 @@
     </div>
 
     <script>
-        
-        class Errors {
-            constructor() {
-                this.errors = {};
-            }
 
-            get(field){
-                if (this.errors[field]) {
-                    return this.errors[field][0];
+        VeeValidate.localize({
+            en: {
+                fields: {
+                    title: {
+                        required: 'El campo nombre es obligatorio',
+                    }
                 }
             }
+        });
 
-            record(errors) {
-                this.errors = errors;
-            }
-
-            reset(){
-                this.errors = {}; 
-            }
-
-        }
+        Vue.component('validation-provider', VeeValidate.ValidationProvider);
+        Vue.component('validation-observer', VeeValidate.ValidationObserver);
 
         const app = new Vue({ 
             el: '#control_profesion',
@@ -86,7 +78,6 @@
                 professions: [],
                 newProfessionTitle: '',
                 fillProfession: {'id': '', 'title': ''},
-                errors: new Errors()
             },
             watch: {
                 keywords(after, before) {
@@ -98,9 +89,6 @@
                     axios.get('/profesiones/search', { params: { keywords: this.keywords } })
                         .then(response => this.professions = response.data)
                         .catch(error => {});
-                },
-                clearErrors: function(){
-                    this.errors.reset();
                 },
                 getProfessions: function(){
                     var urlProfession = '/profesiones/recursos';
@@ -122,10 +110,8 @@
                         var msg = '¡Se ha editado la profesión ' + this.fillProfession.title + ' correctamente!';
                         toastr.success(msg, "Profesión modificada", {"positionClass": "toast-bottom-right"});
                         this.fillProfession = {'id': '', 'title': ''};
-                        this.errors.reset();
                         $('#editProfessionModal').modal('hide');
                     }).catch(error => {
-                        this.errors.record(error.response.data.errors);
                         toastr.error("No se ha podido actualizar la profesión, por favor revisa los errores", "Error al editar profesión", {"positionClass": "toast-bottom-right"});
                     });
                 },
@@ -159,10 +145,8 @@
                         var msg = '¡Se ha creado la profesión ' + this.newProfessionTitle + ' correctamente!';
                         toastr.success(msg, "Profesión creada", {"positionClass": "toast-bottom-right"});
                         this.title = '';
-                        this.errors.reset();
                         $('#createProfessionModal').modal('hide');
                     }).catch(error => {
-                        this.errors.record(error.response.data.errors);
                         toastr.error("No se ha podido crear la profesión, por favor revisa los errores", "Error al crear profesión", {"positionClass": "toast-bottom-right"});
                     });
                 }
