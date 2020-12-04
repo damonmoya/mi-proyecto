@@ -78,6 +78,39 @@
 
         }
 
+        VeeValidate.extend('confirm_password', {
+            params: ['target'],
+            validate(value, { target }) {
+                return value === target;
+            },
+            message: 'Las claves no coinciden'
+        });
+
+        VeeValidate.localize({
+            en: {
+                fields: {
+                    name: {
+                        required: 'El campo nombre es obligatorio',
+                    },
+                    email: {
+                        required: 'El campo correo es obligatorio',
+                        email: 'El correo no es válido',
+                    },
+                    password: {
+                        required: 'El campo clave es obligatorio',
+                        min: 'La clave debe tener mínimo 6 caracteres',
+                    },
+                    confirm_password: {
+                        required: 'Se debe confirmar la clave',
+                        required_if: 'Se debe confirmar la clave',
+                    }
+                }
+            }
+        });
+
+        Vue.component('validation-provider', VeeValidate.ValidationProvider);
+        Vue.component('validation-observer', VeeValidate.ValidationObserver);
+
         const app = new Vue({ 
             el: '#control_usuario',
             created: function() {

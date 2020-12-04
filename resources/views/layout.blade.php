@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="icon" href="favicon.ico">
@@ -95,8 +96,8 @@
       </div>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.18/vue.min.js"></script>
       <script src="https://cdn.jsdelivr.net/npm/vue"></script>
-      
-      <script src="https://unpkg.com/vee-validate@next"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/vee-validate/3.4.5/vee-validate.full.min.js" integrity="sha512-HcKh0sDC7OaZhXRJIjVIC6ZL4jn3rZ7+X2rwJxnzvKEFUx9+gNZBoYN3jZGnKVf8aWFZKNVA3u2Ti903eCAH8g==" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/vee-validate/3.4.5/locale/es.json"></script>
       <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
       @yield('content')
     </main>
